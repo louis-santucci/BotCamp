@@ -1,6 +1,6 @@
 package com.botcamp.botcamp.reporting;
 
-import com.botcamp.botcamp.service.mailing.GmailQuery;
+import com.botcamp.botcamp.service.mailing.query.GmailQuery;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
