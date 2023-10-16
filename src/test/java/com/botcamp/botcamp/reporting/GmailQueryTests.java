@@ -1,8 +1,9 @@
 package com.botcamp.botcamp.reporting;
 
 import com.botcamp.botcamp.service.mailing.query.GmailQuery;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class GmailQueryTests {
 
@@ -17,7 +18,7 @@ public class GmailQueryTests {
                 .from(TOTO_MAIL)
                 .build();
         String result = String.format("from:%s", TOTO_MAIL);
-        Assertions.assertEquals(result, query.toString());
+        assertThat(query.toString()).isEqualTo(result);
     }
 
     @Test
@@ -27,7 +28,7 @@ public class GmailQueryTests {
                 .beginDate(BEGIN_DATE)
                 .endDate(END_DATE)
                 .build();
-        Assertions.assertEquals(result, query.toString());
+        assertThat(query.toString()).isEqualTo(result);
     }
 
     @Test
@@ -38,7 +39,7 @@ public class GmailQueryTests {
                 .beginDate(BEGIN_DATE)
                 .endDate(END_DATE)
                 .build();
-        Assertions.assertEquals(result, query.toString());
+        assertThat(query.toString()).isEqualTo(result);
     }
 
     @Test
@@ -47,6 +48,6 @@ public class GmailQueryTests {
         GmailQuery query = GmailQuery.builder()
                 .subject("\"New message from Toto\"")
                 .build();
-        Assertions.assertEquals(result, query.toString());
+        assertThat(query.toString()).isEqualTo(result);
     }
 }
