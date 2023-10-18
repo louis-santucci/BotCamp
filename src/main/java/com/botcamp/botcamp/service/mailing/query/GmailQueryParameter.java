@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GmailQuery {
+public class GmailQueryParameter {
 
     private static final char SPACE = ' ';
     private static final String AFTER = "after";
