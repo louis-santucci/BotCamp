@@ -21,7 +21,8 @@ public class GmailMessageHandlerImpl implements MessageHandler {
     private static final String HEADER_DATE = "Date";
     private static final String HEADER_DATETIME_FORMAT = "dd LLL yyyy HH:mm:ss";
 
-    public Email handleMessage(Message message) {
+    public Email handleMessage(Object msg) {
+        Message message = (Message) msg;
         String base64Body = message.getPayload().getParts().get(0).getBody().getData();
         String body = cleanCrlfEndOfLine(new String(Base64.getDecoder().decode(base64Body)));
         Map<String, String> headerMap = headerListToMap(message.getPayload().getHeaders());
