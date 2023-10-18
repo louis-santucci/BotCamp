@@ -1,0 +1,9 @@
+gmail:
+  api:
+    caller:
+      cost-frequency: 10000
+      cost-limit: 250
+      max-results: 500
+      reset-cron: "*/5 * * * * *"
+    user:
+      email: toto@toto.com
