@@ -32,16 +32,6 @@ public class GmailServiceImpl implements GmailService {
     }
 
     @Override
-    public List<Email> getEmails(String beginDate, String endDate) throws IOException, InterruptedException {
-        GmailQueryParameter query = GmailQueryParameter.builder()
-                .beginDate(beginDate)
-                .endDate(endDate)
-                .build();
-
-        return getEmails(query);
-    }
-
-    @Override
     public List<Email> getEmails(String beginDate, String endDate, String sender, String subject) throws IOException, InterruptedException {
         GmailQueryParameter query = GmailQueryParameter.builder()
                 .beginDate(beginDate)
