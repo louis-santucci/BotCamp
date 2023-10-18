@@ -1,10 +1,12 @@
 package com.botcamp.botcamp.config;
 
-import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@AllArgsConstructor
-@ConfigurationProperties(prefix = "gmail-user")
+@ConfigurationProperties(prefix = "gmail.api.user")
+@Data
+@NoArgsConstructor
 public class GmailUserConfig {
 
     private String email;
