@@ -1,10 +1,9 @@
-package com.botcamp.botcamp.service.reporting.impl;
+package com.botcamp.botcamp.service.reporting.bandcamp;
 
 import com.botcamp.botcamp.service.mailing.Email;
-import com.botcamp.botcamp.service.reporting.BandcampRecord;
 import com.botcamp.botcamp.service.reporting.EmailPostprocessor;
 
-public class BandcampPostprocessor implements EmailPostprocessor<BandcampRecord> {
+public class BandcampPostProcessor implements EmailPostprocessor<BandcampRecord> {
     @Override
     public BandcampRecord processEmail(Email email) {
         return null;

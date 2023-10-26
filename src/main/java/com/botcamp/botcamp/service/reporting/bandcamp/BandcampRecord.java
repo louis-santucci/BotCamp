@@ -1,5 +1,6 @@
-package com.botcamp.botcamp.service.reporting;
+package com.botcamp.botcamp.service.reporting.bandcamp;
 
+import com.botcamp.botcamp.service.reporting.Record;
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
