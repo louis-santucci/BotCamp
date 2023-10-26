@@ -5,5 +5,7 @@ import org.springframework.http.ResponseEntity;
 public interface MailController {
     ResponseEntity<?> getEmails(String beginDate, String endDate, String sender, String subject);
 
-    String GET_LIST = "/all";
+    interface Endpoints {
+        String GET_LIST = "/all";
+    }
 }
