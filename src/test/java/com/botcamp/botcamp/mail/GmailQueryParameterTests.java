@@ -1,4 +1,4 @@
-package com.botcamp.botcamp.reporting;
+package com.botcamp.botcamp.mail;
 
 import com.botcamp.botcamp.service.mail.query.GmailQueryParameter;
 import org.junit.jupiter.api.Test;
