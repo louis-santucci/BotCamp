@@ -1,4 +1,4 @@
-package com.botcamp.botcamp.service.mailing.query;
+package com.botcamp.botcamp.service.mail.query;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

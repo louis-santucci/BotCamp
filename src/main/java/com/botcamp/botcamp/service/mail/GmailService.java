@@ -1,4 +1,4 @@
-package com.botcamp.botcamp.service.mailing;
+package com.botcamp.botcamp.service.mail;
 
 import java.io.IOException;
 import java.util.List;

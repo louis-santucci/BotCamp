@@ -1,13 +1,13 @@
-package com.botcamp.botcamp.service.mailing.impl;
+package com.botcamp.botcamp.service.mail.impl;
 
 import com.botcamp.botcamp.config.GmailUserConfig;
-import com.botcamp.botcamp.service.mailing.Email;
-import com.botcamp.botcamp.service.mailing.GmailAPICaller;
-import com.botcamp.botcamp.service.mailing.GmailService;
-import com.botcamp.botcamp.service.mailing.MessageHandler;
-import com.botcamp.botcamp.service.mailing.query.GmailQueryParameter;
-import com.botcamp.botcamp.service.mailing.query.MessageListQuery;
-import com.botcamp.botcamp.service.mailing.query.MessageQuery;
+import com.botcamp.botcamp.service.mail.Email;
+import com.botcamp.botcamp.service.mail.GmailAPICaller;
+import com.botcamp.botcamp.service.mail.GmailService;
+import com.botcamp.botcamp.service.mail.MessageHandler;
+import com.botcamp.botcamp.service.mail.query.GmailQueryParameter;
+import com.botcamp.botcamp.service.mail.query.MessageListQuery;
+import com.botcamp.botcamp.service.mail.query.MessageQuery;
 import com.google.api.services.gmail.model.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.botcamp.botcamp.service.mailing.GmailAPIAction.MESSAGE_GET;
-import static com.botcamp.botcamp.service.mailing.GmailAPIAction.MESSAGE_LIST;
+import static com.botcamp.botcamp.service.mail.GmailAPIAction.MESSAGE_GET;
+import static com.botcamp.botcamp.service.mail.GmailAPIAction.MESSAGE_LIST;
 
 
 @Service

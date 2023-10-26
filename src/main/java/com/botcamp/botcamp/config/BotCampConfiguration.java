@@ -1,7 +1,7 @@
 package com.botcamp.botcamp.config;
 
-import com.botcamp.botcamp.service.mailing.GmailAPICaller;
-import com.botcamp.botcamp.service.mailing.impl.GmailAPICallerImpl;
+import com.botcamp.botcamp.service.mail.GmailAPICaller;
+import com.botcamp.botcamp.service.mail.impl.GmailAPICallerImpl;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;

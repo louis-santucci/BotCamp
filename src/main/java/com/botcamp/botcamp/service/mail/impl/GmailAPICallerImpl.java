@@ -1,11 +1,11 @@
-package com.botcamp.botcamp.service.mailing.impl;
+package com.botcamp.botcamp.service.mail.impl;
 
 import com.botcamp.botcamp.config.GmailAPICallerConfig;
-import com.botcamp.botcamp.service.mailing.GmailAPIAction;
-import com.botcamp.botcamp.service.mailing.GmailAPICaller;
-import com.botcamp.botcamp.service.mailing.query.MessageListQuery;
-import com.botcamp.botcamp.service.mailing.query.MessageQuery;
-import com.botcamp.botcamp.service.mailing.query.Query;
+import com.botcamp.botcamp.service.mail.GmailAPIAction;
+import com.botcamp.botcamp.service.mail.GmailAPICaller;
+import com.botcamp.botcamp.service.mail.query.MessageListQuery;
+import com.botcamp.botcamp.service.mail.query.MessageQuery;
+import com.botcamp.botcamp.service.mail.query.Query;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.ListMessagesResponse;
 import com.google.api.services.gmail.model.Message;

@@ -1,5 +1,6 @@
-package com.botcamp.botcamp.utils;
+package com.botcamp.botcamp.utils.test;
 
+import com.botcamp.botcamp.utils.DateUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

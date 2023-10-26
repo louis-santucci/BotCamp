@@ -1,8 +1,7 @@
-package com.botcamp.botcamp.service.mailing.query;
+package com.botcamp.botcamp.service.mail.query;
 
 import com.google.api.services.gmail.model.Message;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 
 @AllArgsConstructor
 public class MessageQuery implements Query<Message> {

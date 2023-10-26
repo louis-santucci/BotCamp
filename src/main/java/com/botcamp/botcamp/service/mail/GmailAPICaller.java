@@ -1,6 +1,6 @@
-package com.botcamp.botcamp.service.mailing;
+package com.botcamp.botcamp.service.mail;
 
-import com.botcamp.botcamp.service.mailing.query.Query;
+import com.botcamp.botcamp.service.mail.query.Query;
 import com.google.api.services.gmail.model.Message;
 
 import java.io.IOException;

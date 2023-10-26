@@ -7,13 +7,13 @@ import com.botcamp.botcamp.MemoryAppender;
 import com.botcamp.botcamp.config.GmailAPICallerConfig;
 import com.botcamp.botcamp.config.GmailUserConfig;
 import com.botcamp.botcamp.configuration.TestConfiguration;
-import com.botcamp.botcamp.service.mailing.GmailAPIAction;
-import com.botcamp.botcamp.service.mailing.impl.GmailAPICallerImpl;
-import com.botcamp.botcamp.service.mailing.query.MessageQuery;
+import com.botcamp.botcamp.service.mail.GmailAPIAction;
+import com.botcamp.botcamp.service.mail.impl.GmailAPICallerImpl;
+import com.botcamp.botcamp.service.mail.query.MessageQuery;
+import com.botcamp.botcamp.utils.MessageUtils;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.Message;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,13 +23,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -71,7 +67,7 @@ public class GmailAPICallerTests {
 
     private void configureTests(int messageListSize) throws IOException {
 
-        this.messageMap = generateMessages(messageListSize);
+        this.messageMap = MessageUtils.generateMessages(messageListSize);
 
         // Gmail Mock config
         gmail = mock(Gmail.class);
@@ -97,19 +93,6 @@ public class GmailAPICallerTests {
         }
 
         this.caller = spy(new GmailAPICallerImpl(gmail, apiCallerConfig));
-    }
-
-    private Map<String, Message> generateMessages(int size) {
-        List<Message> messageList = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            Message msg = new Message();
-            String randomId = RandomStringUtils.randomAlphanumeric(10);
-            msg.setId(randomId);
-            messageList.add(msg);
-        }
-        return messageList
-                .stream()
-                .collect(Collectors.toMap(Message::getId, Function.identity()));
     }
 
     @Test

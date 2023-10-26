@@ -1,4 +1,4 @@
-package com.botcamp.botcamp.service.mailing;
+package com.botcamp.botcamp.service.mail;
 
 import lombok.Getter;
 

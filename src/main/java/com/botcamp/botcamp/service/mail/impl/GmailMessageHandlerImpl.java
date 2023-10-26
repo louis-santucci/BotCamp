@@ -1,7 +1,7 @@
-package com.botcamp.botcamp.service.mailing.impl;
+package com.botcamp.botcamp.service.mail.impl;
 
-import com.botcamp.botcamp.service.mailing.Email;
-import com.botcamp.botcamp.service.mailing.MessageHandler;
+import com.botcamp.botcamp.service.mail.Email;
+import com.botcamp.botcamp.service.mail.MessageHandler;
 import com.botcamp.botcamp.utils.DateUtils;
 import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePartHeader;

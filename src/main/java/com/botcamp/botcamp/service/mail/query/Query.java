@@ -1,4 +1,4 @@
-package com.botcamp.botcamp.service.mailing.query;
+package com.botcamp.botcamp.service.mail.query;
 
 public interface Query<T> {
     String getUserEmail();

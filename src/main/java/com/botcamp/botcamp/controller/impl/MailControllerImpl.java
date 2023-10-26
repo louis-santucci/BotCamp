@@ -1,8 +1,8 @@
 package com.botcamp.botcamp.controller.impl;
 
 import com.botcamp.botcamp.controller.MailController;
-import com.botcamp.botcamp.service.mailing.Email;
-import com.botcamp.botcamp.service.mailing.GmailService;
+import com.botcamp.botcamp.service.mail.Email;
+import com.botcamp.botcamp.service.mail.GmailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
