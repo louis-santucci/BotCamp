@@ -6,7 +6,7 @@ import ch.qos.logback.classic.LoggerContext;
 import com.botcamp.botcamp.MemoryAppender;
 import com.botcamp.botcamp.config.GmailAPICallerConfig;
 import com.botcamp.botcamp.config.GmailUserConfig;
-import com.botcamp.botcamp.configuration.TestConfiguration;
+import com.botcamp.botcamp.configuration.BotCampTestConfiguration;
 import com.botcamp.botcamp.service.mail.GmailAPIAction;
 import com.botcamp.botcamp.service.mail.impl.GmailAPICallerImpl;
 import com.botcamp.botcamp.service.mail.query.MessageQuery;
@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = TestConfiguration.class)
+@SpringBootTest(classes = BotCampTestConfiguration.class)
 @ActiveProfiles("test")
 @Slf4j
 public class GmailAPICallerTests {
