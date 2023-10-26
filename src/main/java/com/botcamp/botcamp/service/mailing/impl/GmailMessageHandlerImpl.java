@@ -7,6 +7,7 @@ import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePartHeader;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
@@ -23,11 +24,11 @@ public class GmailMessageHandlerImpl implements MessageHandler {
 
     public Email handleMessage(Object msg) {
         Message message = (Message) msg;
-        String base64Body = message.getPayload().getParts().get(0).getBody().getData();
-        String body = cleanCrlfEndOfLine(new String(Base64.getDecoder().decode(base64Body)));
+        byte[] base64Body = message.getPayload().getParts().get(0).getBody().getData().getBytes(StandardCharsets.ISO_8859_1);
+        String body = cleanCrlfEndOfLine(new String(Base64.getUrlDecoder().decode(base64Body)));
         Map<String, String> headerMap = headerListToMap(message.getPayload().getHeaders());
 
-        String receiver = getEmailFromHeaderValue(headerMap.get(HEADER_TO));
+        String receiver = headerMap.get(HEADER_TO);
         String sender = getEmailFromHeaderValue(headerMap.get(HEADER_FROM));
         String subject = headerMap.get(HEADER_SUBJECT);
         String dateTimeStr = DateUtils.cleanDate(headerMap.get(HEADER_DATE));
