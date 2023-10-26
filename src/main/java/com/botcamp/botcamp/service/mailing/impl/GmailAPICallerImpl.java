@@ -7,13 +7,13 @@ import com.botcamp.botcamp.service.mailing.query.MessageListQuery;
 import com.botcamp.botcamp.service.mailing.query.MessageQuery;
 import com.botcamp.botcamp.service.mailing.query.Query;
 import com.google.api.services.gmail.Gmail;
+import com.google.api.services.gmail.model.ListMessagesResponse;
 import com.google.api.services.gmail.model.Message;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,19 +49,19 @@ public class GmailAPICallerImpl implements GmailAPICaller {
         limit += apiAction.getCost();
         return switch (apiAction) {
             case MESSAGE_GET -> {
-                log.info("Getting message from Gmail API");
+                log.debug("Getting message from Gmail API");
                 MessageQuery messageQuery = (MessageQuery) queryObject;
                 Message msg = getMessage(messageQuery);
                 yield Collections.singletonList(msg);
             }
             case MESSAGE_LIST -> {
-                log.info("Getting message list from Gmail API");
+                log.debug("Getting message list from Gmail API");
                 MessageListQuery messageListQuery = (MessageListQuery) queryObject;
                 yield getMessageList(messageListQuery);
             }
             case MESSAGE_TRASH, MESSAGE_SEND -> {
-                log.info("NOT IMPLEMENTED YET");
-                yield new ArrayList<>();
+                log.warn("NOT IMPLEMENTED YET");
+                yield new ArrayList<>(0);
             }
         };
     }
@@ -72,15 +72,24 @@ public class GmailAPICallerImpl implements GmailAPICaller {
         resetLimit();
     }
 
-    private List<Message> getMessageList(MessageListQuery messageListQuery) throws IOException {
-        return this.gmail
+    private List<Message> getMessageList(MessageListQuery messageListQuery) throws IOException, InterruptedException {
+        ListMessagesResponse listMessagesResponse = this.gmail
                 .users()
                 .messages()
                 .list(messageListQuery.getUserEmail())
+                .setPageToken(messageListQuery.getNextPageToken())
                 .setQ(messageListQuery.getQueryObject().toString())
                 .setMaxResults(apiConfig.getMaxResults())
-                .execute()
-                .getMessages();
+                .execute();
+        List<Message> messageList = listMessagesResponse.getMessages();
+        String nextToken = listMessagesResponse.getNextPageToken();
+        if (nextToken != null) {
+            messageListQuery.setNextPageToken(nextToken);
+            List<Message> newResults = this.callGmailAPI(GmailAPIAction.MESSAGE_LIST, messageListQuery);
+            messageList.addAll(newResults);
+        }
+
+        return messageList;
     }
 
     private Message getMessage(MessageQuery messageQuery) throws IOException {
