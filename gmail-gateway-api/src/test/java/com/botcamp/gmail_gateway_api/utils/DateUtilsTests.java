@@ -1,6 +1,5 @@
-package com.botcamp.botcamp.utils;
+package com.botcamp.gmail_gateway_api.utils;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;

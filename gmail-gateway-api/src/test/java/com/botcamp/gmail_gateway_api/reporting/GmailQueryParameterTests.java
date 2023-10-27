@@ -1,8 +1,7 @@
-package com.botcamp.botcamp.reporting;
+package com.botcamp.gmail_gateway_api.reporting;
 
-import com.botcamp.botcamp.service.mailing.query.GmailQueryParameter;
+import com.botcamp.gmail_gateway_api.mailing.query.GmailQueryParameter;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

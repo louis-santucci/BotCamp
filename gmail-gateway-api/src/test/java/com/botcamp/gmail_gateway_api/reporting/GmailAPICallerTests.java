@@ -1,15 +1,15 @@
-package com.botcamp.botcamp.reporting;
+package com.botcamp.gmail_gateway_api.reporting;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
-import com.botcamp.botcamp.MemoryAppender;
-import com.botcamp.botcamp.config.GmailAPICallerConfig;
-import com.botcamp.botcamp.config.GmailUserConfig;
-import com.botcamp.botcamp.configuration.TestConfiguration;
-import com.botcamp.botcamp.service.mailing.GmailAPIAction;
-import com.botcamp.botcamp.service.mailing.impl.GmailAPICallerImpl;
-import com.botcamp.botcamp.service.mailing.query.MessageQuery;
+import com.botcamp.gmail_gateway_api.MemoryAppender;
+import com.botcamp.gmail_gateway_api.config.GmailAPICallerConfig;
+import com.botcamp.gmail_gateway_api.config.GmailUserConfig;
+import com.botcamp.gmail_gateway_api.configuration.TestConfiguration;
+import com.botcamp.gmail_gateway_api.mailing.GmailAPIAction;
+import com.botcamp.gmail_gateway_api.mailing.impl.GmailAPICallerImpl;
+import com.botcamp.gmail_gateway_api.mailing.query.MessageQuery;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.Message;
 import lombok.extern.slf4j.Slf4j;

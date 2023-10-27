@@ -1,4 +1,4 @@
-package com.botcamp.botcamp;
+package com.botcamp.gmail_gateway_api;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.ILoggingEvent;
