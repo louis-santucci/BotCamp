@@ -5,12 +5,12 @@
     <parent>
         <groupId>com.botcamp</groupId>
         <artifactId>botcamp</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.2-SNAPSHOT</version>
     </parent>
 
     <groupId>com.botcamp</groupId>
     <artifactId>gmail-gateway-api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>gmail-gateway-api</name>
     <description>gmail-gateway-api</description>
     <properties>
