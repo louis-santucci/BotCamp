@@ -1,3 +1,7 @@
+spring:
+  banner:
+    location: classpath:/gmail_gateway_api_banner.txt
+
 server:
   port: 7500
 

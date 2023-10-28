@@ -1,2 +1,6 @@
+spring:
+  banner:
+    location: classpath:/botcamp_api_banner.txt
+
 server:
   port: 7510
