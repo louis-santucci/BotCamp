@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.util.List;
 
+import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.GET_LIST;
+
 @RestController
 @RequestMapping(path = "/api/v1/mail")
 public class MailControllerImpl implements MailController {
