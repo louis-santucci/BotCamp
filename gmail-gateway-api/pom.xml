@@ -120,6 +120,10 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                    <layers>
+                        <enabled>true</enabled>
+                        <configuration>${project.basedir}/src/layers.xml</configuration>
+                    </layers>
                 </configuration>
             </plugin>
         </plugins>
