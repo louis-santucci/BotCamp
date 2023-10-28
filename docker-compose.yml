@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  botcamp-api:
+    restart: unless-stopped
+    depends_on:
+      - gmail-gateway-api
+    container_name: botcamp-api
+    build:
+      context: ./botcamp-api/
+      dockerfile: ./Dockerfile
+    ports:
+      - '7510:7510'
+  gmail-gateway-api:
+    restart: unless-stopped
+    container_name: gmail-gateway-api
+    build:
+      context: ./gmail-gateway-api/
+      dockerfile: ./Dockerfile
+    ports:
+      - '7500:7500'
+      - '2424:2424'

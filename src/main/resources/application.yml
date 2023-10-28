@@ -1,9 +1,0 @@
-gmail:
-  api:
-    caller:
-      cost-frequency: 1000
-      cost-limit: 250
-      max-results: 500
-      reset-cron: "* * * * * *"
-    user:
-      email: louissantucci1998@gmail.com
