@@ -31,4 +31,4 @@ build/
 
 ### VS Code ###
 .vscode/
-postgres/config/.env
+postgres/config/*.env
