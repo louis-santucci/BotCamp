@@ -1,6 +1,13 @@
 spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+    show-sql: false
   banner:
     location: classpath:/gmail_gateway_api_banner.txt
+
 
 server:
   port: 7500
@@ -14,3 +21,12 @@ gmail:
       reset-cron: "* * * * * *"
     user:
       email: louissantucci1998@gmail.com
+
+
+
+db:
+  username: ${POSTGRES_USER}
+  password: ${POSTGRES_PASSWORD}
+  port: 7501
+  hostname: localhost
+  db-name: ${POSTGRES_DB}
