@@ -30,9 +30,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Configuration
-@EnableConfigurationProperties
-@Import({GmailUserConfig.class, GmailAPICallerConfig.class})
-public class BotCampConfiguration {
+public class GmailAPIOAuthConfiguration {
 
     private final String APPLICATION_NAME = "BotCamp";
     private final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
@@ -57,7 +55,7 @@ public class BotCampConfiguration {
     }
 
     private Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
-        InputStream in = BotCampConfiguration.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+        InputStream in = GmailAPIOAuthConfiguration.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
 
         if (in == null) throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
 
