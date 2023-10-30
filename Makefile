@@ -17,14 +17,10 @@ prune:
 	@docker system prune -a -f
 	@docker image prune -f
 
-run: install
-	@docker-compose down
-	@docker-compose build
-	@docker-compose up
+run: down build up
 
-restart: install
-	@docker-compose build
-	@docker-compose up -d
+rund: down build upd
+
 
 up:
 	@docker-compose up
