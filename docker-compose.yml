@@ -1,10 +1,28 @@
 version: '3.8'
 
 services:
+  postgres:
+    image: postgres:16.0-alpine
+    container_name: postgres
+    env_file: postgres/config/postgres.env
+    volumes:
+      - "./postgres/data:/var/lib/postgresql/data"
+    ports:
+      - "7501:5432"
+  pgadmin:
+    image: dpage/pgadmin4:7.8
+    container_name: pgadmin
+    env_file: postgres/config/pgadmin.env
+    volumes:
+      - "./postgres/pgadmin-data:/var/lib/pgadmin"
+    depends_on:
+      - postgres
+    ports:
+      - "7502:80"
   botcamp-api:
-    restart: unless-stopped
     depends_on:
       - gmail-gateway-api
+      - postgres
     container_name: botcamp-api
     build:
       context: ./botcamp-api/
@@ -12,7 +30,8 @@ services:
     ports:
       - '7510:7510'
   gmail-gateway-api:
-    restart: unless-stopped
+    depends_on:
+      - postgres
     container_name: gmail-gateway-api
     build:
       context: ./gmail-gateway-api/
