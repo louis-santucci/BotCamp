@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### LOCAL DATABASE DATA ###
-data/
+db_data/
