@@ -11,4 +11,6 @@ public class DataSourceConfigProperties {
     private String username;
     private String password;
     private String dbName;
+    private String dbUrl;
+    private String dbType;
 }
