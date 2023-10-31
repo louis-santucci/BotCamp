@@ -7,6 +7,16 @@ test:
 clean:
 	@mvn clean
 
+dbup:
+	@docker-compose up postgres
+
+dbdown:
+	@docker-compose rm -fsv postgres
+
+
+dbupd:
+	@docker-compose up postgres -d
+
 build: install
 	@docker-compose build
 
@@ -30,3 +40,6 @@ upd:
 
 down:
 	@docker-compose down
+
+
+.PHONY: postgres
