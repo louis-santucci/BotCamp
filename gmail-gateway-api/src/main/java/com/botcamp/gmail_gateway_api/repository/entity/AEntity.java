@@ -1,25 +1,24 @@
 package com.botcamp.gmail_gateway_api.repository.entity;
-import jakarta.persistence.*;
+
 import lombok.Data;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.UUID;
 
 @MappedSuperclass
 @Data
 public abstract class AEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    private Long id;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    @CreatedDate
+    @CreationTimestamp
     private Date createdAt;
 
     @Column(name = "updated_at")
-    @LastModifiedDate
+    @UpdateTimestamp
     private Date updatedAt;
 }
