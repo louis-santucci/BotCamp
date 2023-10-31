@@ -5,7 +5,7 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class BandcampUser {
+public class BotcampUser {
 
     private String username;
 
