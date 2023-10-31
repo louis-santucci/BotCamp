@@ -8,14 +8,15 @@ clean:
 	@mvn clean
 
 dbup:
-	@docker-compose up postgres
+	@docker-compose up postgres pgadmin
 
 dbdown:
 	@docker-compose rm -fsv postgres
+	@docker-compose rm -fsv pgadmin
 
 
 dbupd:
-	@docker-compose up postgres -d
+	@docker-compose up postgres pgadmin -d
 
 build: install
 	@docker-compose build
