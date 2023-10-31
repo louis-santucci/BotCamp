@@ -21,7 +21,6 @@ import javax.sql.DataSource;
 public class GmailGatewayConfiguration {
 
     private static final String ENV_FILE = ".env";
-    private static final String DB_URL = "jdbc:postgresql://%s:%d/%s";
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
@@ -34,7 +33,18 @@ public class GmailGatewayConfiguration {
 
     @Bean
     public DataSource dataSource(DataSourceConfigProperties config) {
-        String url = String.format(DB_URL, config.getHostname(), config.getPort(), config.getDbName());
+        DbTypeEnum type = DbTypeEnum.fromString(config.getDbType());
+        if (type == null) throw new TypeNotPresentException(config.getDbType(), null);
+
+        String url = switch (type) {
+            case POSTGRES -> String.format(
+                    config.getDbUrl(),
+                    config.getHostname(),
+                    config.getPort(),
+                    config.getDbName());
+            case H2 -> config.getDbUrl();
+        };
+
         DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder
                 .create()
                 .username(config.getUsername())
