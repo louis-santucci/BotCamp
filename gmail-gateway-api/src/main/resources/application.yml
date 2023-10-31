@@ -8,6 +8,9 @@ spring:
   banner:
     location: classpath:/gmail_gateway_api_banner.txt
 
+jwt:
+  secret: botcampgmailgatewayapilocal
+  token-validity: 18000
 
 server:
   port: 7500
