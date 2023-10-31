@@ -1,6 +1,6 @@
 package com.botcamp.gmail_gateway_api.service;
 
-import com.botcamp.gmail_gateway_api.config.GmailUserConfig;
+import com.botcamp.gmail_gateway_api.config.properties.GmailUserConfigProperties;
 import com.botcamp.gmail_gateway_api.mailing.Email;
 import com.botcamp.gmail_gateway_api.mailing.GmailAPICaller;
 import com.botcamp.gmail_gateway_api.mailing.MessageHandler;
@@ -27,14 +27,14 @@ public class GmailServiceImpl implements GmailService {
     private static final String BANDCAMP_EMAIL = "noreply@bandcamp.com";
     private static final String BANDCAMP_SUBJECT = "\"New Release From\"";
     private final GmailAPICaller gmailAPICaller;
-    private GmailUserConfig userConfig;
+    private GmailUserConfigProperties userConfig;
     private MessageHandler messageHandler;
 
-    public GmailServiceImpl(GmailUserConfig gmailUserConfig,
+    public GmailServiceImpl(GmailUserConfigProperties gmailUserConfigProperties,
                             GmailAPICaller gmailAPICaller,
                             MessageHandler messageHandler) {
         this.gmailAPICaller = gmailAPICaller;
-        this.userConfig = gmailUserConfig;
+        this.userConfig = gmailUserConfigProperties;
         this.messageHandler = messageHandler;
     }
 

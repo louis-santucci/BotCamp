@@ -5,7 +5,7 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import com.botcamp.gmail_gateway_api.MemoryAppender;
 import com.botcamp.gmail_gateway_api.config.GmailAPICallerConfig;
-import com.botcamp.gmail_gateway_api.config.GmailUserConfig;
+import com.botcamp.gmail_gateway_api.config.properties.GmailUserConfigProperties;
 import com.botcamp.gmail_gateway_api.configuration.TestConfiguration;
 import com.botcamp.gmail_gateway_api.mailing.GmailAPIAction;
 import com.botcamp.gmail_gateway_api.mailing.impl.GmailAPICallerImpl;
@@ -40,7 +40,7 @@ import static org.mockito.Mockito.*;
 public class GmailAPICallerTests {
 
     @Autowired
-    private GmailUserConfig userConfig;
+    private GmailUserConfigProperties userConfig;
     @Autowired
     private GmailAPICallerConfig apiCallerConfig;
     private GmailAPICallerImpl caller;

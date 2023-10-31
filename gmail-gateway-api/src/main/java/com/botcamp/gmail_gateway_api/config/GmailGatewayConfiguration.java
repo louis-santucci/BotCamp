@@ -1,5 +1,8 @@
 package com.botcamp.gmail_gateway_api.config;
 
+import com.botcamp.gmail_gateway_api.config.properties.JwtConfigProperties;
+import com.botcamp.gmail_gateway_api.config.properties.DataSourceConfigProperties;
+import com.botcamp.gmail_gateway_api.config.properties.GmailUserConfigProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -14,10 +17,11 @@ import javax.sql.DataSource;
 @Configuration
 @EnableConfigurationProperties
 @Import({
-        GmailUserConfig.class,
+        GmailUserConfigProperties.class,
         GmailAPICallerConfig.class,
         DataSourceConfigProperties.class,
-        GmailAPIOAuthConfiguration.class})
+        GmailAPIOAuthConfiguration.class,
+        JwtConfigProperties.class})
 public class GmailGatewayConfiguration {
 
     private static final String ENV_FILE = ".env";
