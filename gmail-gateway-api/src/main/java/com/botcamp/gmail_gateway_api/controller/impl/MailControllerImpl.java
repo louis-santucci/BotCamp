@@ -14,9 +14,10 @@ import java.io.IOException;
 import java.util.List;
 
 import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.GET_LIST;
+import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.V1_MAIL;
 
 @RestController
-@RequestMapping(path = "/api/v1/mail")
+@RequestMapping(path = V1_MAIL)
 public class MailControllerImpl implements MailController {
 
     private static final String BEGIN_DATE_QUERY_PARAM = "beginDate";
