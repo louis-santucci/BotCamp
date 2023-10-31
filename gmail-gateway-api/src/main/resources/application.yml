@@ -5,8 +5,16 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
     open-in-view: false
     show-sql: false
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+  sql:
+    init:
+      mode: always
   banner:
     location: classpath:/gmail_gateway_api_banner.txt
+  main:
+    allow-circular-references: true
 
 jwt:
   secret: botcampgmailgatewayapilocal
