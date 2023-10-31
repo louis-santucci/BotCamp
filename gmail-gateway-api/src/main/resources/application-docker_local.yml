@@ -1,11 +1,5 @@
-spring:
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-
 db:
-  hostname: postgres
+  hostname: localhost
   username: ${POSTGRES_USER}
   password: ${POSTGRES_PASSWORD}
   db-name: ${POSTGRES_DB}

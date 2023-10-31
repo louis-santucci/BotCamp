@@ -2,7 +2,7 @@ spring:
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.H2Dialect
     open-in-view: false
     show-sql: false
   banner:
@@ -27,6 +27,8 @@ gmail:
 db:
   username: ${POSTGRES_USER}
   password: ${POSTGRES_PASSWORD}
-  port: 7501
   hostname: localhost
   db-name: ${POSTGRES_DB}
+  db-url: jdbc:h2:file:./db_data/gmail_gateway;AUTO_SERVER=TRUE;MODE=PostgreSQL;
+  db-type: h2
+  port: ${PGPORT}
