@@ -21,7 +21,7 @@ import javax.sql.DataSource;
         GmailAPICallerConfig.class,
         DataSourceConfigProperties.class,
         GmailAPIOAuthConfiguration.class,
-        JwtConfigProperties.class})
+        WebSecurityConfig.class})
 public class GmailGatewayConfiguration {
 
     private static final String ENV_FILE = ".env";
