@@ -29,7 +29,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.AUTH;
+import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.*;
 
 @Configuration
 @EnableWebSecurity
@@ -81,12 +81,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+        String authUrl = V1_AUTH + AUTH;
         // We don't need CSRF for this example
         httpSecurity.csrf().disable()
                 .cors()
                 .and()
                 // dont authenticate this particular request
-                .authorizeRequests().antMatchers(AUTH).permitAll().anyRequest().authenticated()
+                .authorizeRequests().antMatchers(authUrl).permitAll().anyRequest().authenticated()
                 // all other requests need to be authenticated
                 .and()
                 // make sure we use stateless session; session won't be used to
