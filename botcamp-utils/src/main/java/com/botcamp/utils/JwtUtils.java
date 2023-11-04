@@ -1,4 +1,4 @@
-package com.botcamp.gmail_gateway_api.utils;
+package com.botcamp.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

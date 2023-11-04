@@ -1,10 +1,10 @@
-package com.botcamp.gmail_gateway_api.utils;
+package utils;
 
+import com.botcamp.utils.DateUtils;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class DateUtilsTests {
     private static final String DATE_TEST_1 = "30 Sep 2023 09:02:58";
@@ -16,7 +16,7 @@ public class DateUtilsTests {
         String expectedDateStr = "30 Sep 2023 09:02:58";
         String actualDateTime = DateUtils.cleanDate(DATE_CLEAN_TEST_1);
 
-        assertThat(actualDateTime).isEqualTo(expectedDateStr);
+        Assertions.assertThat(actualDateTime).isEqualTo(expectedDateStr);
     }
 
     @Test
@@ -24,6 +24,6 @@ public class DateUtilsTests {
         LocalDateTime expectedDateTime = LocalDateTime.of(2023, 9, 30, 11, 2, 58);
         LocalDateTime actualDateTime = DateUtils.StringToDateTime(DATE_TEST_1, FORMAT_1);
 
-        assertThat(actualDateTime).isEqualTo(expectedDateTime);
+        Assertions.assertThat(actualDateTime).isEqualTo(expectedDateTime);
     }
 }
