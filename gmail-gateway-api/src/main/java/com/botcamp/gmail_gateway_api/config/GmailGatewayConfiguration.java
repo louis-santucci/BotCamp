@@ -1,6 +1,5 @@
 package com.botcamp.gmail_gateway_api.config;
 
-import com.botcamp.gmail_gateway_api.config.properties.JwtConfigProperties;
 import com.botcamp.gmail_gateway_api.config.properties.DataSourceConfigProperties;
 import com.botcamp.gmail_gateway_api.config.properties.GmailUserConfigProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

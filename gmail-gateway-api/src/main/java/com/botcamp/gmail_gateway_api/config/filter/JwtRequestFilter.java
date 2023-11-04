@@ -1,8 +1,9 @@
 package com.botcamp.gmail_gateway_api.config.filter;
 
+import com.botcamp.gmail_gateway_api.config.BotcampUser;
 import com.botcamp.gmail_gateway_api.config.properties.JwtConfigProperties;
 import com.botcamp.gmail_gateway_api.service.JwtUserDetailsService;
-import com.botcamp.gmail_gateway_api.utils.JwtUtils;
+import com.botcamp.utils.JwtUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.Setter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -46,15 +47,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             } catch (ExpiredJwtException e) {
                 logger.error("JWT Token has expired");
             }
-        } else {
-            logger.warn("JWT Token does not begin with Bearer String");
         }
 
         // Once we get the token validate it.
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
-
+            BotcampUser userDetails = (BotcampUser) this.jwtUserDetailsService.loadUserByUsername(username);
+            logger.info("Request incoming from " + userDetails.getGmailEmail());
             // if token is valid configure Spring Security to manually set
             // authentication
             if (JwtUtils.validateToken(jwtToken, userDetails, jwtProperties.getSecret())) {

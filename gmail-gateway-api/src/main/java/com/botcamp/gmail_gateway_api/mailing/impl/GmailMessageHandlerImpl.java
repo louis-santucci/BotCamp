@@ -2,7 +2,7 @@ package com.botcamp.gmail_gateway_api.mailing.impl;
 
 import com.botcamp.gmail_gateway_api.mailing.Email;
 import com.botcamp.gmail_gateway_api.mailing.MessageHandler;
-import com.botcamp.gmail_gateway_api.utils.DateUtils;
+import com.botcamp.utils.DateUtils;
 import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePartHeader;
 import org.springframework.stereotype.Component;
