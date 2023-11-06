@@ -28,8 +28,8 @@ public class GmailServiceImpl implements GmailService {
     private static final String BANDCAMP_EMAIL = "noreply@bandcamp.com";
     private static final String BANDCAMP_SUBJECT = "\"New Release From\"";
     private final GmailAPICaller gmailAPICaller;
-    private GmailUserConfigProperties userConfig;
-    private MessageHandler messageHandler;
+    private final GmailUserConfigProperties userConfig;
+    private final MessageHandler messageHandler;
 
     public GmailServiceImpl(GmailUserConfigProperties gmailUserConfigProperties,
                             GmailAPICaller gmailAPICaller,
@@ -61,7 +61,7 @@ public class GmailServiceImpl implements GmailService {
             MessageQuery messageQuery = new MessageQuery(userEmail, result);
             Optional<Message> message = gmailAPICaller.callGmailAPI(MESSAGE_GET, messageQuery).stream().findFirst();
             if (message.isPresent()) {
-                Email email = messageHandler.handleMessage(message.get());;
+                Email email = messageHandler.handleMessage(message.get());
                 resultList.add(email);
             }
         }
