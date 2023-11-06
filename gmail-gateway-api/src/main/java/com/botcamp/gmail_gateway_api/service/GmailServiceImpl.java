@@ -2,6 +2,7 @@ package com.botcamp.gmail_gateway_api.service;
 
 import com.botcamp.gmail_gateway_api.config.properties.GmailUserConfigProperties;
 import com.botcamp.gmail_gateway_api.mailing.Email;
+import com.botcamp.gmail_gateway_api.mailing.EmailHandlingException;
 import com.botcamp.gmail_gateway_api.mailing.GmailAPICaller;
 import com.botcamp.gmail_gateway_api.mailing.MessageHandler;
 import com.botcamp.gmail_gateway_api.mailing.query.GmailQueryParameter;
@@ -39,7 +40,7 @@ public class GmailServiceImpl implements GmailService {
     }
 
     @Override
-    public List<Email> getEmails(String beginDate, String endDate, String sender, String subject) throws IOException, InterruptedException {
+    public List<Email> getEmails(String beginDate, String endDate, String sender, String subject) throws IOException, InterruptedException, EmailHandlingException {
         GmailQueryParameter query = GmailQueryParameter.builder()
                 .beginDate(beginDate)
                 .endDate(endDate)
@@ -50,7 +51,7 @@ public class GmailServiceImpl implements GmailService {
         return getEmails(query);
     }
 
-    private List<Email> getEmails(GmailQueryParameter queryParameter) throws IOException, InterruptedException {
+    private List<Email> getEmails(GmailQueryParameter queryParameter) throws IOException, InterruptedException, EmailHandlingException {
         String userEmail = userConfig.getEmail();
         MessageListQuery messageListQuery = new MessageListQuery(userEmail, queryParameter, null);
         List<Message> results = gmailAPICaller.callGmailAPI(MESSAGE_LIST, messageListQuery);
