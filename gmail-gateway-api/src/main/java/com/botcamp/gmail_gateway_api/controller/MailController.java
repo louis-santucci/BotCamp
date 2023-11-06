@@ -1,12 +1,11 @@
 package com.botcamp.gmail_gateway_api.controller;
 
 import com.botcamp.gmail_gateway_api.mailing.Email;
+import com.botcamp.gmail_gateway_api.mailing.EmailHandlingException;
 import com.botcamp.gmail_gateway_api.service.GmailService;
 import com.botcamp.utils.GzipUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.InputStreamSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +17,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.GET_LIST;
@@ -47,20 +47,23 @@ public class MailController {
 
     @GetMapping(GET_LIST)
     public ResponseEntity<?> getEmails(@RequestParam(name = BEGIN_DATE_QUERY_PARAM, required = false) String beginDate,
-                                                @RequestParam(name = END_DATE_QUERY_PARAM, required = false) String endDate,
-                                                @RequestParam(name = TOPIC_QUERY_PARAM, required = false) String sender,
-                                                @RequestParam(name = SUBJECT_QUERY_PARAM, required = false) String subject,
-                                                @RequestParam(name = COMPRESS_QUERY_PARAM, defaultValue = "false") boolean compress) {
+                                       @RequestParam(name = END_DATE_QUERY_PARAM, required = false) String endDate,
+                                       @RequestParam(name = TOPIC_QUERY_PARAM, required = false) String sender,
+                                       @RequestParam(name = SUBJECT_QUERY_PARAM, required = false) String subject,
+                                       @RequestParam(name = COMPRESS_QUERY_PARAM, defaultValue = "false") boolean compress) {
         try {
             List<Email> results = this.gmailService.getEmails(beginDate, endDate, sender, subject);
-            if (compress) {
-                InputStream is = new ByteArrayInputStream(objectMapper.writeValueAsBytes(results));
-                ByteArrayOutputStream baos = GzipUtils.compress(is);
-                return generateResponse(HttpStatus.OK, true, SUCCESS, baos.toString());
-            }
-            return generateResponse(HttpStatus.OK, true, SUCCESS, results);
-        } catch (IOException | InterruptedException | NullPointerException e) {
+            Object content = compress ? compressEmailResults(results) : results;
+            return generateResponse(HttpStatus.OK, true, SUCCESS, content);
+        } catch (IOException | InterruptedException | NullPointerException | EmailHandlingException e) {
             return generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, e.getMessage(), null);
         }
+    }
+
+    private String compressEmailResults(List<Email> emailList) throws JsonProcessingException {
+        InputStream is = new ByteArrayInputStream(objectMapper.writeValueAsBytes(emailList));
+        ByteArrayOutputStream baos = GzipUtils.compress(is);
+
+        return baos.toString(StandardCharsets.UTF_8);
     }
 }
