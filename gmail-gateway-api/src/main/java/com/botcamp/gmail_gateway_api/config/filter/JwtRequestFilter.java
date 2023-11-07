@@ -1,6 +1,6 @@
 package com.botcamp.gmail_gateway_api.config.filter;
 
-import com.botcamp.gmail_gateway_api.config.BotcampUser;
+import com.botcamp.gmail_gateway_api.config.GatewayUser;
 import com.botcamp.config.properties.SecurityConfigProperties;
 import com.botcamp.gmail_gateway_api.service.JwtUserDetailsService;
 import com.botcamp.utils.JwtUtils;
@@ -56,7 +56,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         // Once we get the token validate it.
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            BotcampUser userDetails = (BotcampUser) this.jwtUserDetailsService.loadUserByUsername(username);
+            GatewayUser userDetails = (GatewayUser) this.jwtUserDetailsService.loadUserByUsername(username);
             logger.info("Request incoming from " + userDetails.getGmailEmail());
             // if token is valid configure Spring Security to manually set
             // authentication

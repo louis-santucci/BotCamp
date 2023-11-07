@@ -1,5 +1,6 @@
 package com.botcamp.gmail_gateway_api.service;
 
+import com.botcamp.gmail_gateway_api.config.GatewayUser;
 import com.botcamp.gmail_gateway_api.repository.BotcampUserRepository;
 import com.botcamp.gmail_gateway_api.repository.entity.BotcampUserEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,7 +29,7 @@ public class JwtUserDetailsService implements UserDetailsService {
         if (entity == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
-        return new com.botcamp.gmail_gateway_api.config.BotcampUser(entity.getUsername(), entity.getPassword(), new ArrayList<>(), entity.getGmailEmail());
+        return new GatewayUser(entity.getUsername(), entity.getPassword(), new ArrayList<>(), entity.getGmailEmail());
     }
 
     public BotcampUserEntity save(BotcampUser user) {
