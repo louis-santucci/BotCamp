@@ -8,7 +8,6 @@
         <version>0.0.2-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.botcamp</groupId>
     <artifactId>gmail-gateway-api</artifactId>
     <version>0.0.2-SNAPSHOT</version>
     <name>gmail-gateway-api</name>

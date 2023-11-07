@@ -8,7 +8,6 @@
         <version>0.0.2-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.botcamp</groupId>
     <artifactId>botcamp-api</artifactId>
     <version>0.0.2-SNAPSHOT</version>
     <name>botcamp-api</name>
@@ -81,6 +80,24 @@
                         <configuration>${project.basedir}/src/layers.xml</configuration>
                     </layers>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.coderplus.maven.plugins</groupId>
+                <artifactId>copy-rename-maven-plugin</artifactId>
+                <version>1.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-file</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <sourceFile>${project.parent.basedir}/postgres/config/postgres.env</sourceFile>
+                            <destinationFile>${project.basedir}/src/main/resources/.env</destinationFile>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
