@@ -17,6 +17,19 @@ spring:
     allow-circular-references: true
 
 
+cors:
+  allowed-headers:
+    - "Content-Type"
+    - "accept"
+    - "Origin"
+    - "Authorization"
+  allowed-methods:
+    - "GET"
+  allowed-origins:
+    - "*"
+  enabled: true
+  pattern: "/**"
+
 security:
   jwt:
     secret: botcampgmailgatewayapilocal

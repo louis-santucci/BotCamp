@@ -1,6 +1,50 @@
 spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+    open-in-view: false
+    show-sql: false
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+  sql:
+    init:
+      mode: always
   banner:
     location: classpath:/botcamp_api_banner.txt
+  main:
+    allow-circular-references: true
+
+cors:
+  allowed-headers:
+    - "Content-Type"
+    - "accept"
+    - "Origin"
+    - "Authorization"
+  allowed-methods:
+    - "GET"
+    - "POST"
+  allowed-origins:
+    - "*"
+  enabled: true
+  pattern: "/**"
+
+
+security:
+  jwt:
+    secret: botcampapilocal
+    token-validity: 18000
 
 server:
   port: 7510
+
+db:
+  username: ${POSTGRES_USER}
+  password: ${POSTGRES_PASSWORD}
+  hostname: localhost
+  db-name: ${POSTGRES_DB}
+  db-url: jdbc:h2:file:./db_data/botcamp;AUTO_SERVER=TRUE;MODE=PostgreSQL;
+  db-type: h2
+  port: ${PGPORT}
+
