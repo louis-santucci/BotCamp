@@ -1,7 +1,7 @@
 package com.botcamp.gmail_gateway_api.config.filter;
 
 import com.botcamp.gmail_gateway_api.config.BotcampUser;
-import com.botcamp.gmail_gateway_api.config.properties.JwtConfigProperties;
+import com.botcamp.gmail_gateway_api.config.properties.SecurityConfigProperties;
 import com.botcamp.gmail_gateway_api.service.JwtUserDetailsService;
 import com.botcamp.utils.JwtUtils;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -21,17 +21,21 @@ import java.io.IOException;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
     private final JwtUserDetailsService jwtUserDetailsService;
-    private final JwtConfigProperties jwtProperties;
+    private final SecurityConfigProperties securityConfigProperties;
 
-    public JwtRequestFilter(JwtConfigProperties jwtConfigProperties,
+    public JwtRequestFilter(SecurityConfigProperties securityConfigProperties,
                             @Lazy JwtUserDetailsService service) {
-        this.jwtProperties = jwtConfigProperties;
+        this.securityConfigProperties = securityConfigProperties;
         this.jwtUserDetailsService = service;
     }
 
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        if (!securityConfigProperties.isEnabled()) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         final String requestTokenHeader = request.getHeader("Authorization");
 
         String username = null;
@@ -41,7 +45,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
             try {
-                username = JwtUtils.getUsernameFromToken(jwtToken, jwtProperties.getSecret());
+                username = JwtUtils.getUsernameFromToken(jwtToken, securityConfigProperties.getJwt().getSecret());
             } catch (IllegalArgumentException e) {
                 logger.error("Unable to get JWT Token");
             } catch (ExpiredJwtException e) {
@@ -56,7 +60,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             logger.info("Request incoming from " + userDetails.getGmailEmail());
             // if token is valid configure Spring Security to manually set
             // authentication
-            if (JwtUtils.validateToken(jwtToken, userDetails, jwtProperties.getSecret())) {
+            if (JwtUtils.validateToken(jwtToken, userDetails, securityConfigProperties.getJwt().getSecret())) {
 
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());

@@ -1,11 +1,12 @@
 package com.botcamp.gmail_gateway_api.controller;
 
-import com.botcamp.gmail_gateway_api.config.properties.JwtConfigProperties;
+import com.botcamp.gmail_gateway_api.config.properties.SecurityConfigProperties;
 import com.botcamp.gmail_gateway_api.controller.request.JwtRequest;
 import com.botcamp.gmail_gateway_api.controller.response.JwtResponse;
 import com.botcamp.gmail_gateway_api.service.JwtUserDetailsService;
 import com.botcamp.utils.HttpUtils;
 import com.botcamp.utils.JwtUtils;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,18 +23,21 @@ import static com.botcamp.utils.HttpUtils.generateResponse;
 @CrossOrigin
 @RestController
 @RequestMapping(path = V1_AUTH)
+@ConditionalOnProperty(prefix = "security",
+        name = "enabled",
+        havingValue = "true")
 public class JwtAuthenticationController {
 
     private final AuthenticationManager authManager;
     private final JwtUserDetailsService jwtUserDetailsService;
-    private final JwtConfigProperties jwtProperties;
+    private final SecurityConfigProperties securityConfigProperties;
 
     public JwtAuthenticationController(AuthenticationManager manager,
                                        JwtUserDetailsService jwtUserDetailsService,
-                                       JwtConfigProperties jwtProperties) {
+                                       SecurityConfigProperties securityConfigProperties) {
         this.authManager = manager;
         this.jwtUserDetailsService = jwtUserDetailsService;
-        this.jwtProperties = jwtProperties;
+        this.securityConfigProperties = securityConfigProperties;
     }
 
     @RequestMapping(value = AUTH, method = RequestMethod.POST)
@@ -49,7 +53,7 @@ public class JwtAuthenticationController {
         final UserDetails userDetails = jwtUserDetailsService
                 .loadUserByUsername(authenticationRequest.getUsername());
 
-        final String token = JwtUtils.generateToken(userDetails, jwtProperties.getSecret(), jwtProperties.getTokenValidity());
+        final String token = JwtUtils.generateToken(userDetails, securityConfigProperties.getJwt().getSecret(), securityConfigProperties.getJwt().getTokenValidity());
 
         return generateResponse(HttpStatus.OK, true, HttpUtils.SUCCESS, new JwtResponse(token));
     }
