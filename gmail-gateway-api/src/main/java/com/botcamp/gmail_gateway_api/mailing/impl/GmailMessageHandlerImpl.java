@@ -1,9 +1,9 @@
 package com.botcamp.gmail_gateway_api.mailing.impl;
 
-import com.botcamp.gmail_gateway_api.mailing.Email;
-import com.botcamp.gmail_gateway_api.mailing.MessageHandler;
-import com.botcamp.gmail_gateway_api.utils.DateUtils;
+import com.botcamp.gmail_gateway_api.mailing.*;
+import com.botcamp.utils.DateUtils;
 import com.google.api.services.gmail.model.Message;
+import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartHeader;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +12,10 @@ import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME;
 
 @Component
 public class GmailMessageHandlerImpl implements MessageHandler {
@@ -20,28 +23,65 @@ public class GmailMessageHandlerImpl implements MessageHandler {
     private static final String HEADER_SUBJECT = "Subject";
     private static final String HEADER_FROM = "From";
     private static final String HEADER_DATE = "Date";
-    private static final String HEADER_DATETIME_FORMAT = "dd LLL yyyy HH:mm:ss";
+    private static final String TEXT_PLAIN = "text/plain";
+    private static final String MULTIPART_ALTERNATIVE = "multipart/alternative";
+    private static final String MULTIPART_MIXED = "multipart/mixed";
 
-    public Email handleMessage(Object msg) {
-        Message message = (Message) msg;
-        byte[] base64Body = message.getPayload().getParts().get(0).getBody().getData().getBytes(StandardCharsets.ISO_8859_1);
-        String body = cleanCrlfEndOfLine(new String(Base64.getUrlDecoder().decode(base64Body)));
-        Map<String, String> headerMap = headerListToMap(message.getPayload().getHeaders());
+    public Email handleMessage(Object msg) throws EmailHandlingException {
+        try {
+            Message message = (Message) msg;
+            Map<String, String> headerMap = headerListToMap(message.getPayload().getHeaders());
+            String receiver = headerMap.get(HEADER_TO);
+            String sender = getEmailFromHeaderValue(headerMap.get(HEADER_FROM));
+            String subject = headerMap.get(HEADER_SUBJECT);
+            String dateTimeStr = DateUtils.cleanDate(headerMap.get(HEADER_DATE));
+            LocalDateTime dateTime = DateUtils.StringToDateTime(dateTimeStr, RFC_1123_DATE_TIME);
+            MessageBody messageBody = getMessageBody(message.getPayload());
+            String base64BodyString = new String(Base64.getUrlDecoder().decode(messageBody.getMessageBody()));
+            String body = cleanCrlfEndOfLine(base64BodyString);
 
-        String receiver = headerMap.get(HEADER_TO);
-        String sender = getEmailFromHeaderValue(headerMap.get(HEADER_FROM));
-        String subject = headerMap.get(HEADER_SUBJECT);
-        String dateTimeStr = DateUtils.cleanDate(headerMap.get(HEADER_DATE));
-        LocalDateTime dateTime = DateUtils.StringToDateTime(dateTimeStr, HEADER_DATETIME_FORMAT);
+            return Email.builder()
+                    .receiver(receiver)
+                    .subject(subject)
+                    .sender(sender)
+                    .dateTime(dateTime)
+                    .body(body)
+                    .bodyType(messageBody.getType())
+                    .build();
+        } catch (Exception e) {
+            throw new EmailHandlingException(e);
+        }
+    }
 
-        Email email = Email.builder()
-                .receiver(receiver)
-                .subject(subject)
-                .sender(sender)
-                .dateTime(dateTime)
-                .body(body)
-                .build();
-        return email;
+    private static MessageBody getMessageBody(MessagePart messagePart) {
+        byte[] base64Body = null;
+        MessageBodyType type = MessageBodyType.TEXT_HTML;
+        if (messagePart != null) {
+            if (isMultipartMixed(messagePart)) {
+                return getMessageBody(messagePart.getParts().get(0));
+            }
+            if (isMultipartAlternative(messagePart)) {
+                List<MessagePart> parts = messagePart.getParts();
+                Map<String, MessagePart> partMap = parts.stream().collect(Collectors.toMap(MessagePart::getMimeType, Function.identity()));
+                if (partMap.containsKey(TEXT_PLAIN)) {
+                    base64Body = partMap.get(TEXT_PLAIN).getBody().getData().getBytes(StandardCharsets.ISO_8859_1);
+                    type = MessageBodyType.TEXT_PLAIN;
+                } else {
+                    base64Body =  parts.get(0).getBody().getData().getBytes(StandardCharsets.ISO_8859_1);
+                }
+            } else {
+                base64Body = messagePart.getBody().getData().getBytes(StandardCharsets.ISO_8859_1);
+            }
+        }
+        return new MessageBody(type, base64Body);
+    }
+
+    private static boolean isMultipartAlternative(MessagePart part) {
+        return part.getMimeType().equalsIgnoreCase(MULTIPART_ALTERNATIVE);
+    }
+
+    private static boolean isMultipartMixed(MessagePart part) {
+        return part.getMimeType().equalsIgnoreCase(MULTIPART_MIXED);
     }
 
     private static Map<String, String> headerListToMap(List<MessagePartHeader> list) {

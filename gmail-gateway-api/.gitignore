@@ -35,3 +35,4 @@ build/
 
 tokens/
 **/client_secret.json
+**/.env

@@ -1,7 +1,8 @@
 package com.botcamp.gmail_gateway_api.service;
 
-import com.botcamp.gmail_gateway_api.config.GmailUserConfig;
+import com.botcamp.gmail_gateway_api.config.properties.GmailUserConfigProperties;
 import com.botcamp.gmail_gateway_api.mailing.Email;
+import com.botcamp.gmail_gateway_api.mailing.EmailHandlingException;
 import com.botcamp.gmail_gateway_api.mailing.GmailAPICaller;
 import com.botcamp.gmail_gateway_api.mailing.MessageHandler;
 import com.botcamp.gmail_gateway_api.mailing.query.GmailQueryParameter;
@@ -27,19 +28,19 @@ public class GmailServiceImpl implements GmailService {
     private static final String BANDCAMP_EMAIL = "noreply@bandcamp.com";
     private static final String BANDCAMP_SUBJECT = "\"New Release From\"";
     private final GmailAPICaller gmailAPICaller;
-    private GmailUserConfig userConfig;
-    private MessageHandler messageHandler;
+    private final GmailUserConfigProperties userConfig;
+    private final MessageHandler messageHandler;
 
-    public GmailServiceImpl(GmailUserConfig gmailUserConfig,
+    public GmailServiceImpl(GmailUserConfigProperties gmailUserConfigProperties,
                             GmailAPICaller gmailAPICaller,
                             MessageHandler messageHandler) {
         this.gmailAPICaller = gmailAPICaller;
-        this.userConfig = gmailUserConfig;
+        this.userConfig = gmailUserConfigProperties;
         this.messageHandler = messageHandler;
     }
 
     @Override
-    public List<Email> getEmails(String beginDate, String endDate, String sender, String subject) throws IOException, InterruptedException {
+    public List<Email> getEmails(String beginDate, String endDate, String sender, String subject) throws IOException, InterruptedException, EmailHandlingException {
         GmailQueryParameter query = GmailQueryParameter.builder()
                 .beginDate(beginDate)
                 .endDate(endDate)
@@ -50,7 +51,7 @@ public class GmailServiceImpl implements GmailService {
         return getEmails(query);
     }
 
-    private List<Email> getEmails(GmailQueryParameter queryParameter) throws IOException, InterruptedException {
+    private List<Email> getEmails(GmailQueryParameter queryParameter) throws IOException, InterruptedException, EmailHandlingException {
         String userEmail = userConfig.getEmail();
         MessageListQuery messageListQuery = new MessageListQuery(userEmail, queryParameter, null);
         List<Message> results = gmailAPICaller.callGmailAPI(MESSAGE_LIST, messageListQuery);
@@ -60,7 +61,7 @@ public class GmailServiceImpl implements GmailService {
             MessageQuery messageQuery = new MessageQuery(userEmail, result);
             Optional<Message> message = gmailAPICaller.callGmailAPI(MESSAGE_GET, messageQuery).stream().findFirst();
             if (message.isPresent()) {
-                Email email = messageHandler.handleMessage(message.get());;
+                Email email = messageHandler.handleMessage(message.get());
                 resultList.add(email);
             }
         }

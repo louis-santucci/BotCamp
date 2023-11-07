@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public class Email {
     private String sender;
     private String body;
+    private MessageBodyType bodyType;
     private String subject;
     private String receiver;
     private LocalDateTime dateTime;

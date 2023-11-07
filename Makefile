@@ -7,6 +7,17 @@ test:
 clean:
 	@mvn clean
 
+dbup:
+	@docker-compose up postgres pgadmin
+
+dbdown:
+	@docker-compose rm -fsv postgres
+	@docker-compose rm -fsv pgadmin
+
+
+dbupd:
+	@docker-compose up postgres pgadmin -d
+
 build: install
 	@docker-compose build
 
@@ -17,14 +28,10 @@ prune:
 	@docker system prune -a -f
 	@docker image prune -f
 
-run: install
-	@docker-compose down
-	@docker-compose build
-	@docker-compose up
+run: down build up
 
-restart: install
-	@docker-compose build
-	@docker-compose up -d
+rund: down build upd
+
 
 up:
 	@docker-compose up
@@ -34,3 +41,6 @@ upd:
 
 down:
 	@docker-compose down
+
+
+.PHONY: postgres

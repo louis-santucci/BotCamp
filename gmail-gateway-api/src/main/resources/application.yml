@@ -1,6 +1,26 @@
 spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+    open-in-view: false
+    show-sql: false
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+  sql:
+    init:
+      mode: always
   banner:
     location: classpath:/gmail_gateway_api_banner.txt
+  main:
+    allow-circular-references: true
+
+
+security:
+  jwt:
+    secret: botcampgmailgatewayapilocal
+    token-validity: 18000
 
 server:
   port: 7500
@@ -14,3 +34,14 @@ gmail:
       reset-cron: "* * * * * *"
     user:
       email: louissantucci1998@gmail.com
+
+
+
+db:
+  username: ${POSTGRES_USER}
+  password: ${POSTGRES_PASSWORD}
+  hostname: localhost
+  db-name: ${POSTGRES_DB}
+  db-url: jdbc:h2:file:./db_data/gmail_gateway;AUTO_SERVER=TRUE;MODE=PostgreSQL;
+  db-type: h2
+  port: ${PGPORT}
