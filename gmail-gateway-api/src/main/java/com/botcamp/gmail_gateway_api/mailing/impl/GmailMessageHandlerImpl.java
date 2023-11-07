@@ -55,7 +55,7 @@ public class GmailMessageHandlerImpl implements MessageHandler {
 
     private static MessageBody getMessageBody(MessagePart messagePart) {
         byte[] base64Body = null;
-        MessageBodyType type = MessageBodyType.HTML;
+        MessageBodyType type = MessageBodyType.TEXT_HTML;
         if (messagePart != null) {
             if (isMultipartMixed(messagePart)) {
                 return getMessageBody(messagePart.getParts().get(0));
