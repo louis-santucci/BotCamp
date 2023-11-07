@@ -1,4 +1,4 @@
-package com.botcamp.gmail_gateway_api.config;
+package com.botcamp.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
