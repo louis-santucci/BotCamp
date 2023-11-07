@@ -41,7 +41,7 @@ public class DateUtils {
     }
 
     public static String cleanDate(String date) {
-        String[] splitDate = date.split(SPACE);
+        String[] splitDate = Arrays.stream(date.split(SPACE)).filter(s -> !s.isEmpty()).toArray(String[]::new);
         if (splitDate.length == 7) splitDate = Arrays.copyOf(splitDate, splitDate.length - 1);
         StringBuilder sb = new StringBuilder();
         Iterator<String> it = Arrays.stream(splitDate).iterator();
@@ -54,6 +54,8 @@ public class DateUtils {
 
         return sb.toString();
     }
+
+
 
     public static OffsetPair parseOffset(String offsetString) {
         String offsetHoursStr = offsetString.substring(0, 3);

@@ -15,6 +15,7 @@ public class DateUtilsTests {
     private static final String DATE_TEST_3 = "Sat, 30 Sep 2023 09:02:58 +0730";
 
     private static final String DATE_CLEAN_TEST_1 = "Sat, 30 Sep 2023 09:02:58 +0000 (UTC)";
+    private static final String DATE_CLEAN_TEST_2 = "Thu,  7 Sep 2023 09:02:58 +0000 (UTC)";
 
 
     @Test
@@ -24,6 +25,15 @@ public class DateUtilsTests {
 
         Assertions.assertThat(actualDateTime).isEqualTo(expectedDateStr);
     }
+
+    @Test
+    public void test_date_clean_2() {
+        String expectedDateStr = "Thu, 7 Sep 2023 09:02:58 +0000";
+        String actualDateTime = DateUtils.cleanDate(DATE_CLEAN_TEST_2);
+
+        Assertions.assertThat(actualDateTime).isEqualTo(expectedDateStr);
+    }
+
 
     @Test
     public void test_date_time() {
