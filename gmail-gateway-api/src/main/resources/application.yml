@@ -16,9 +16,11 @@ spring:
   main:
     allow-circular-references: true
 
-jwt:
-  secret: botcampgmailgatewayapilocal
-  token-validity: 18000
+
+security:
+  jwt:
+    secret: botcampgmailgatewayapilocal
+    token-validity: 18000
 
 server:
   port: 7500
