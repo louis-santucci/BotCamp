@@ -1,7 +1,7 @@
 package com.botcamp.gmail_gateway_api.config.filter;
 
 import com.botcamp.gmail_gateway_api.config.BotcampUser;
-import com.botcamp.gmail_gateway_api.config.properties.SecurityConfigProperties;
+import com.botcamp.config.properties.SecurityConfigProperties;
 import com.botcamp.gmail_gateway_api.service.JwtUserDetailsService;
 import com.botcamp.utils.JwtUtils;
 import io.jsonwebtoken.ExpiredJwtException;

@@ -1,6 +1,6 @@
 package com.botcamp.gmail_gateway_api.controller;
 
-import com.botcamp.gmail_gateway_api.config.properties.SecurityConfigProperties;
+import com.botcamp.config.properties.SecurityConfigProperties;
 import com.botcamp.gmail_gateway_api.controller.request.JwtRequest;
 import com.botcamp.gmail_gateway_api.controller.response.JwtResponse;
 import com.botcamp.gmail_gateway_api.service.JwtUserDetailsService;
