@@ -2,10 +2,9 @@ package com.botcamp.gmail_gateway_api.config;
 
 import com.botcamp.gmail_gateway_api.config.filter.JwtAuthenticationEntryPoint;
 import com.botcamp.gmail_gateway_api.config.filter.JwtRequestFilter;
-import com.botcamp.gmail_gateway_api.config.properties.JwtConfigProperties;
+import com.botcamp.gmail_gateway_api.config.properties.SecurityConfigProperties;
 import com.botcamp.gmail_gateway_api.service.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -22,29 +21,30 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.*;
+import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.AUTH;
+import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.V1_AUTH;
 
 @Configuration
-@EnableWebSecurity
-@EnableConfigurationProperties
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@Import(JwtConfigProperties.class)
+@EnableWebSecurity
+@Import(SecurityConfigProperties.class)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtRequestFilter jwtRequestFilter;
+    private final SecurityConfigProperties securityConfigProperties;
+
 
     public WebSecurityConfig(JwtAuthenticationEntryPoint entryPoint,
-                             JwtRequestFilter requestFilter) {
+                             JwtRequestFilter requestFilter,
+                             SecurityConfigProperties securityConfigProperties) {
         this.jwtAuthenticationEntryPoint = entryPoint;
         this.jwtRequestFilter = requestFilter;
+        this.securityConfigProperties = securityConfigProperties;
     }
 
 
@@ -72,15 +72,35 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth,
-                                JwtUserDetailsService jwtUserDetailsService) throws Exception {
+                                JwtUserDetailsService jwtUserDetailsService,
+                                PasswordEncoder passwordEncoder) throws Exception {
         // configure AuthenticationManager so that it knows from where to load
         // user for matching credentials
         // Use BCryptPasswordEncoder
-        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder);
     }
+
+
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+        if (this.securityConfigProperties.isEnabled()) {
+            configureEnabledSecurity(httpSecurity);
+        } else {
+            configureDisabledSecurity(httpSecurity);
+        }
+    }
+
+    private void configureDisabledSecurity(HttpSecurity httpSecurity) throws Exception {
+        // We don't need CSRF for this example
+        httpSecurity.csrf().disable()
+                .cors()
+                .and()
+                // dont authenticate this particular request
+                .authorizeRequests().antMatchers("/**").permitAll();
+    }
+
+    private void configureEnabledSecurity(HttpSecurity httpSecurity) throws Exception {
         String authUrl = V1_AUTH + AUTH;
         // We don't need CSRF for this example
         httpSecurity.csrf().disable()
