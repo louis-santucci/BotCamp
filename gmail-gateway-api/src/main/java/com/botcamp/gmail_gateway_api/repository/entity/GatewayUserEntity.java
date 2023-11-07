@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Entity(name = "botcamp_user")
 @Table(name = "botcamp_user")
 @Data
-public class BotcampUserEntity extends AEntity {
+public class GatewayUserEntity extends AEntity {
 
     @Column(name = "username", unique = true)
     private String username;

@@ -5,7 +5,7 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class BotcampUser {
+public class GatewayUser {
 
     private String username;
 

@@ -1,8 +1,7 @@
 package com.botcamp.gmail_gateway_api.service;
 
-import com.botcamp.gmail_gateway_api.config.GatewayUser;
-import com.botcamp.gmail_gateway_api.repository.BotcampUserRepository;
-import com.botcamp.gmail_gateway_api.repository.entity.BotcampUserEntity;
+import com.botcamp.gmail_gateway_api.repository.GatewayUserRepository;
+import com.botcamp.gmail_gateway_api.repository.entity.GatewayUserEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,25 +14,25 @@ import java.util.ArrayList;
 
 public class JwtUserDetailsService implements UserDetailsService {
 
-    private BotcampUserRepository userRepository;
+    private GatewayUserRepository userRepository;
     private PasswordEncoder encoder;
 
-    public JwtUserDetailsService(BotcampUserRepository botcampUserRepository,
+    public JwtUserDetailsService(GatewayUserRepository gatewayUserRepository,
                                  PasswordEncoder passwordEncoder) {
-        this.userRepository = botcampUserRepository;
+        this.userRepository = gatewayUserRepository;
         this.encoder = passwordEncoder;
     }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        BotcampUserEntity entity = userRepository.findByUsername(username);
+        GatewayUserEntity entity = userRepository.findByUsername(username);
         if (entity == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
-        return new GatewayUser(entity.getUsername(), entity.getPassword(), new ArrayList<>(), entity.getGmailEmail());
+        return new com.botcamp.gmail_gateway_api.config.GatewayUser(entity.getUsername(), entity.getPassword(), new ArrayList<>(), entity.getGmailEmail());
     }
 
-    public BotcampUserEntity save(BotcampUser user) {
-        BotcampUserEntity newUser = new BotcampUserEntity();
+    public GatewayUserEntity save(GatewayUser user) {
+        GatewayUserEntity newUser = new GatewayUserEntity();
         newUser.setUsername(user.getUsername());
         newUser.setPassword(encoder.encode(user.getPassword()));
         return userRepository.save(newUser);
