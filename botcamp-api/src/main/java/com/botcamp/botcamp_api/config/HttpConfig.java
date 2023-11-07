@@ -13,7 +13,7 @@ import java.time.Duration;
 public class HttpConfig {
     @Bean
     OkHttpClient okHttpClient(HttpConfigProperties httpConfigProperties) {
-        OkHttpClient client = new OkHttpClient.Builder()
+        return new OkHttpClient.Builder()
                 .callTimeout(Duration.ofSeconds(httpConfigProperties.getRequestTimeout()))
                 .build();
     }
