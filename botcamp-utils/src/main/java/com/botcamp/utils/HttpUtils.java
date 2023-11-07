@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -22,6 +23,7 @@ public class HttpUtils {
             map.put("isSuccess", isSuccess);
             map.put("message", message);
             map.put("data", responseObj);
+            if (responseObj instanceof List<?>) map.put("size", ((List<?>) responseObj).size());
 
             return new ResponseEntity<Object>(map,status);
         } catch (Exception e) {
