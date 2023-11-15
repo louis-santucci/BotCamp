@@ -88,12 +88,14 @@ public class GmailAPICallerImpl implements GmailAPICaller {
             List<Message> newResults = this.callGmailAPI(GmailAPIAction.MESSAGE_LIST, messageListQuery);
             messageList.addAll(newResults);
         }
-
+        log.info("Requesting {} emails", messageList.size());
         return messageList;
     }
 
     private Message getMessage(MessageQuery messageQuery) throws IOException {
         Gmail.Users.Messages.Get get = this.gmail.users().messages().get(messageQuery.getUserEmail(), messageQuery.getQueryObject().getId());
-        return get.execute();
+        Message message =  get.execute();
+        log.info("Requested email (id:{})", message.getId());
+        return message;
     }
 }
