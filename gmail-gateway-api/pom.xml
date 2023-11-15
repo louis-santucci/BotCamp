@@ -165,7 +165,7 @@
                 <version>1.0</version>
                 <executions>
                     <execution>
-                        <id>copy-file</id>
+                        <id>copy-file-env</id>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>copy</goal>
@@ -173,6 +173,17 @@
                         <configuration>
                             <sourceFile>${project.parent.basedir}/postgres/config/postgres.env</sourceFile>
                             <destinationFile>${project.basedir}/src/main/resources/.env</destinationFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-file-startup</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <sourceFile>${project.parent.basedir}/docker/startup.sh</sourceFile>
+                            <destinationFile>${project.basedir}/startup.sh</destinationFile>
                         </configuration>
                     </execution>
                 </executions>

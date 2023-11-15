@@ -29,6 +29,8 @@ services:
       dockerfile: ./Dockerfile
     ports:
       - '7510:7510'
+    environment:
+      - SLEEP_ENABLED=true
   gmail-gateway-api:
     depends_on:
       - postgres
@@ -39,3 +41,5 @@ services:
     ports:
       - '7500:7500'
       - '2424:2424'
+    environment:
+      - SLEEP_ENABLED=true
