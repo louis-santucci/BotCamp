@@ -18,7 +18,7 @@
     <modules>
         <module>gmail-gateway-api</module>
         <module>botcamp-api</module>
-        <module>botcamp-utils</module>
+        <module>botcamp-common</module>
     </modules>
 
 </project>

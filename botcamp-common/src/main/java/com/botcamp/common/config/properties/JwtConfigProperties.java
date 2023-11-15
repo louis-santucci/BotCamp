@@ -1,4 +1,4 @@
-package com.botcamp.config.properties;
+package com.botcamp.common.config.properties;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

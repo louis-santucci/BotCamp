@@ -1,4 +1,4 @@
-package com.botcamp.gmail_gateway_api.repository.entity;
+package com.botcamp.common.entity;
 
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;

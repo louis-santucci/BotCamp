@@ -1,5 +1,6 @@
 package com.botcamp.gmail_gateway_api.service;
 
+import com.botcamp.common.service.JwtUserDetailsService;
 import com.botcamp.gmail_gateway_api.repository.GatewayUserRepository;
 import com.botcamp.gmail_gateway_api.repository.entity.GatewayUserEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,13 +13,13 @@ import java.util.ArrayList;
 
 @Service
 
-public class JwtUserDetailsService implements UserDetailsService {
+public class GatewayUserDetailsService implements JwtUserDetailsService<GatewayUserEntity> {
 
     private GatewayUserRepository userRepository;
     private PasswordEncoder encoder;
 
-    public JwtUserDetailsService(GatewayUserRepository gatewayUserRepository,
-                                 PasswordEncoder passwordEncoder) {
+    public GatewayUserDetailsService(GatewayUserRepository gatewayUserRepository,
+                                     PasswordEncoder passwordEncoder) {
         this.userRepository = gatewayUserRepository;
         this.encoder = passwordEncoder;
     }
@@ -31,10 +32,12 @@ public class JwtUserDetailsService implements UserDetailsService {
         return new com.botcamp.gmail_gateway_api.config.GatewayUser(entity.getUsername(), entity.getPassword(), new ArrayList<>(), entity.getGmailEmail());
     }
 
-    public GatewayUserEntity save(GatewayUser user) {
+    @Override
+    public GatewayUserEntity save(Object user) {
+        GatewayUser gatewayUser = (GatewayUser) user;
         GatewayUserEntity newUser = new GatewayUserEntity();
-        newUser.setUsername(user.getUsername());
-        newUser.setPassword(encoder.encode(user.getPassword()));
+        newUser.setUsername(gatewayUser.getUsername());
+        newUser.setPassword(encoder.encode(gatewayUser.getPassword()));
         return userRepository.save(newUser);
     }
 

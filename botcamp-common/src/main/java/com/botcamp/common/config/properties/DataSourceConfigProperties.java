@@ -1,4 +1,4 @@
-package com.botcamp.config.properties;
+package com.botcamp.common.config.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

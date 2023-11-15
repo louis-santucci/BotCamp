@@ -1,6 +1,6 @@
 package utils;
 
-import com.botcamp.utils.GzipUtils;
+import com.botcamp.common.utils.GzipUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 

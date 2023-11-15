@@ -1,7 +1,7 @@
 package utils;
 
-import com.botcamp.utils.DateUtils;
-import com.botcamp.utils.OffsetPair;
+import com.botcamp.common.utils.DateUtils;
+import com.botcamp.common.utils.OffsetPair;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

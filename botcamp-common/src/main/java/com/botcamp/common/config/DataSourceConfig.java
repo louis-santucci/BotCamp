@@ -1,6 +1,6 @@
-package com.botcamp.config;
+package com.botcamp.common.config;
 
-import com.botcamp.config.properties.DataSourceConfigProperties;
+import com.botcamp.common.config.properties.DataSourceConfigProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

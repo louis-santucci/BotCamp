@@ -1,6 +1,6 @@
-package com.botcamp.config;
+package com.botcamp.common.config;
 
-import com.botcamp.config.properties.CorsConfigProperties;
+import com.botcamp.common.config.properties.CorsConfigProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

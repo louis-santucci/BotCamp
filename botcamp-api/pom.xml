@@ -53,7 +53,7 @@
         </dependency>
         <dependency>
             <groupId>com.botcamp</groupId>
-            <artifactId>botcamp-utils</artifactId>
+            <artifactId>botcamp-common</artifactId>
             <version>0.0.2-SNAPSHOT</version>
         </dependency>
         <dependency>

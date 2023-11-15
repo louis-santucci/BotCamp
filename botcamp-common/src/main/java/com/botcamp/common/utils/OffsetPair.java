@@ -1,4 +1,4 @@
-package com.botcamp.utils;
+package com.botcamp.common.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
