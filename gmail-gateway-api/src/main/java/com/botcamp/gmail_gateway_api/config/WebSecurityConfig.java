@@ -1,10 +1,10 @@
 package com.botcamp.gmail_gateway_api.config;
 
-import com.botcamp.config.CorsConfig;
-import com.botcamp.config.properties.SecurityConfigProperties;
+import com.botcamp.common.config.CorsConfig;
+import com.botcamp.common.config.properties.SecurityConfigProperties;
 import com.botcamp.gmail_gateway_api.config.filter.JwtAuthenticationEntryPoint;
 import com.botcamp.gmail_gateway_api.config.filter.JwtRequestFilter;
-import com.botcamp.gmail_gateway_api.service.JwtUserDetailsService;
+import com.botcamp.gmail_gateway_api.service.GatewayUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -59,12 +59,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth,
-                                JwtUserDetailsService jwtUserDetailsService,
+                                GatewayUserDetailsService gatewayUserDetailsService,
                                 PasswordEncoder passwordEncoder) throws Exception {
         // configure AuthenticationManager so that it knows from where to load
         // user for matching credentials
         // Use BCryptPasswordEncoder
-        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder);
+        auth.userDetailsService(gatewayUserDetailsService).passwordEncoder(passwordEncoder);
     }
 
 

@@ -1,5 +1,6 @@
 package com.botcamp.gmail_gateway_api.repository.entity;
 
+import com.botcamp.common.entity.AEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,8 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @EqualsAndHashCode(callSuper = true)
-@Entity(name = "botcamp_user")
-@Table(name = "botcamp_user")
+@Entity(name = "gateway_user")
+@Table(name = "gateway_user")
 @Data
 public class GatewayUserEntity extends AEntity {
 
