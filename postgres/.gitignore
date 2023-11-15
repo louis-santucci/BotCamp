@@ -1,4 +1,4 @@
-config/postgres.env
-config/pgadmin.env
+../config/postgres.env
+../config/pgadmin.env
 data/
 pgadmin-data/
