@@ -48,3 +48,6 @@ db:
   db-type: h2
   port: ${PGPORT}
 
+
+http-config:
+  request-timeout: 100
