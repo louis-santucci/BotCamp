@@ -182,7 +182,7 @@
                             <goal>copy</goal>
                         </goals>
                         <configuration>
-                            <sourceFile>${project.parent.basedir}/docker/startup.sh</sourceFile>
+                            <sourceFile>${project.parent.basedir}/config/docker/startup.sh</sourceFile>
                             <destinationFile>${project.basedir}/startup.sh</destinationFile>
                         </configuration>
                     </execution>
