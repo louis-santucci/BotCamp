@@ -1,9 +1,10 @@
 package com.botcamp.botcamp_api.config;
 
-import com.botcamp.botcamp_api.config.filter.JwtAuthenticationEntryPoint;
-import com.botcamp.botcamp_api.config.filter.JwtRequestFilter;
+import com.botcamp.botcamp_api.repository.entity.BotcampUserEntity;
 import com.botcamp.botcamp_api.service.BotcampUserDetailsService;
 import com.botcamp.common.config.CorsConfig;
+import com.botcamp.common.config.filter.JwtAuthenticationEntryPoint;
+import com.botcamp.common.config.filter.JwtRequestFilter;
 import com.botcamp.common.config.properties.SecurityConfigProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,19 +21,22 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.botcamp.botcamp_api.controller.ControllerEndpoint.*;
+import static com.botcamp.botcamp_api.controller.ControllerEndpoint.AUTH;
+import static com.botcamp.botcamp_api.controller.ControllerEndpoint.V1_AUTH;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
 @Import({
         SecurityConfigProperties.class,
-        CorsConfig.class
+        CorsConfig.class,
+        JwtRequestFilter.class,
+        JwtAuthenticationEntryPoint.class
 })
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final JwtRequestFilter jwtRequestFilter;
+    private final JwtRequestFilter<BotcampUserEntity> jwtRequestFilter;
     private final SecurityConfigProperties securityConfigProperties;
 
     public WebSecurityConfig(JwtAuthenticationEntryPoint entryPoint,

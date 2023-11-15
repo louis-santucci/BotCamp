@@ -1,13 +1,14 @@
-package com.botcamp.botcamp_api.config.filter;
+package com.botcamp.common.config.filter;
 
-import com.botcamp.botcamp_api.config.BotcampUser;
-import com.botcamp.botcamp_api.service.BotcampUserDetailsService;
 import com.botcamp.common.config.properties.SecurityConfigProperties;
+import com.botcamp.common.entity.AEntity;
+import com.botcamp.common.service.JwtUserDetailsService;
 import com.botcamp.common.utils.JwtUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -19,14 +20,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class JwtRequestFilter extends OncePerRequestFilter {
-    private final BotcampUserDetailsService jwtUserDetailsService;
+public class JwtRequestFilter<ENTITY extends AEntity> extends OncePerRequestFilter {
+    private final JwtUserDetailsService<ENTITY> gatewayUserDetailsService;
     private final SecurityConfigProperties securityConfigProperties;
 
     public JwtRequestFilter(SecurityConfigProperties securityConfigProperties,
-                            @Lazy BotcampUserDetailsService service) {
+                            @Lazy JwtUserDetailsService<ENTITY> service) {
         this.securityConfigProperties = securityConfigProperties;
-        this.jwtUserDetailsService = service;
+        this.gatewayUserDetailsService = service;
     }
 
 
@@ -56,7 +57,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         // Once we get the token validate it.
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            BotcampUser userDetails = (BotcampUser) this.jwtUserDetailsService.loadUserByUsername(username);
+            UserDetails userDetails = this.gatewayUserDetailsService.loadUserByUsername(username);
+            logger.info("Request incoming from " + userDetails.getUsername());
             // if token is valid configure Spring Security to manually set
             // authentication
             if (JwtUtils.validateToken(jwtToken, userDetails, securityConfigProperties.getJwt().getSecret())) {

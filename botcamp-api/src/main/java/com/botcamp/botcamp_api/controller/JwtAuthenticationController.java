@@ -1,11 +1,11 @@
-package com.botcamp.gmail_gateway_api.controller;
+package com.botcamp.botcamp_api.controller;
 
+import com.botcamp.botcamp_api.service.BotcampUserDetailsService;
 import com.botcamp.common.config.properties.SecurityConfigProperties;
-import com.botcamp.common.request.JwtRequest;
-import com.botcamp.common.response.JwtResponse;
-import com.botcamp.gmail_gateway_api.service.GatewayUserDetailsService;
 import com.botcamp.common.utils.HttpUtils;
 import com.botcamp.common.utils.JwtUtils;
+import com.botcamp.common.request.JwtRequest;
+import com.botcamp.common.response.JwtResponse;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +16,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.AUTH;
-import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.V1_AUTH;
+import static com.botcamp.botcamp_api.controller.ControllerEndpoint.AUTH;
+import static com.botcamp.botcamp_api.controller.ControllerEndpoint.V1_AUTH;
 import static com.botcamp.common.utils.HttpUtils.generateResponse;
 
 @CrossOrigin
@@ -29,11 +29,11 @@ import static com.botcamp.common.utils.HttpUtils.generateResponse;
 public class JwtAuthenticationController {
 
     private final AuthenticationManager authManager;
-    private final GatewayUserDetailsService gatewayUserDetailsService;
+    private final BotcampUserDetailsService gatewayUserDetailsService;
     private final SecurityConfigProperties securityConfigProperties;
 
     public JwtAuthenticationController(AuthenticationManager manager,
-                                       GatewayUserDetailsService gatewayUserDetailsService,
+                                       BotcampUserDetailsService gatewayUserDetailsService,
                                        SecurityConfigProperties securityConfigProperties) {
         this.authManager = manager;
         this.gatewayUserDetailsService = gatewayUserDetailsService;

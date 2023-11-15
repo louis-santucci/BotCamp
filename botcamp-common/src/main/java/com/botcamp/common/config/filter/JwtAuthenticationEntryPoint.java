@@ -1,4 +1,4 @@
-package com.botcamp.botcamp_api.config.filter;
+package com.botcamp.common.config.filter;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Slf4j
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {
     @Serial
-    private static final long serialVersionUID = -783869558953243875L;
+    private static final long serialVersionUID = -7858888558953243875L;
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
