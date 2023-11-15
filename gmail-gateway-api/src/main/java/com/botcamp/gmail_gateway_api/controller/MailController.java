@@ -3,7 +3,7 @@ package com.botcamp.gmail_gateway_api.controller;
 import com.botcamp.gmail_gateway_api.mailing.Email;
 import com.botcamp.gmail_gateway_api.mailing.EmailHandlingException;
 import com.botcamp.gmail_gateway_api.service.GmailService;
-import com.botcamp.utils.GzipUtils;
+import com.botcamp.common.utils.GzipUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
@@ -22,8 +22,8 @@ import java.util.List;
 
 import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.GET_LIST;
 import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.V1_MAIL;
-import static com.botcamp.utils.HttpUtils.SUCCESS;
-import static com.botcamp.utils.HttpUtils.generateResponse;
+import static com.botcamp.common.utils.HttpUtils.SUCCESS;
+import static com.botcamp.common.utils.HttpUtils.generateResponse;
 
 @RestController
 @RequestMapping(path = V1_MAIL)

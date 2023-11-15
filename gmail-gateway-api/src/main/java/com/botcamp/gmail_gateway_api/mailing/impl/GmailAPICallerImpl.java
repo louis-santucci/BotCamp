@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -88,12 +89,16 @@ public class GmailAPICallerImpl implements GmailAPICaller {
             List<Message> newResults = this.callGmailAPI(GmailAPIAction.MESSAGE_LIST, messageListQuery);
             messageList.addAll(newResults);
         }
-
+        log.info("Requesting {} emails", messageList.size());
         return messageList;
     }
 
     private Message getMessage(MessageQuery messageQuery) throws IOException {
+        Long start = System.currentTimeMillis();
         Gmail.Users.Messages.Get get = this.gmail.users().messages().get(messageQuery.getUserEmail(), messageQuery.getQueryObject().getId());
-        return get.execute();
+        Message message =  get.execute();
+        Long end = System.currentTimeMillis();
+        log.info("Got email with id {} ({}ms)", message.getId(), end - start);
+        return message;
     }
 }

@@ -1,0 +1,7 @@
+db:
+  hostname: localhost
+  username: ${POSTGRES_USER}
+  password: ${POSTGRES_PASSWORD}
+  db-name: ${POSTGRES_DB}
+  db-type: postgres
+  db-url: jdbc:postgresql://%s:%d/%s

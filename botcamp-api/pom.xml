@@ -8,7 +8,6 @@
         <version>0.0.2-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.botcamp</groupId>
     <artifactId>botcamp-api</artifactId>
     <version>0.0.2-SNAPSHOT</version>
     <name>botcamp-api</name>
@@ -54,8 +53,24 @@
         </dependency>
         <dependency>
             <groupId>com.botcamp</groupId>
-            <artifactId>botcamp-utils</artifactId>
+            <artifactId>botcamp-common</artifactId>
             <version>0.0.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.3.8</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 
@@ -76,6 +91,35 @@
                         <configuration>${project.basedir}/src/layers.xml</configuration>
                     </layers>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.coderplus.maven.plugins</groupId>
+                <artifactId>copy-rename-maven-plugin</artifactId>
+                <version>1.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-file-env</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <sourceFile>${project.parent.basedir}/postgres/config/postgres.env</sourceFile>
+                            <destinationFile>${project.basedir}/src/main/resources/.env</destinationFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-file-startup</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <sourceFile>${project.parent.basedir}/config/docker/startup.sh</sourceFile>
+                            <destinationFile>${project.basedir}/startup.sh</destinationFile>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

@@ -1,9 +1,9 @@
 package com.botcamp.gmail_gateway_api.config.filter;
 
-import com.botcamp.gmail_gateway_api.config.BotcampUser;
-import com.botcamp.gmail_gateway_api.config.properties.SecurityConfigProperties;
-import com.botcamp.gmail_gateway_api.service.JwtUserDetailsService;
-import com.botcamp.utils.JwtUtils;
+import com.botcamp.gmail_gateway_api.config.GatewayUser;
+import com.botcamp.common.config.properties.SecurityConfigProperties;
+import com.botcamp.gmail_gateway_api.service.GatewayUserDetailsService;
+import com.botcamp.common.utils.JwtUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,13 +20,13 @@ import java.io.IOException;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
-    private final JwtUserDetailsService jwtUserDetailsService;
+    private final GatewayUserDetailsService gatewayUserDetailsService;
     private final SecurityConfigProperties securityConfigProperties;
 
     public JwtRequestFilter(SecurityConfigProperties securityConfigProperties,
-                            @Lazy JwtUserDetailsService service) {
+                            @Lazy GatewayUserDetailsService service) {
         this.securityConfigProperties = securityConfigProperties;
-        this.jwtUserDetailsService = service;
+        this.gatewayUserDetailsService = service;
     }
 
 
@@ -56,7 +56,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         // Once we get the token validate it.
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            BotcampUser userDetails = (BotcampUser) this.jwtUserDetailsService.loadUserByUsername(username);
+            GatewayUser userDetails = (GatewayUser) this.gatewayUserDetailsService.loadUserByUsername(username);
             logger.info("Request incoming from " + userDetails.getGmailEmail());
             // if token is valid configure Spring Security to manually set
             // authentication

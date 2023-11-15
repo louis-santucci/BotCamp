@@ -4,7 +4,7 @@ services:
   postgres:
     image: postgres:16.0-alpine
     container_name: postgres
-    env_file: postgres/config/postgres.env
+    env_file: config/botcamp.env
     volumes:
       - "./postgres/data:/var/lib/postgresql/data"
     ports:
@@ -12,7 +12,7 @@ services:
   pgadmin:
     image: dpage/pgadmin4:7.8
     container_name: pgadmin
-    env_file: postgres/config/pgadmin.env
+    env_file: config/pgadmin.env
     volumes:
       - "./postgres/pgadmin-data:/var/lib/pgadmin"
     depends_on:
@@ -29,6 +29,8 @@ services:
       dockerfile: ./Dockerfile
     ports:
       - '7510:7510'
+    environment:
+      - SLEEP_ENABLED=true
   gmail-gateway-api:
     depends_on:
       - postgres
@@ -39,3 +41,5 @@ services:
     ports:
       - '7500:7500'
       - '2424:2424'
+    environment:
+      - SLEEP_ENABLED=true

@@ -1,7 +1,7 @@
 package com.botcamp.gmail_gateway_api.mailing.impl;
 
 import com.botcamp.gmail_gateway_api.mailing.*;
-import com.botcamp.utils.DateUtils;
+import com.botcamp.common.utils.DateUtils;
 import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartHeader;

@@ -17,6 +17,19 @@ spring:
     allow-circular-references: true
 
 
+cors:
+  allowed-headers:
+    - "Content-Type"
+    - "accept"
+    - "Origin"
+    - "Authorization"
+  allowed-methods:
+    - "GET"
+  allowed-origins:
+    - "*"
+  enabled: true
+  pattern: "/**"
+
 security:
   jwt:
     secret: botcampgmailgatewayapilocal
@@ -42,6 +55,6 @@ db:
   password: ${POSTGRES_PASSWORD}
   hostname: localhost
   db-name: ${POSTGRES_DB}
-  db-url: jdbc:h2:file:./db_data/gmail_gateway;AUTO_SERVER=TRUE;MODE=PostgreSQL;
+  db-url: jdbc:h2:file:./db_data/botcamp;AUTO_SERVER=TRUE;MODE=PostgreSQL;
   db-type: h2
   port: ${PGPORT}

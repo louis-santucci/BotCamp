@@ -8,7 +8,6 @@
         <version>0.0.2-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.botcamp</groupId>
     <artifactId>gmail-gateway-api</artifactId>
     <version>0.0.2-SNAPSHOT</version>
     <name>gmail-gateway-api</name>
@@ -137,7 +136,7 @@
         </dependency>
         <dependency>
             <groupId>com.botcamp</groupId>
-            <artifactId>botcamp-utils</artifactId>
+            <artifactId>botcamp-common</artifactId>
             <version>0.0.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
@@ -166,7 +165,7 @@
                 <version>1.0</version>
                 <executions>
                     <execution>
-                        <id>copy-file</id>
+                        <id>copy-file-env</id>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>copy</goal>
@@ -174,6 +173,17 @@
                         <configuration>
                             <sourceFile>${project.parent.basedir}/postgres/config/postgres.env</sourceFile>
                             <destinationFile>${project.basedir}/src/main/resources/.env</destinationFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-file-startup</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <sourceFile>${project.parent.basedir}/config/docker/startup.sh</sourceFile>
+                            <destinationFile>${project.basedir}/startup.sh</destinationFile>
                         </configuration>
                     </execution>
                 </executions>

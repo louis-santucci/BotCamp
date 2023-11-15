@@ -33,6 +33,6 @@ build/
 .vscode/
 
 
-tokens/
 **/client_secret.json
 **/.env
+**/startup.sh
