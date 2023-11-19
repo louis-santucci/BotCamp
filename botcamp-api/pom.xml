@@ -72,6 +72,11 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -104,7 +109,7 @@
                             <goal>copy</goal>
                         </goals>
                         <configuration>
-                            <sourceFile>${project.parent.basedir}/postgres/config/postgres.env</sourceFile>
+                            <sourceFile>${project.parent.basedir}/config/botcamp.env.env</sourceFile>
                             <destinationFile>${project.basedir}/src/main/resources/.env</destinationFile>
                         </configuration>
                     </execution>
