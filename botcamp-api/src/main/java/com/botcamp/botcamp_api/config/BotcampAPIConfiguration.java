@@ -13,7 +13,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @Import({
         HttpConfig.class,
         DataSourceConfig.class,
-        PropertySourcesPlaceholderConfig.class
+        PropertySourcesPlaceholderConfig.class,
+        EmailSenderConfig.class
 })
 public class BotcampAPIConfiguration {
 }
