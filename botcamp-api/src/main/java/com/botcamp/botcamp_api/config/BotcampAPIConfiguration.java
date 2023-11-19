@@ -1,5 +1,6 @@
 package com.botcamp.botcamp_api.config;
 
+import com.botcamp.botcamp_api.config.http.HttpConfig;
 import com.botcamp.common.config.DataSourceConfig;
 import com.botcamp.common.config.PropertySourcesPlaceholderConfig;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
