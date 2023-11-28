@@ -1,6 +1,7 @@
 package com.botcamp.botcamp_api.config;
 
 import com.botcamp.botcamp_api.config.properties.BotcampEmailProperties;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -22,7 +23,6 @@ public class EmailSenderConfig {
 
     @Bean
     Properties botcampEmailProperties(BotcampEmailProperties botcampEmailProperties) {
-        System.out.println("TLSEmail Start");
         Properties smtpProperties = new Properties();
         smtpProperties.put(MAIL_SMTP_HOST, botcampEmailProperties.getHost()); //SMTP Host
         smtpProperties.put(MAIL_SMTP_PORT, botcampEmailProperties.getPort()); //TLS Port
@@ -34,7 +34,7 @@ public class EmailSenderConfig {
     }
 
     @Bean
-    Session session(Properties emailProperties,
+    Session session(@Qualifier("botcampEmailProperties") Properties emailProperties,
                     Authenticator authenticator) {
         return Session.getInstance(emailProperties, authenticator);
     }
