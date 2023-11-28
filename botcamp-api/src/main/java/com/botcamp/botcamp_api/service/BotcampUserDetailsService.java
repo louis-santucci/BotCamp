@@ -21,6 +21,7 @@ public class BotcampUserDetailsService implements JwtUserDetailsService<BotcampU
         this.userRepository = botcampUserRepository;
         this.encoder = passwordEncoder;
     }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         BotcampUserEntity entity = userRepository.findByUsername(username);
@@ -33,9 +34,10 @@ public class BotcampUserDetailsService implements JwtUserDetailsService<BotcampU
     @Override
     public BotcampUserEntity save(Object user) {
         BotcampUser botcampUser = (BotcampUser) user;
-        BotcampUserEntity newUser = new BotcampUserEntity();
-        newUser.setUsername(botcampUser.getUsername());
-        newUser.setPassword(encoder.encode(botcampUser.getPassword()));
+        BotcampUserEntity newUser = BotcampUserEntity.builder()
+                .username(botcampUser.getUsername())
+                .password(botcampUser.getPassword())
+                .build();
         return userRepository.save(newUser);
     }
 

@@ -48,6 +48,16 @@ db:
   db-type: h2
   port: ${PGPORT}
 
-
 http-config:
-  request-timeout: 100
+  request-timeout: 10
+  unit: minutes
+
+botcamp:
+  smtp:
+    host: ${BOTCAMP_EMAIL_SENDER_HOST}
+    port: ${BOTCAMP_EMAIL_SENDER_PORT}
+    username: ${BOTCAMP_EMAIL_SENDER_USERNAME}
+    password: ${BOTCAMP_EMAIL_SENDER_PASSWORD}
+    start-tls-enabled: true
+    ssl-protocols: TLSv1.2
+    auth-enabled: true

@@ -1,5 +1,6 @@
 package com.botcamp.botcamp_api.config;
 
+import com.botcamp.botcamp_api.config.http.HttpConfig;
 import com.botcamp.common.config.DataSourceConfig;
 import com.botcamp.common.config.PropertySourcesPlaceholderConfig;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -13,7 +14,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @Import({
         HttpConfig.class,
         DataSourceConfig.class,
-        PropertySourcesPlaceholderConfig.class
+        PropertySourcesPlaceholderConfig.class,
+        EmailSenderConfig.class
 })
 public class BotcampAPIConfiguration {
 }
