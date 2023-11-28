@@ -2,6 +2,7 @@ package com.botcamp.botcamp_api.repository.entity;
 
 import com.botcamp.common.entity.AEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,6 +18,7 @@ import static com.botcamp.common.entity.EntityNamingAttributes.*;
 @Table(name = BOTCAMP_USER)
 @Data
 @Builder
+@AllArgsConstructor
 public class BotcampUserEntity extends AEntity {
 
     protected BotcampUserEntity() {
