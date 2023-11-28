@@ -10,6 +10,8 @@ import java.util.Date;
 @MappedSuperclass
 @Data
 public abstract class AEntity {
+    protected AEntity() {}
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

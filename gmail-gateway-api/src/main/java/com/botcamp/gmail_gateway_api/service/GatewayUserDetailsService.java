@@ -4,7 +4,6 @@ import com.botcamp.common.service.JwtUserDetailsService;
 import com.botcamp.gmail_gateway_api.repository.GatewayUserRepository;
 import com.botcamp.gmail_gateway_api.repository.entity.GatewayUserEntity;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,9 +34,11 @@ public class GatewayUserDetailsService implements JwtUserDetailsService<GatewayU
     @Override
     public GatewayUserEntity save(Object user) {
         GatewayUser gatewayUser = (GatewayUser) user;
-        GatewayUserEntity newUser = new GatewayUserEntity();
-        newUser.setUsername(gatewayUser.getUsername());
-        newUser.setPassword(encoder.encode(gatewayUser.getPassword()));
+        GatewayUserEntity newUser = GatewayUserEntity.builder()
+                .username(gatewayUser.getUsername())
+                .password(gatewayUser.getPassword())
+                .gmailEmail(gatewayUser.getGmailEmail())
+                .build();
         return userRepository.save(newUser);
     }
 
