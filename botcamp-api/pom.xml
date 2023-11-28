@@ -109,7 +109,7 @@
                             <goal>copy</goal>
                         </goals>
                         <configuration>
-                            <sourceFile>${project.parent.basedir}/config/botcamp.env.env</sourceFile>
+                            <sourceFile>${project.parent.basedir}/config/botcamp.env</sourceFile>
                             <destinationFile>${project.basedir}/src/main/resources/.env</destinationFile>
                         </configuration>
                     </execution>
