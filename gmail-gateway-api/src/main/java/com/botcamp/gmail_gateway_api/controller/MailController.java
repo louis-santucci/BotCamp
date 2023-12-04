@@ -6,6 +6,7 @@ import com.botcamp.gmail_gateway_api.service.GmailService;
 import com.botcamp.common.utils.GzipUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +22,14 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import static com.botcamp.common.config.SwaggerConfig.BEARER_AUTHENTICATION;
 import static com.botcamp.common.utils.HttpUtils.SUCCESS;
 import static com.botcamp.common.utils.HttpUtils.generateResponse;
 import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.*;
 
 @RestController
 @RequestMapping(path = API_MAIL)
+@SecurityRequirement(name = BEARER_AUTHENTICATION)
 @Tag(name = MAIL_CONTROLLER)
 public class MailController {
 
