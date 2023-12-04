@@ -21,12 +21,14 @@ public class ApplicationUtils {
         String hostAddress = InetAddress.getLocalHost().getHostAddress();
         String[] profiles = env.getActiveProfiles();
         logger.info(
-                "\n-----------------------------------------\n\t"
-                        + "Application '{}' is running ! Access URLs:\n\t"
-                        + "Local: \t\t{}://localhost:{}\t\t\t {}://localhost:{}/swagger-ui.html\n\t"
-                        + "External: \t{}://{}:{}\t\t {}://{}:{}/swagger-ui.html\n\t"
-                        + "Profiles(s): \t{}"
-                        + "\n-----------------------------------------",
+                """
+
+                        ----------------------------------------------------------------------------------
+                        \tApplication '{}' is running ! Access URLs:
+                        \tLocal: \t\t\t{}://localhost:{}/api\t\t\t {}://localhost:{}/swagger-ui.html
+                        \tExternal: \t\t{}://{}:{}/api\t\t {}://{}:{}/swagger-ui.html
+                        \tProfiles(s): \t{}
+                        ----------------------------------------------------------------------------------""",
                 appName,
                 protocol,
                 serverPort,
