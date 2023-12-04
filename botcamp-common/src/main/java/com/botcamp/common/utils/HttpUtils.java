@@ -1,39 +1,40 @@
 package com.botcamp.common.utils;
 
+import com.botcamp.common.response.GenericResponse;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class HttpUtils {
 
     public static final String SUCCESS = "Success";
 
-    public static ResponseEntity<?> generateResponse(HttpStatus status, boolean isSuccess, String message, Object responseObj) {
-        Map<String, Object> map = new HashMap<>();
-        try {
-            map.put("timestamp", new Date());
-            map.put("status", status.value());
-            map.put("isSuccess", isSuccess);
-            map.put("message", message);
-            map.put("data", responseObj);
-            if (responseObj instanceof List<?>) map.put("size", ((List<?>) responseObj).size());
 
-            return new ResponseEntity<Object>(map,status);
-        } catch (Exception e) {
-            map.clear();
-            map.put("timestamp", new Date());
-            map.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-            map.put("isSuccess",false);
-            map.put("message", e.getMessage());
-            map.put("data", null);
-            return new ResponseEntity<Object>(map,status);
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+
+    public static ResponseEntity<GenericResponse> generateResponse(HttpStatus status, String message, Object responseObj) {
+        GenericResponse response = generateGenericResponse(status, message, responseObj);
+        return new ResponseEntity<>(response, status);
+    }
+
+    private static GenericResponse generateGenericResponse(HttpStatus status, String message, Object responseObj) {
+        GenericResponse response = GenericResponse.builder()
+                .status(status.value())
+                .message(message)
+                .dateTime(LocalDateTime.now().format(formatter))
+                .data(responseObj)
+                .build();
+
+        if (responseObj instanceof Collection<?>) {
+            response.setSize(((Collection<?>) responseObj).size());
         }
+
+        return response;
     }
 }

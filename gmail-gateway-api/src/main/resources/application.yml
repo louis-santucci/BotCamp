@@ -15,6 +15,8 @@ spring:
     location: classpath:/gmail_gateway_api_banner.txt
   main:
     allow-circular-references: true
+  application:
+    name: Gmail Gateway API
 
 
 cors:
@@ -58,3 +60,12 @@ db:
   db-url: jdbc:h2:file:./db_data/botcamp;AUTO_SERVER=TRUE;MODE=PostgreSQL;
   db-type: h2
   port: ${PGPORT}
+
+swagger:
+  title: Gmail GatewayAPI
+  description: Gmail Gateway API
+  version: 0.0.2
+  contact:
+    email: botcamp-api@hotmail.com
+    name: Louis SANTUCCI
+    url: https://github.com/louis-santucci/BotCamp

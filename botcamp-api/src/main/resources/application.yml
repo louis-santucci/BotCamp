@@ -15,6 +15,8 @@ spring:
     location: classpath:/botcamp_api_banner.txt
   main:
     allow-circular-references: true
+  application:
+    name: Botcamp API
 
 cors:
   allowed-headers:
@@ -61,3 +63,12 @@ botcamp:
     start-tls-enabled: true
     ssl-protocols: TLSv1.2
     auth-enabled: true
+
+swagger:
+  title: Botcamp API
+  description: Botcamp API
+  version: 0.0.2
+  contact:
+      email: botcamp-api@hotmail.com
+      name: Louis SANTUCCI
+      url: https://github.com/louis-santucci/BotCamp

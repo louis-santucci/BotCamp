@@ -2,8 +2,9 @@ package com.botcamp.gmail_gateway_api.config;
 
 import com.botcamp.common.config.CorsConfig;
 import com.botcamp.common.config.properties.SecurityConfigProperties;
-import com.botcamp.gmail_gateway_api.config.filter.JwtAuthenticationEntryPoint;
-import com.botcamp.gmail_gateway_api.config.filter.JwtRequestFilter;
+import com.botcamp.common.config.filter.JwtRequestFilter;
+import com.botcamp.common.config.filter.JwtAuthenticationEntryPoint;
+import com.botcamp.gmail_gateway_api.repository.entity.GatewayUserEntity;
 import com.botcamp.gmail_gateway_api.service.GatewayUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -21,24 +22,33 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.AUTH;
-import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.V1_AUTH;
+import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.API_AUTH;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
 @Import({
         SecurityConfigProperties.class,
+        JwtRequestFilter.class,
+        JwtAuthenticationEntryPoint.class,
         CorsConfig.class
 })
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final JwtRequestFilter jwtRequestFilter;
+
+    private final JwtRequestFilter<GatewayUserEntity> jwtRequestFilter;
     private final SecurityConfigProperties securityConfigProperties;
 
+    private final String[] AUTH_WHITELIST = {
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/swagger-ui.html",
+            API_AUTH + AUTH
+    };
 
     public WebSecurityConfig(JwtAuthenticationEntryPoint entryPoint,
-                             JwtRequestFilter requestFilter,
+                             JwtRequestFilter<GatewayUserEntity> requestFilter,
                              SecurityConfigProperties securityConfigProperties) {
         this.jwtAuthenticationEntryPoint = entryPoint;
         this.jwtRequestFilter = requestFilter;
@@ -83,10 +93,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     private void configureEnabledSecurity(HttpSecurity httpSecurity) throws Exception {
-        String authUrl = V1_AUTH + AUTH;
         httpSecurity.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(authUrl).permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)

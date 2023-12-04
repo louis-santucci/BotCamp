@@ -5,9 +5,12 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ControllerEndpoint {
-    // Controllers paths
-    public static final String V1_MAIL = "/api/v1/mail";
-    public static final String V1_AUTH = "/api/v1/auth";
+    // Controller names
+    public static final String JWT_AUTH_CONTROLLER = "JWT Auth Controller";
+    public static final String MAIL_CONTROLLER = "Mail Controller";
+    // Controller paths
+    public static final String API_MAIL = "/api/mail";
+    public static final String API_AUTH = "/api/auth";
 
     // JWT Auth Controller
     public static final String AUTH = "/authenticate";
