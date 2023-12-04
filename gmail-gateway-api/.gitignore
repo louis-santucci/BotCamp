@@ -35,4 +35,3 @@ build/
 
 **/client_secret.json
 **/.env
-**/startup.sh
