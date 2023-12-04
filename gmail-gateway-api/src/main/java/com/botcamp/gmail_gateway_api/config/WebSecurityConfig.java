@@ -22,7 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.AUTH;
-import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.V1_AUTH;
+import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.API_AUTH;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -40,6 +40,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtRequestFilter<GatewayUserEntity> jwtRequestFilter;
     private final SecurityConfigProperties securityConfigProperties;
 
+    private final String[] AUTH_WHITELIST = {
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/swagger-ui.html",
+            API_AUTH + AUTH
+    };
 
     public WebSecurityConfig(JwtAuthenticationEntryPoint entryPoint,
                              JwtRequestFilter<GatewayUserEntity> requestFilter,
@@ -87,10 +93,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     private void configureEnabledSecurity(HttpSecurity httpSecurity) throws Exception {
-        String authUrl = V1_AUTH + AUTH;
         httpSecurity.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(authUrl).permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)

@@ -5,9 +5,13 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ControllerEndpoint {
+    // Controller names
+    public static final String JWT_AUTH_CONTROLLER = "JWT Auth Controller";
+    public static final String REPORTING_CONTROLLER = "Reporting Controller";
+
     // Controllers paths
-    public static final String V1_AUTH = "/api/v1/auth";
-    public static final String V1_REPORTING = "/api/v1/reporting";
+    public static final String API_AUTH = "/api/auth";
+    public static final String API_REPORTING = "/api/reporting";
 
     // JWT Auth Controller
     public static final String AUTH = "/authenticate";

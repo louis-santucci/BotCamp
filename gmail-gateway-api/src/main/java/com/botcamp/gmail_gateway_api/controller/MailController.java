@@ -6,6 +6,7 @@ import com.botcamp.gmail_gateway_api.service.GmailService;
 import com.botcamp.common.utils.GzipUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,13 +21,13 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.GET_LIST;
-import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.V1_MAIL;
 import static com.botcamp.common.utils.HttpUtils.SUCCESS;
 import static com.botcamp.common.utils.HttpUtils.generateResponse;
+import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.*;
 
 @RestController
-@RequestMapping(path = V1_MAIL)
+@RequestMapping(path = API_MAIL)
+@Tag(name = MAIL_CONTROLLER)
 public class MailController {
 
     private static final String BEGIN_DATE_QUERY_PARAM = "beginDate";
@@ -54,9 +55,9 @@ public class MailController {
         try {
             List<Email> results = this.gmailService.getEmails(beginDate, endDate, sender, subject);
             Object content = compress ? compressEmailResults(results) : results;
-            return generateResponse(HttpStatus.OK, true, SUCCESS, content);
+            return generateResponse(HttpStatus.OK, SUCCESS, content);
         } catch (IOException | InterruptedException | NullPointerException | EmailHandlingException e) {
-            return generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, e.getMessage(), null);
+            return generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null);
         }
     }
 
