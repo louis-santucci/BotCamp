@@ -2,8 +2,9 @@ package com.botcamp.gmail_gateway_api.config;
 
 import com.botcamp.common.config.CorsConfig;
 import com.botcamp.common.config.properties.SecurityConfigProperties;
-import com.botcamp.gmail_gateway_api.config.filter.JwtAuthenticationEntryPoint;
-import com.botcamp.gmail_gateway_api.config.filter.JwtRequestFilter;
+import com.botcamp.common.config.filter.JwtRequestFilter;
+import com.botcamp.common.config.filter.JwtAuthenticationEntryPoint;
+import com.botcamp.gmail_gateway_api.repository.entity.GatewayUserEntity;
 import com.botcamp.gmail_gateway_api.service.GatewayUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -28,17 +29,20 @@ import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.V1_AUT
 @EnableWebSecurity
 @Import({
         SecurityConfigProperties.class,
+        JwtRequestFilter.class,
+        JwtAuthenticationEntryPoint.class,
         CorsConfig.class
 })
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final JwtRequestFilter jwtRequestFilter;
+
+    private final JwtRequestFilter<GatewayUserEntity> jwtRequestFilter;
     private final SecurityConfigProperties securityConfigProperties;
 
 
     public WebSecurityConfig(JwtAuthenticationEntryPoint entryPoint,
-                             JwtRequestFilter requestFilter,
+                             JwtRequestFilter<GatewayUserEntity> requestFilter,
                              SecurityConfigProperties securityConfigProperties) {
         this.jwtAuthenticationEntryPoint = entryPoint;
         this.jwtRequestFilter = requestFilter;
