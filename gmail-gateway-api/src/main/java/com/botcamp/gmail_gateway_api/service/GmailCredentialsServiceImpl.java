@@ -13,15 +13,19 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.util.store.DataStore;
 import com.google.api.services.gmail.Gmail;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class GmailCredentialsServiceImpl implements GmailCredentialsService {
 
     private final Map<String, GmailCredential> credentialsMap;
@@ -81,6 +85,18 @@ public class GmailCredentialsServiceImpl implements GmailCredentialsService {
 
         credentialsMap.put(gmailCredential.getGmailEmail(), gmailCredential);
         return gmailCredential;
+    }
+
+    @Override
+    public void clearGmailCredentials(Boolean deleteFile) throws IOException {
+        credentialsMap.clear();
+        googleAuthCodeFlow.getCredentialDataStore().clear();
+        log.info("Cleared Credentials");
+        if (deleteFile) {
+            File tokenDirectory = new File(googleOAuth2ConfigProperties.getTokenDirectoryName());
+            FileUtils.cleanDirectory(tokenDirectory);
+            log.info("Deleted credentials file {} in {} folder", googleOAuth2ConfigProperties.getCredentialsFilePath(), googleOAuth2ConfigProperties.getTokenDirectoryName());
+        }
     }
 
     private Gmail buildGmailClient(Credential credential) {

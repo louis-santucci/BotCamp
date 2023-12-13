@@ -23,5 +23,6 @@ public class ControllerEndpoint {
     // Gmail Credentials Controller
     public static final String GET_CREDENTIALS = "/all";
     public static final String CREATE_CREDENTIALS = "/create";
+    public static final String CLEAR_CREDENTIALS = "/clear";
 
 }

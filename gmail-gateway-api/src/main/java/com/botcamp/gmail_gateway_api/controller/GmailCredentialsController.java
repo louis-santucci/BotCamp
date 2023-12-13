@@ -23,13 +23,14 @@ import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.*;
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 public class GmailCredentialsController {
     private static final String GMAIL_EMAIL_REQUEST_PARAM = "email";
+    private static final String DELETE_FILE_REQUEST_PARAM = "deleteFile";
     private final GmailCredentialsService gmailCredentialsService;
 
     public GmailCredentialsController(GmailCredentialsService gmailCredentialsService) {
         this.gmailCredentialsService = gmailCredentialsService;
     }
 
-    @RequestMapping(value = GET_CREDENTIALS, method = RequestMethod.POST)
+    @RequestMapping(value = GET_CREDENTIALS, method = RequestMethod.GET)
     @Operation(summary = "Gets all stored credentials")
     public ResponseEntity<GenericResponse> getCredentials() {
         try {
@@ -46,6 +47,17 @@ public class GmailCredentialsController {
         try {
             GmailCredential gmailCredential = gmailCredentialsService.createGmailCredential(gmailEmail);
             return HttpUtils.generateResponse(HttpStatus.OK, HttpUtils.SUCCESS, gmailCredential);
+        } catch (Exception e) {
+            return HttpUtils.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null);
+        }
+    }
+
+    @RequestMapping(value = CLEAR_CREDENTIALS, method = RequestMethod.PUT)
+    @Operation(summary = "Deletes all saved credentials, and deletes credentials datastore file")
+    public ResponseEntity<GenericResponse> clearAllCredentials(@RequestParam(value = DELETE_FILE_REQUEST_PARAM) Boolean deleteFile) {
+        try {
+            gmailCredentialsService.clearGmailCredentials(deleteFile);
+            return HttpUtils.generateResponse(HttpStatus.OK, HttpUtils.SUCCESS, "Successfully cleared Google Credentials");
         } catch (Exception e) {
             return HttpUtils.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null);
         }

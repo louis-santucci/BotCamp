@@ -10,5 +10,6 @@ public interface GmailCredentialsService {
     GmailCredential createGmailCredential(String gmailEmail) throws EmailParsingException, IOException;
     Map<String, GmailCredential> getGmailCredentials();
     void initGmailCredentialsMap() throws IOException, EmailParsingException;
+    void clearGmailCredentials(Boolean deleteFile) throws IOException;
 
 }
