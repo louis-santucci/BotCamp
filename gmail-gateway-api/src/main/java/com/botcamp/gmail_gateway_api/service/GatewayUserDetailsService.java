@@ -48,8 +48,7 @@ public class GatewayUserDetailsService implements JwtUserDetailsService<GatewayU
     }
 
     @Override
-    public String getUsernameFromToken(String token) {
-        String secret = securityConfigProperties.getJwt().getSecret();
-        return JwtUtils.getUsernameFromToken(token, secret);
+    public SecurityConfigProperties getSecurityConfigProperties() {
+        return securityConfigProperties;
     }
 }
