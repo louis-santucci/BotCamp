@@ -1,6 +1,8 @@
 package com.botcamp.gmail_gateway_api.service;
 
+import com.botcamp.common.config.properties.SecurityConfigProperties;
 import com.botcamp.common.service.JwtUserDetailsService;
+import com.botcamp.common.utils.JwtUtils;
 import com.botcamp.gmail_gateway_api.repository.GatewayUserRepository;
 import com.botcamp.gmail_gateway_api.repository.entity.GatewayUserEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,11 +17,14 @@ import java.util.ArrayList;
 public class GatewayUserDetailsService implements JwtUserDetailsService<GatewayUserEntity> {
 
     private GatewayUserRepository userRepository;
+    private SecurityConfigProperties securityConfigProperties;
     private PasswordEncoder encoder;
 
     public GatewayUserDetailsService(GatewayUserRepository gatewayUserRepository,
+                                     SecurityConfigProperties securityConfigProperties,
                                      PasswordEncoder passwordEncoder) {
         this.userRepository = gatewayUserRepository;
+        this.securityConfigProperties = securityConfigProperties;
         this.encoder = passwordEncoder;
     }
     @Override
@@ -42,4 +47,9 @@ public class GatewayUserDetailsService implements JwtUserDetailsService<GatewayU
         return userRepository.save(newUser);
     }
 
+    @Override
+    public String getUsernameFromToken(String token) {
+        String secret = securityConfigProperties.getJwt().getSecret();
+        return JwtUtils.getUsernameFromToken(token, secret);
+    }
 }
