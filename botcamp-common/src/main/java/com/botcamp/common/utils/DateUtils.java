@@ -20,6 +20,7 @@ public class DateUtils {
     private static final String UTC = "UTC";
     private static final String TIME_ZONE_PARIS = "Europe/Paris";
 
+    public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
     public static LocalDateTime StringToDateTime(String dateStr, DateTimeFormatter formatter) {
         formatter = formatter.withLocale(Locale.ENGLISH);
@@ -30,6 +31,10 @@ public class DateUtils {
         ZonedDateTime zonedDateTime = instant.atZone(ZoneId.of(TIME_ZONE_PARIS));
 
         return zonedDateTime.toLocalDateTime();
+    }
+
+    public static String dateTimeToString(LocalDateTime dateTime) {
+        return dateTime.format(formatter);
     }
 
     private static LocalDateTime addOffsetToLocalDateTime(LocalDateTime localDateTime, OffsetPair pair) {

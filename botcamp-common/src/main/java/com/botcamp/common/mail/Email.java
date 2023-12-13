@@ -1,11 +1,9 @@
-package com.botcamp.gmail_gateway_api.mailing;
+package com.botcamp.common.mail;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,5 +15,5 @@ public class Email {
     private MessageBodyType bodyType;
     private String subject;
     private String receiver;
-    private LocalDateTime dateTime;
+    private String dateTime;
 }

@@ -2,7 +2,9 @@ package com.botcamp.botcamp_api.service;
 
 import com.botcamp.botcamp_api.repository.BotcampUserRepository;
 import com.botcamp.botcamp_api.repository.entity.BotcampUserEntity;
+import com.botcamp.common.config.properties.SecurityConfigProperties;
 import com.botcamp.common.service.JwtUserDetailsService;
+import com.botcamp.common.utils.JwtUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,10 +17,13 @@ public class BotcampUserDetailsService implements JwtUserDetailsService<BotcampU
 
     private BotcampUserRepository userRepository;
     private PasswordEncoder encoder;
+    private SecurityConfigProperties securityConfigProperties;
 
     public BotcampUserDetailsService(BotcampUserRepository botcampUserRepository,
+                                     SecurityConfigProperties securityConfigProperties,
                                      PasswordEncoder passwordEncoder) {
         this.userRepository = botcampUserRepository;
+        this.securityConfigProperties = securityConfigProperties;
         this.encoder = passwordEncoder;
     }
 
@@ -39,6 +44,11 @@ public class BotcampUserDetailsService implements JwtUserDetailsService<BotcampU
                 .password(botcampUser.getPassword())
                 .build();
         return userRepository.save(newUser);
+    }
+
+    @Override
+    public SecurityConfigProperties getSecurityConfigProperties() {
+        return securityConfigProperties;
     }
 
 }

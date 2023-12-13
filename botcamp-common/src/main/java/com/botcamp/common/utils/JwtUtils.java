@@ -14,7 +14,8 @@ import java.util.function.Function;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class JwtUtils {
-
+    private static final String BEARER = "Bearer";
+    private static final String SPACE = " ";
     // Retrieve username from jwt token
     public static String getUsernameFromToken(String token, String secret) {
         return getClaimFromToken(token, Claims::getSubject, secret);
@@ -26,6 +27,9 @@ public class JwtUtils {
     }
 
     public static <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver, String secret) {
+        if (token.startsWith(BEARER)) {
+            token = token.split(SPACE)[1];
+        }
         final Claims claims = getAllClaimsFromToken(token, secret);
         return claimsResolver.apply(claims);
     }

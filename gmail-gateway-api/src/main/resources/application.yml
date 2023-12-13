@@ -36,6 +36,7 @@ security:
   jwt:
     secret: botcampgmailgatewayapilocal
     token-validity: 18000
+  enabled: true
 
 server:
   port: 7500
@@ -47,8 +48,14 @@ gmail:
       cost-limit: 250
       max-results: 500
       reset-cron: "* * * * * *"
-    user:
-      email: louissantucci1998@gmail.com
+  config:
+    credentials-file-path: /client_secret.json
+    scopes:
+      - https://www.googleapis.com/auth/gmail.readonly
+    token-directory-name: tokens
+    stored-credentials-file-name: stored_credentials
+    callback-server-port: 2424
+
 
 
 

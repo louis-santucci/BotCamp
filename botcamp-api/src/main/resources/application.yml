@@ -37,6 +37,7 @@ security:
   jwt:
     secret: botcampapilocal
     token-validity: 18000
+  enabled: true
 
 server:
   port: 7510
