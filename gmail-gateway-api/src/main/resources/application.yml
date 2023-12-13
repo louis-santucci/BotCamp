@@ -36,6 +36,7 @@ security:
   jwt:
     secret: botcampgmailgatewayapilocal
     token-validity: 18000
+  enabled: true
 
 server:
   port: 7500
