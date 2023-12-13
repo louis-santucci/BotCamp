@@ -1,26 +1,27 @@
 package com.botcamp.gmail_gateway_api.controller;
 
-import com.botcamp.gmail_gateway_api.mailing.Email;
-import com.botcamp.gmail_gateway_api.mailing.EmailHandlingException;
-import com.botcamp.gmail_gateway_api.service.GmailService;
+import com.botcamp.common.exception.UnknownUserException;
+import com.botcamp.common.response.EmailResponse;
+import com.botcamp.common.service.TokenExtractor;
 import com.botcamp.common.utils.GzipUtils;
+import com.botcamp.gmail_gateway_api.config.GatewayUser;
+import com.botcamp.common.exception.EmailHandlingException;
+import com.botcamp.gmail_gateway_api.mailing.EmailResults;
+import com.botcamp.gmail_gateway_api.service.GatewayUserDetailsService;
+import com.botcamp.gmail_gateway_api.service.GmailService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 import static com.botcamp.common.config.SwaggerConfig.BEARER_AUTHENTICATION;
 import static com.botcamp.common.utils.HttpUtils.SUCCESS;
@@ -32,7 +33,6 @@ import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.*;
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @Tag(name = MAIL_CONTROLLER)
 public class MailController {
-
     private static final String BEGIN_DATE_QUERY_PARAM = "beginDate";
     private static final String END_DATE_QUERY_PARAM = "endDate";
     private static final String TOPIC_QUERY_PARAM = "sender";
@@ -41,11 +41,17 @@ public class MailController {
 
     private final GmailService gmailService;
     private final ObjectMapper objectMapper;
+    private final GatewayUserDetailsService gatewayUserDetailsService;
+    private final TokenExtractor tokenExtractor;
 
     public MailController(GmailService service,
-                          ObjectMapper objectMapper) {
+                          ObjectMapper objectMapper,
+                          GatewayUserDetailsService gatewayUserDetailsService,
+                          TokenExtractor tokenExtractor) {
         this.gmailService = service;
         this.objectMapper = objectMapper;
+        this.gatewayUserDetailsService = gatewayUserDetailsService;
+        this.tokenExtractor = tokenExtractor;
     }
 
 
@@ -56,15 +62,18 @@ public class MailController {
                                        @RequestParam(name = SUBJECT_QUERY_PARAM, required = false) String subject,
                                        @RequestParam(name = COMPRESS_QUERY_PARAM, defaultValue = "false") boolean compress) {
         try {
-            List<Email> results = this.gmailService.getEmails(beginDate, endDate, sender, subject);
-            Object content = compress ? compressEmailResults(results) : results;
+            String usernameFromToken = gatewayUserDetailsService.getUsernameFromToken(tokenExtractor.getJwtToken());
+            GatewayUser user = (GatewayUser) gatewayUserDetailsService.loadUserByUsername(usernameFromToken);
+            EmailResults results = this.gmailService.getEmails(user, beginDate, endDate, sender, subject);
+            EmailResponse emailResponse = new EmailResponse(results.getEmails(), results.getErrors());
+            Object content = compress ? compressEmailResults(results) : emailResponse;
             return generateResponse(HttpStatus.OK, SUCCESS, content);
-        } catch (IOException | InterruptedException | NullPointerException | EmailHandlingException e) {
+        } catch (IOException | InterruptedException | NullPointerException | EmailHandlingException | UnknownUserException e) {
             return generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null);
         }
     }
 
-    private String compressEmailResults(List<Email> emailList) throws JsonProcessingException {
+    private String compressEmailResults(EmailResults emailList) throws JsonProcessingException {
         InputStream is = new ByteArrayInputStream(objectMapper.writeValueAsBytes(emailList));
         ByteArrayOutputStream baos = GzipUtils.compress(is);
 
