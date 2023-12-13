@@ -1,5 +1,9 @@
 package com.botcamp.gmail_gateway_api.mailing.impl;
 
+import com.botcamp.common.exception.EmailHandlingException;
+import com.botcamp.common.mail.Email;
+import com.botcamp.common.mail.MessageBody;
+import com.botcamp.common.mail.MessageBodyType;
 import com.botcamp.gmail_gateway_api.mailing.*;
 import com.botcamp.common.utils.DateUtils;
 import com.google.api.services.gmail.model.Message;
@@ -32,7 +36,7 @@ public class GmailMessageHandlerImpl implements MessageHandler {
             Message message = (Message) msg;
             Map<String, String> headerMap = headerListToMap(message.getPayload().getHeaders());
             String receiver = headerMap.get(HEADER_TO);
-            String sender = getEmailFromHeaderValue(headerMap.get(HEADER_FROM));
+            String sender = getEmailFromHeaderValue(headerMap);
             String subject = headerMap.get(HEADER_SUBJECT);
             String dateTimeStr = DateUtils.cleanDate(headerMap.get(HEADER_DATE));
             LocalDateTime dateTime = DateUtils.StringToDateTime(dateTimeStr, RFC_1123_DATE_TIME);
@@ -44,7 +48,7 @@ public class GmailMessageHandlerImpl implements MessageHandler {
                     .receiver(receiver)
                     .subject(subject)
                     .sender(sender)
-                    .dateTime(dateTime)
+                    .dateTime(DateUtils.dateTimeToString(dateTime))
                     .body(body)
                     .bodyType(messageBody.getType())
                     .build();
@@ -92,7 +96,11 @@ public class GmailMessageHandlerImpl implements MessageHandler {
         return text.replaceAll("\\r\\n","\n");
     }
 
-    private static String getEmailFromHeaderValue(String headerValue) {
+    private static String getEmailFromHeaderValue(Map<String, String> headerMap) {
+        String headerValue = headerMap.get(HEADER_FROM);
+        if (headerValue == null) {
+            headerValue = headerMap.get(HEADER_FROM.toLowerCase());
+        }
         return headerValue.substring(headerValue.indexOf('<') + 1, headerValue.indexOf('>'));
     }
 }
