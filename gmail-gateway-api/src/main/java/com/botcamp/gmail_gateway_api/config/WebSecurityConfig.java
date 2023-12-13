@@ -1,9 +1,12 @@
 package com.botcamp.gmail_gateway_api.config;
 
 import com.botcamp.common.config.CorsConfig;
+import com.botcamp.common.config.SwaggerConfig;
+import com.botcamp.common.config.filter.JwtTokenExtractionFilter;
 import com.botcamp.common.config.properties.SecurityConfigProperties;
 import com.botcamp.common.config.filter.JwtRequestFilter;
 import com.botcamp.common.config.filter.JwtAuthenticationEntryPoint;
+import com.botcamp.common.service.TokenExtractor;
 import com.botcamp.gmail_gateway_api.repository.entity.GatewayUserEntity;
 import com.botcamp.gmail_gateway_api.service.GatewayUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +34,17 @@ import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.API_AU
         SecurityConfigProperties.class,
         JwtRequestFilter.class,
         JwtAuthenticationEntryPoint.class,
-        CorsConfig.class
+        CorsConfig.class,
+        SwaggerConfig.class,
+        TokenExtractor.class,
+        JwtTokenExtractionFilter.class
 })
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     private final JwtRequestFilter<GatewayUserEntity> jwtRequestFilter;
+    private final JwtTokenExtractionFilter jwtTokenExtractionFilter;
     private final SecurityConfigProperties securityConfigProperties;
 
     private final String[] AUTH_WHITELIST = {
@@ -49,10 +56,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     public WebSecurityConfig(JwtAuthenticationEntryPoint entryPoint,
                              JwtRequestFilter<GatewayUserEntity> requestFilter,
-                             SecurityConfigProperties securityConfigProperties) {
+                             SecurityConfigProperties securityConfigProperties,
+                             JwtTokenExtractionFilter jwtTokenExtractionFilter) {
         this.jwtAuthenticationEntryPoint = entryPoint;
         this.jwtRequestFilter = requestFilter;
         this.securityConfigProperties = securityConfigProperties;
+        this.jwtTokenExtractionFilter = jwtTokenExtractionFilter;
     }
 
 
@@ -103,7 +112,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // Add a filter to validate the tokens with every request
-        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(jwtTokenExtractionFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(jwtRequestFilter, JwtTokenExtractionFilter.class);
     }
 
 }
