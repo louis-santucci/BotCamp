@@ -2,7 +2,6 @@ package com.botcamp.gmail_gateway_api.controller;
 
 import com.botcamp.common.exception.UnknownUserException;
 import com.botcamp.common.response.EmailResponse;
-import com.botcamp.common.service.TokenExtractor;
 import com.botcamp.common.utils.GzipUtils;
 import com.botcamp.gmail_gateway_api.config.GatewayUser;
 import com.botcamp.common.exception.EmailHandlingException;
@@ -15,6 +14,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
@@ -38,20 +38,18 @@ public class MailController {
     private static final String TOPIC_QUERY_PARAM = "sender";
     private static final String SUBJECT_QUERY_PARAM = "subject";
     private static final String COMPRESS_QUERY_PARAM = "compress";
+    private static final String AUTH_HEADER = "Authorization";
 
     private final GmailService gmailService;
     private final ObjectMapper objectMapper;
     private final GatewayUserDetailsService gatewayUserDetailsService;
-    private final TokenExtractor tokenExtractor;
 
     public MailController(GmailService service,
                           ObjectMapper objectMapper,
-                          GatewayUserDetailsService gatewayUserDetailsService,
-                          TokenExtractor tokenExtractor) {
+                          GatewayUserDetailsService gatewayUserDetailsService) {
         this.gmailService = service;
         this.objectMapper = objectMapper;
         this.gatewayUserDetailsService = gatewayUserDetailsService;
-        this.tokenExtractor = tokenExtractor;
     }
 
 
@@ -60,11 +58,11 @@ public class MailController {
                                        @RequestParam(name = END_DATE_QUERY_PARAM, required = false) String endDate,
                                        @RequestParam(name = TOPIC_QUERY_PARAM, required = false) String sender,
                                        @RequestParam(name = SUBJECT_QUERY_PARAM, required = false) String subject,
-                                       @RequestParam(name = COMPRESS_QUERY_PARAM, defaultValue = "false") boolean compress) {
+                                       @RequestParam(name = COMPRESS_QUERY_PARAM, defaultValue = "false") boolean compress,
+                                       Authentication authentication) {
         try {
-            String usernameFromToken = gatewayUserDetailsService.getUsernameFromToken(tokenExtractor.getJwtToken());
-            GatewayUser user = (GatewayUser) gatewayUserDetailsService.loadUserByUsername(usernameFromToken);
-            EmailResults results = this.gmailService.getEmails(user, beginDate, endDate, sender, subject);
+            var userDetails = (GatewayUser) authentication.getPrincipal();
+            EmailResults results = this.gmailService.getEmails(userDetails, beginDate, endDate, sender, subject);
             EmailResponse emailResponse = new EmailResponse(results.getEmails(), results.getErrors());
             Object content = compress ? compressEmailResults(results) : emailResponse;
             return generateResponse(HttpStatus.OK, SUCCESS, content);
