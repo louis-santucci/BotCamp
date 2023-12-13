@@ -1,11 +1,12 @@
 package com.botcamp.gmail_gateway_api.service;
 
-import com.botcamp.gmail_gateway_api.mailing.Email;
-import com.botcamp.gmail_gateway_api.mailing.EmailHandlingException;
+import com.botcamp.common.exception.UnknownUserException;
+import com.botcamp.gmail_gateway_api.config.GatewayUser;
+import com.botcamp.common.exception.EmailHandlingException;
+import com.botcamp.gmail_gateway_api.mailing.EmailResults;
 
 import java.io.IOException;
-import java.util.List;
 
 public interface GmailService {
-    List<Email> getEmails(String beginDate, String endDate, String sender, String subject) throws IOException, InterruptedException, EmailHandlingException;
+    EmailResults getEmails(GatewayUser gatewayUser, String beginDate, String endDate, String sender, String subject) throws IOException, InterruptedException, EmailHandlingException, UnknownUserException;
 }
