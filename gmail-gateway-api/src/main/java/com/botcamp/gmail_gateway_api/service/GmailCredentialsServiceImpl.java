@@ -3,7 +3,7 @@ package com.botcamp.gmail_gateway_api.service;
 import com.botcamp.common.exception.EmailParsingException;
 import com.botcamp.common.utils.DateUtils;
 import com.botcamp.common.utils.EmailUtils;
-import com.botcamp.gmail_gateway_api.config.properties.GmailConfigProperties;
+import com.botcamp.gmail_gateway_api.config.properties.GoogleOAuth2ConfigProperties;
 import com.botcamp.gmail_gateway_api.credentials.GmailCredential;
 import com.botcamp.gmail_gateway_api.credentials.GmailCredentialProvider;
 import com.google.api.client.auth.oauth2.Credential;
@@ -27,7 +27,7 @@ public class GmailCredentialsServiceImpl implements GmailCredentialsService {
     private final Map<String, GmailCredential> credentialsMap;
     private final String applicationName;
     private final GoogleAuthorizationCodeFlow googleAuthCodeFlow;
-    private final GmailConfigProperties gmailConfigProperties;
+    private final GoogleOAuth2ConfigProperties googleOAuth2ConfigProperties;
     private final JsonFactory gsonFactory;
     private final HttpTransport httpTransport;
     private final GmailCredentialProvider credentialProvider;
@@ -36,14 +36,14 @@ public class GmailCredentialsServiceImpl implements GmailCredentialsService {
                                        GoogleAuthorizationCodeFlow googleAuthorizationCodeFlow,
                                        HttpTransport httpTransport,
                                        JsonFactory gsonFactory,
-                                       GmailConfigProperties gmailConfigProperties,
+                                       GoogleOAuth2ConfigProperties googleOAuth2ConfigProperties,
                                        GmailCredentialProvider credentialProvider) throws EmailParsingException, IOException {
         this.credentialsMap = new HashMap<>();
         this.applicationName = context.getId();
         this.googleAuthCodeFlow = googleAuthorizationCodeFlow;
         this.httpTransport = httpTransport;
         this.gsonFactory = gsonFactory;
-        this.gmailConfigProperties = gmailConfigProperties;
+        this.googleOAuth2ConfigProperties = googleOAuth2ConfigProperties;
         this.credentialProvider = credentialProvider;
 
         initGmailCredentialsMap();
@@ -71,7 +71,7 @@ public class GmailCredentialsServiceImpl implements GmailCredentialsService {
         String dateTimeNow = DateUtils.dateTimeToString(now);
         String expirationTime = DateUtils.dateTimeToString(now.plusSeconds(credential.getExpiresInSeconds()));
         GmailCredential gmailCredential = GmailCredential.builder()
-                .credentialFilename(gmailConfigProperties.getStoredCredentialsFileName())
+                .credentialFilename(googleOAuth2ConfigProperties.getStoredCredentialsFileName())
                 .gmail(gmail)
                 .gmailEmail(gmailEmail)
                 .credential(credential)
