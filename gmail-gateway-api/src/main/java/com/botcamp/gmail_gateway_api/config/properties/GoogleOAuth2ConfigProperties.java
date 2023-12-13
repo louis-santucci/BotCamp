@@ -14,6 +14,5 @@ public class GoogleOAuth2ConfigProperties {
     private String credentialsFilePath;
     private String storedCredentialsFileName;
     private List<String> scopes;
-    private String refreshToken;
     private int callbackServerPort;
 }
