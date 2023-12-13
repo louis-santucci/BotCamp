@@ -3,13 +3,16 @@ package com.botcamp.gmail_gateway_api.reporting;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
+import com.botcamp.common.exception.UnknownUserException;
 import com.botcamp.gmail_gateway_api.MemoryAppender;
-import com.botcamp.gmail_gateway_api.config.GmailAPICallerConfig;
-import com.botcamp.gmail_gateway_api.config.properties.GmailUserConfigProperties;
+import com.botcamp.gmail_gateway_api.config.properties.GmailAPICallerProperties;
 import com.botcamp.gmail_gateway_api.configuration.TestConfiguration;
+import com.botcamp.gmail_gateway_api.credentials.GmailCredential;
 import com.botcamp.gmail_gateway_api.mailing.GmailAPIAction;
 import com.botcamp.gmail_gateway_api.mailing.impl.GmailAPICallerImpl;
 import com.botcamp.gmail_gateway_api.mailing.query.MessageQuery;
+import com.botcamp.gmail_gateway_api.service.GmailCredentialsService;
+import com.botcamp.gmail_gateway_api.service.GmailCredentialsServiceImpl;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.Message;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -38,20 +42,19 @@ import static org.mockito.Mockito.*;
 @ActiveProfiles("test")
 @Slf4j
 public class GmailAPICallerTests {
+    private static final String GMAIL_EMAIL = "toto@toto.com";
 
     @Autowired
-    private GmailUserConfigProperties userConfig;
-    @Autowired
-    private GmailAPICallerConfig apiCallerConfig;
+    private GmailAPICallerProperties apiCallerConfig;
+
     private GmailAPICallerImpl caller;
-    Map<String, Message> messageMap;
-
-    MemoryAppender memoryAppender;
+    private Map<String, Message> messageMap;
+    private MemoryAppender memoryAppender;
+    private Gmail gmail;
+    private GmailCredentialsService gmailCredentialsService;
 
     public GmailAPICallerTests() {
     }
-
-    Gmail gmail;
 
     @BeforeEach
     public void setup() {
@@ -74,13 +77,14 @@ public class GmailAPICallerTests {
         this.messageMap = generateMessages(messageListSize);
 
         // Gmail Mock config
+        gmailCredentialsService = mock(GmailCredentialsServiceImpl.class);
         gmail = mock(Gmail.class);
         Gmail.Users users = mock(Gmail.Users.class);
         Gmail.Users.Messages messages = mock(Gmail.Users.Messages.class);
         Map<String, Gmail.Users.Messages.Get> getMap = new HashMap<>();
         messageMap.forEach((key, value) -> {
             Gmail.Users.Messages.Get get = mock(Gmail.Users.Messages.Get.class);
-            get.setUserId(userConfig.getEmail());
+            get.setUserId(GMAIL_EMAIL);
             get.setId(key);
             getMap.put(key, get);
             try {
@@ -93,10 +97,19 @@ public class GmailAPICallerTests {
         doReturn(messages).when(users).messages();
         for (Map.Entry<String, Message> entry: messageMap.entrySet()) {
             String id = entry.getKey();
-            doReturn(getMap.get(id)).when(messages).get(userConfig.getEmail(), id);
+            doReturn(getMap.get(id)).when(messages).get(GMAIL_EMAIL, id);
         }
 
-        this.caller = spy(new GmailAPICallerImpl(gmail, apiCallerConfig));
+        Map<String, GmailCredential> credentialMap = new HashMap<>();
+        GmailCredential gmailCredential = GmailCredential.builder()
+                .gmailEmail(GMAIL_EMAIL)
+                .gmail(gmail)
+                .gmailEmail("test")
+                .build();
+        credentialMap.put(GMAIL_EMAIL, gmailCredential);
+        doReturn(credentialMap).when(gmailCredentialsService).getGmailCredentials();
+
+        this.caller = spy(new GmailAPICallerImpl(gmailCredentialsService, apiCallerConfig));
     }
 
     private Map<String, Message> generateMessages(int size) {
@@ -121,14 +134,32 @@ public class GmailAPICallerTests {
         int size = messageMap.size();
         this.messageMap.forEach((key, value) -> {
             log.info("#" + counter.getAndIncrement() + " - call to API");
-            MessageQuery query = new MessageQuery(userConfig.getEmail(), value);
+            MessageQuery query = new MessageQuery(GMAIL_EMAIL, value);
             try {
-                this.caller.callGmailAPI(GmailAPIAction.MESSAGE_GET, query);
-            } catch (InterruptedException | IOException e) {
+                this.caller.callGmailAPI(GMAIL_EMAIL, GmailAPIAction.MESSAGE_GET, query);
+            } catch (InterruptedException | IOException | UnknownUserException e) {
                 throw new RuntimeException(e);
             }
         });
         verify(this.caller, atLeast(2)).sleep();
+    }
+
+    @Test
+    public void should_throw_exception_when_user_is_not_existing() throws IOException {
+        configureTests(1);
+        String wrongEmail = "wrong_email@gogole.com";
+        AtomicBoolean hasThrown = new AtomicBoolean(false);
+        this.messageMap.forEach((key, value) -> {
+            MessageQuery query = new MessageQuery(wrongEmail, value);
+            try {
+                this.caller.callGmailAPI(wrongEmail, GmailAPIAction.MESSAGE_GET, query);
+            } catch (InterruptedException | IOException e) {
+                throw new RuntimeException(e);
+            } catch (UnknownUserException e) {
+                hasThrown.set(true);
+            }
+        });
+        assertThat(hasThrown).isTrue();
     }
 
     @Test
@@ -138,11 +169,11 @@ public class GmailAPICallerTests {
         AtomicInteger counter = new AtomicInteger(1);
         this.messageMap.forEach((key, value) -> {
             log.info("#" + counter.getAndIncrement() + " - call to API");
-            MessageQuery query = new MessageQuery(userConfig.getEmail(), value);
+            MessageQuery query = new MessageQuery(GMAIL_EMAIL, value);
             try {
-                this.caller.callGmailAPI(GmailAPIAction.MESSAGE_GET, query);
+                this.caller.callGmailAPI(GMAIL_EMAIL, GmailAPIAction.MESSAGE_GET, query);
                 Thread.sleep(6000);
-            } catch (InterruptedException | IOException e) {
+            } catch (InterruptedException | IOException | UnknownUserException e) {
                 throw new RuntimeException(e);
             }
         });
