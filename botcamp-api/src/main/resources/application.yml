@@ -54,6 +54,8 @@ db:
 http-config:
   request-timeout: 10
   unit: minutes
+  retry-delay: 30
+  max-retries: 3
 
 botcamp:
   smtp:

@@ -10,4 +10,6 @@ import java.util.concurrent.TimeUnit;
 public class HttpConfigProperties {
     private Long requestTimeout;
     private TimeUnit unit;
+    private int maxRetries;
+    private Long retryDelay;
 }
