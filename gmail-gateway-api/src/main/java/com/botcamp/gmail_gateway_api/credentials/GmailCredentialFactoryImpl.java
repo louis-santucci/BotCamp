@@ -16,15 +16,15 @@ import java.io.*;
 
 @Component
 @Slf4j
-public class GmailCredentialProviderImpl implements GmailCredentialProvider {
+public class GmailCredentialFactoryImpl implements GmailCredentialFactory {
     private final GoogleAuthorizationCodeFlow googleAuthCodeFlow;
     private final AuthorizationCodeInstalledApp.Browser browser;
     private final GoogleOAuth2ConfigProperties googleOAuth2ConfigProperties;
 
 
-    public GmailCredentialProviderImpl(GoogleAuthorizationCodeFlow googleAuthorizationCodeFlow,
-                                       GoogleOAuth2ConfigProperties googleOAuth2ConfigProperties,
-                                       AuthorizationCodeInstalledApp.Browser browser) {
+    public GmailCredentialFactoryImpl(GoogleAuthorizationCodeFlow googleAuthorizationCodeFlow,
+                                      GoogleOAuth2ConfigProperties googleOAuth2ConfigProperties,
+                                      AuthorizationCodeInstalledApp.Browser browser) {
         this.googleAuthCodeFlow = googleAuthorizationCodeFlow;
         this.browser = browser;
         this.googleOAuth2ConfigProperties = googleOAuth2ConfigProperties;
@@ -32,7 +32,7 @@ public class GmailCredentialProviderImpl implements GmailCredentialProvider {
 
 
     @Override
-    public Credential authorize(String gmailEmail) throws IOException {
+    public Credential buildCredential(String gmailEmail) throws IOException {
         VerificationCodeReceiver receiver = new LocalServerReceiver
                 .Builder()
                 .setPort(googleOAuth2ConfigProperties.getCallbackServerPort())
