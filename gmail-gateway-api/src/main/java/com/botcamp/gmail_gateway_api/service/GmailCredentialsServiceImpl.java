@@ -5,7 +5,7 @@ import com.botcamp.common.utils.DateUtils;
 import com.botcamp.common.utils.EmailUtils;
 import com.botcamp.gmail_gateway_api.config.properties.GoogleOAuth2ConfigProperties;
 import com.botcamp.gmail_gateway_api.credentials.GmailCredential;
-import com.botcamp.gmail_gateway_api.credentials.GmailCredentialProvider;
+import com.botcamp.gmail_gateway_api.credentials.GmailCredentialFactory;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.auth.oauth2.StoredCredential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
@@ -34,21 +34,21 @@ public class GmailCredentialsServiceImpl implements GmailCredentialsService {
     private final GoogleOAuth2ConfigProperties googleOAuth2ConfigProperties;
     private final JsonFactory gsonFactory;
     private final HttpTransport httpTransport;
-    private final GmailCredentialProvider credentialProvider;
+    private final GmailCredentialFactory credentialFactory;
 
     public GmailCredentialsServiceImpl(ApplicationContext context,
                                        GoogleAuthorizationCodeFlow googleAuthorizationCodeFlow,
                                        HttpTransport httpTransport,
                                        JsonFactory gsonFactory,
                                        GoogleOAuth2ConfigProperties googleOAuth2ConfigProperties,
-                                       GmailCredentialProvider credentialProvider) throws EmailParsingException, IOException {
+                                       GmailCredentialFactory credentialFactory) throws EmailParsingException, IOException {
         this.credentialsMap = new HashMap<>();
         this.applicationName = context.getId();
         this.googleAuthCodeFlow = googleAuthorizationCodeFlow;
         this.httpTransport = httpTransport;
         this.gsonFactory = gsonFactory;
         this.googleOAuth2ConfigProperties = googleOAuth2ConfigProperties;
-        this.credentialProvider = credentialProvider;
+        this.credentialFactory = credentialFactory;
 
         initGmailCredentialsMap();
     }
@@ -107,6 +107,6 @@ public class GmailCredentialsServiceImpl implements GmailCredentialsService {
 
     private Credential getCredentials(final String gmailEmail) throws IOException, EmailParsingException {
         EmailUtils.validateEmail(gmailEmail);
-        return credentialProvider.authorize(gmailEmail);
+        return credentialFactory.buildCredential(gmailEmail);
     }
 }
