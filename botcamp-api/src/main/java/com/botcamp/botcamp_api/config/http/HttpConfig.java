@@ -10,10 +10,15 @@ import org.springframework.context.annotation.Import;
 @Import(HttpConfigProperties.class)
 public class HttpConfig {
     @Bean
-    OkHttpClient okHttpClient(HttpConfigProperties httpConfigProperties) {
+    OkHttpClient okHttpClient(HttpConfigProperties httpConfigProperties,
+                              HeaderBuilderInterceptor headerBuilderInterceptor,
+                              HeaderAuthInterceptor headerAuthInterceptor,
+                              RetryInterceptor retryInterceptor) {
         return new OkHttpClient.Builder()
                 .readTimeout(httpConfigProperties.getRequestTimeout(), httpConfigProperties.getUnit())
-                .addInterceptor(new HeaderBuilderInterceptor())
+                .addInterceptor(headerBuilderInterceptor)
+                .addInterceptor(headerAuthInterceptor)
+                .addInterceptor(retryInterceptor)
                 .build();
     }
 }
