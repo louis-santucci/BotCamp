@@ -4,6 +4,7 @@ import com.botcamp.botcamp_api.config.http.HttpResponseHandler;
 import com.botcamp.botcamp_api.config.properties.GmailGatewayCredentialsProperties;
 import com.botcamp.botcamp_api.config.properties.GmailGatewayProperties;
 import com.botcamp.common.endpoints.GmailGatewayEndpoint;
+import com.botcamp.common.http.HttpMethod;
 import com.botcamp.common.jwt.JwtToken;
 import com.botcamp.common.request.JwtRequest;
 import com.botcamp.common.response.GenericResponse;
@@ -56,7 +57,7 @@ public class TokenRefresher {
         String jsonInput = objectMapper.writeValueAsString(jwtRequest);
         try (CloseableHttpClient httpClient = httpClientBuilder.build();
              StringEntity stringEntity = new StringEntity(jsonInput)) {
-            HttpPost post = HttpUtils.buildHttpPost(url, stringEntity);
+            HttpPost post = (HttpPost) HttpUtils.buildHttpObject(HttpMethod.POST, url, stringEntity);
 
             HttpResponseHandler responseHandler = new HttpResponseHandler();
 
