@@ -36,8 +36,10 @@ cors:
 security:
   jwt:
     secret: botcampapilocal
-    token-validity: 18000
+    token-validity: 3
+    unit: hours
   enabled: true
+
 
 server:
   port: 7510
@@ -52,10 +54,11 @@ db:
   port: ${PGPORT}
 
 http-config:
-  request-timeout: 10
-  unit: minutes
-  retry-delay: 30
-  max-retries: 3
+  logging-enabled: true
+  connection-timeout: 10
+  socket-timeout: 10
+  connection-timeout-unit: seconds
+  socket-timeout-unit: minutes
 
 botcamp:
   smtp:
@@ -75,3 +78,11 @@ swagger:
       email: botcamp-api@hotmail.com
       name: Louis SANTUCCI
       url: https://github.com/louis-santucci/BotCamp
+
+gmail-gateway:
+  url: localhost
+  protocol: http
+  port: 7500
+  credentials:
+    username: ${BOTCAMP_USR1_USERNAME}
+    password: ${BOTCAMP_USR1_PASSWORD}

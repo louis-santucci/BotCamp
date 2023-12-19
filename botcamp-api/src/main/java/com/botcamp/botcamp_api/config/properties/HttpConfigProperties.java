@@ -8,8 +8,9 @@ import java.util.concurrent.TimeUnit;
 @ConfigurationProperties(prefix = "http-config")
 @Data
 public class HttpConfigProperties {
-    private Long requestTimeout;
-    private TimeUnit unit;
-    private int maxRetries;
-    private Long retryDelay;
+    private Long connectionTimeout;
+    private int socketTimeout;
+    private TimeUnit connectionTimeoutUnit;
+    private TimeUnit socketTimeoutUnit;
+    private boolean isLoggingEnabled;
 }
