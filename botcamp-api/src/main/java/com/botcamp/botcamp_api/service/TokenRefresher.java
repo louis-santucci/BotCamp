@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
 public class TokenRefresher {
 
     private JwtToken token;
-    private HttpClientBuilder httpClientBuilder;
+    private final HttpClientBuilder httpClientBuilder;
     private final ObjectMapper objectMapper;
     private final GmailGatewayProperties gatewayProperties;
 
