@@ -9,7 +9,6 @@ import org.apache.hc.core5.http.protocol.HttpContext;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 @Slf4j(topic = "[HTTP][REQUEST]")
 @Component
