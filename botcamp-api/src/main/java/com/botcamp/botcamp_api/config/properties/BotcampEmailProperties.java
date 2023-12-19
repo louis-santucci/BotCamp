@@ -10,7 +10,7 @@ public class BotcampEmailProperties {
     private Integer port;
     private String username;
     private String password;
-    private boolean AuthEnabled;
-    private boolean StartTlsEnabled;
+    private boolean authEnabled;
+    private boolean startTlsEnabled;
     private String sslProtocols;
 }
