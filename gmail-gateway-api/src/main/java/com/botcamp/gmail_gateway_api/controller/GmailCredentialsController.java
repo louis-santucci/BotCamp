@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 import static com.botcamp.common.config.SwaggerConfig.BEARER_AUTHENTICATION;
-import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.*;
+import static com.botcamp.common.endpoints.GmailGatewayEndpoint.*;
 
 @RestController
 @CrossOrigin
@@ -30,9 +30,9 @@ public class GmailCredentialsController {
         this.gmailCredentialsService = gmailCredentialsService;
     }
 
-    @RequestMapping(value = GET_CREDENTIALS, method = RequestMethod.GET)
+    @GetMapping(value = GET_CREDENTIALS)
     @Operation(summary = "Gets all stored credentials")
-    public ResponseEntity<GenericResponse> getCredentials() {
+    public ResponseEntity<GenericResponse<Map<String, GmailCredential>>> getCredentials() {
         try {
             Map<String, GmailCredential> credentials = gmailCredentialsService.getGmailCredentials();
             return HttpUtils.generateResponse(HttpStatus.OK, HttpUtils.SUCCESS, credentials);
@@ -41,9 +41,9 @@ public class GmailCredentialsController {
         }
     }
 
-    @RequestMapping(value = CREATE_CREDENTIALS, method = RequestMethod.POST)
+    @PostMapping(value = CREATE_CREDENTIALS)
     @Operation(summary = "Creates new credentials to request the Gmail Gateway")
-    public ResponseEntity<GenericResponse> createNewCredentials(@RequestParam(value = GMAIL_EMAIL_REQUEST_PARAM) String gmailEmail) {
+    public ResponseEntity<GenericResponse<GmailCredential>> createNewCredentials(@RequestParam(value = GMAIL_EMAIL_REQUEST_PARAM) String gmailEmail) {
         try {
             GmailCredential gmailCredential = gmailCredentialsService.createGmailCredential(gmailEmail);
             return HttpUtils.generateResponse(HttpStatus.OK, HttpUtils.SUCCESS, gmailCredential);
@@ -52,9 +52,9 @@ public class GmailCredentialsController {
         }
     }
 
-    @RequestMapping(value = CLEAR_CREDENTIALS, method = RequestMethod.PUT)
+    @PutMapping(value = CLEAR_CREDENTIALS)
     @Operation(summary = "Deletes all saved credentials, and deletes credentials datastore file")
-    public ResponseEntity<GenericResponse> clearAllCredentials(@RequestParam(value = DELETE_FILE_REQUEST_PARAM) Boolean deleteFile) {
+    public ResponseEntity<GenericResponse<String>> clearAllCredentials(@RequestParam(value = DELETE_FILE_REQUEST_PARAM) Boolean deleteFile) {
         try {
             gmailCredentialsService.clearGmailCredentials(deleteFile);
             return HttpUtils.generateResponse(HttpStatus.OK, HttpUtils.SUCCESS, "Successfully cleared Google Credentials");
