@@ -1,6 +1,7 @@
 package com.botcamp.gmail_gateway_api.controller;
 
 import com.botcamp.common.config.properties.SecurityConfigProperties;
+import com.botcamp.common.jwt.JwtToken;
 import com.botcamp.common.request.JwtRequest;
 import com.botcamp.common.response.GenericResponse;
 import com.botcamp.common.response.JwtResponse;
@@ -16,11 +17,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import static com.botcamp.common.utils.HttpUtils.generateResponse;
-import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.*;
+import static com.botcamp.common.endpoints.GmailGatewayEndpoint.*;
 
 @CrossOrigin
 @RestController
@@ -43,9 +45,9 @@ public class JwtAuthenticationController {
         this.securityConfigProperties = securityConfigProperties;
     }
 
-    @RequestMapping(value = AUTH, method = RequestMethod.POST)
+    @PostMapping(value = AUTH)
     @Operation(summary = "Authenticates the user using username/password")
-    public ResponseEntity<GenericResponse> createAuthToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+    public ResponseEntity<GenericResponse<JwtResponse>> createAuthToken(@RequestBody JwtRequest authenticationRequest) {
         try {
             authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         } catch (BadCredentialsException | DisabledException e) {
@@ -57,12 +59,15 @@ public class JwtAuthenticationController {
         final UserDetails userDetails = gatewayUserDetailsService
                 .loadUserByUsername(authenticationRequest.getUsername());
 
-        final String token = JwtUtils.generateToken(userDetails, securityConfigProperties.getJwt().getSecret(), securityConfigProperties.getJwt().getTokenValidity());
+        final JwtToken token = JwtUtils.generateToken(userDetails,
+                securityConfigProperties.getJwt().getSecret(),
+                securityConfigProperties.getJwt().getTokenValidity(),
+                securityConfigProperties.getJwt().getUnit());
 
         return generateResponse(HttpStatus.OK, HttpUtils.SUCCESS, new JwtResponse(token));
     }
 
-    private void authenticate(String username, String password) throws Exception {
+    private void authenticate(String username, String password) throws AuthenticationException {
         try {
             authManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {
