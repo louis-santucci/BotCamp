@@ -39,7 +39,7 @@ public class GmailMessageHandlerImpl implements MessageHandler {
             String sender = getEmailFromHeaderValue(headerMap);
             String subject = headerMap.get(HEADER_SUBJECT);
             String dateTimeStr = DateUtils.cleanDate(headerMap.get(HEADER_DATE));
-            LocalDateTime dateTime = DateUtils.StringToDateTime(dateTimeStr, RFC_1123_DATE_TIME);
+            LocalDateTime dateTime = DateUtils.stringToDateTime(dateTimeStr, RFC_1123_DATE_TIME);
             MessageBody messageBody = getMessageBody(message.getPayload());
             String base64BodyString = new String(Base64.getUrlDecoder().decode(messageBody.getMessageBody()));
             String body = cleanCrlfEndOfLine(base64BodyString);
@@ -93,7 +93,7 @@ public class GmailMessageHandlerImpl implements MessageHandler {
     }
 
     private static String cleanCrlfEndOfLine(String text) {
-        return text.replaceAll("\\r\\n","\n");
+        return text.replace("\\r\\n","\n");
     }
 
     private static String getEmailFromHeaderValue(Map<String, String> headerMap) {

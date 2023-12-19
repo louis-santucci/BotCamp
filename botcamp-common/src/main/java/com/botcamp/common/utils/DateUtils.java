@@ -9,6 +9,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 
@@ -22,7 +23,9 @@ public class DateUtils {
 
     public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
-    public static LocalDateTime StringToDateTime(String dateStr, DateTimeFormatter formatter) {
+
+    public static LocalDateTime stringToDateTime(String dateStr, DateTimeFormatter formatter) {
+        if (formatter.equals(DateUtils.formatter)) return LocalDateTime.parse(dateStr, formatter);
         formatter = formatter.withLocale(Locale.ENGLISH);
         LocalDateTime localDateTime = LocalDateTime.parse(dateStr, formatter);
         OffsetPair offset = parseOffset(dateStr.substring(dateStr.length() - 5));
@@ -68,5 +71,16 @@ public class DateUtils {
         String offsetMinutesStr = offsetString.substring(3, 5);
         int offsetMinutes = Integer.parseInt(offsetMinutesStr);
         return new OffsetPair(offsetHour < 0, abs(offsetHour), abs(offsetMinutes));
+    }
+
+    public static LocalDateTime dateToLocalDateTime(Date dateToConvert) {
+        return LocalDateTime.ofInstant(
+                dateToConvert.toInstant(), ZoneId.systemDefault());
+    }
+
+    public static Date localDateTimeToDate(LocalDateTime localDateTime) {
+        return java.util.Date
+                .from(localDateTime.atZone(ZoneId.systemDefault())
+                        .toInstant());
     }
 }
