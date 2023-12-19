@@ -1,10 +1,10 @@
-package com.botcamp.botcamp_api.controller;
+package com.botcamp.common.endpoints;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ControllerEndpoint {
+public class BotcampApiEndpoint {
     // Controller names
     public static final String JWT_AUTH_CONTROLLER = "JWT Auth Controller";
     public static final String REPORTING_CONTROLLER = "Reporting Controller";

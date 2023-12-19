@@ -2,11 +2,9 @@ package com.botcamp.gmail_gateway_api.config;
 
 import com.botcamp.common.config.CorsConfig;
 import com.botcamp.common.config.SwaggerConfig;
-import com.botcamp.common.config.filter.JwtTokenExtractionFilter;
 import com.botcamp.common.config.properties.SecurityConfigProperties;
 import com.botcamp.common.config.filter.JwtRequestFilter;
 import com.botcamp.common.config.filter.JwtAuthenticationEntryPoint;
-import com.botcamp.common.service.TokenExtractor;
 import com.botcamp.gmail_gateway_api.repository.entity.GatewayUserEntity;
 import com.botcamp.gmail_gateway_api.service.GatewayUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +22,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.AUTH;
-import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.API_AUTH;
+import static com.botcamp.common.endpoints.GmailGatewayEndpoint.AUTH;
+import static com.botcamp.common.endpoints.GmailGatewayEndpoint.API_AUTH;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -35,19 +33,16 @@ import static com.botcamp.gmail_gateway_api.controller.ControllerEndpoint.API_AU
         JwtRequestFilter.class,
         JwtAuthenticationEntryPoint.class,
         CorsConfig.class,
-        SwaggerConfig.class,
-        TokenExtractor.class,
-        JwtTokenExtractionFilter.class
+        SwaggerConfig.class
 })
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     private final JwtRequestFilter<GatewayUserEntity> jwtRequestFilter;
-    private final JwtTokenExtractionFilter jwtTokenExtractionFilter;
     private final SecurityConfigProperties securityConfigProperties;
 
-    private final String[] AUTH_WHITELIST = {
+    private static final String[] AUTH_WHITELIST = {
             "/swagger-ui/**",
             "/v3/api-docs/**",
             "/swagger-ui.html",
@@ -56,12 +51,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     public WebSecurityConfig(JwtAuthenticationEntryPoint entryPoint,
                              JwtRequestFilter<GatewayUserEntity> requestFilter,
-                             SecurityConfigProperties securityConfigProperties,
-                             JwtTokenExtractionFilter jwtTokenExtractionFilter) {
+                             SecurityConfigProperties securityConfigProperties) {
         this.jwtAuthenticationEntryPoint = entryPoint;
         this.jwtRequestFilter = requestFilter;
         this.securityConfigProperties = securityConfigProperties;
-        this.jwtTokenExtractionFilter = jwtTokenExtractionFilter;
     }
 
 
@@ -112,8 +105,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // Add a filter to validate the tokens with every request
-        httpSecurity.addFilterBefore(jwtTokenExtractionFilter, UsernamePasswordAuthenticationFilter.class);
-        httpSecurity.addFilterBefore(jwtRequestFilter, JwtTokenExtractionFilter.class);
+        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
 }

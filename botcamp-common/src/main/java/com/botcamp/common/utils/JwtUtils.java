@@ -1,5 +1,6 @@
 package com.botcamp.common.utils;
 
+import com.botcamp.common.jwt.JwtToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -7,6 +8,8 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,9 +49,9 @@ public class JwtUtils {
     }
 
     // Generate token for user
-    public static String generateToken(UserDetails userDetails, String secret, Long tokenValidity) {
+    public static JwtToken generateToken(UserDetails userDetails, String secret, Long tokenValidity, ChronoUnit unit) {
         Map<String, Object> claims = new HashMap<>();
-        return doGenerateToken(claims, userDetails.getUsername(), secret, tokenValidity);
+        return doGenerateToken(claims, userDetails.getUsername(), secret, tokenValidity, unit);
     }
 
     // While creating the token -
@@ -56,11 +59,13 @@ public class JwtUtils {
     // 2. Sign the JWT using the HS512 algorithm and secret key.
     // 3. According to JWS Compact Serialization(https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-41#section-3.1)
     //    compaction of the JWT to a URL-safe string
-    private static String doGenerateToken(Map<String, Object> claims, String subject, String secret, Long tokenValidity) {
-
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + tokenValidity * 1000))
+    private static JwtToken doGenerateToken(Map<String, Object> claims, String subject, String secret, Long tokenValidity, ChronoUnit unit) {
+        LocalDateTime expirationDateTime = LocalDateTime.now().plus(tokenValidity, unit);
+        Date expirationDate = DateUtils.localDateTimeToDate(expirationDateTime);
+        String token = Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
+        return new JwtToken(token, expirationDateTime);
     }
 
     // Validate token

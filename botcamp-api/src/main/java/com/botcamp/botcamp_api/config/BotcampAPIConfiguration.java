@@ -1,6 +1,7 @@
 package com.botcamp.botcamp_api.config;
 
 import com.botcamp.botcamp_api.config.http.HttpConfig;
+import com.botcamp.botcamp_api.config.properties.GmailGatewayProperties;
 import com.botcamp.common.config.DataSourceConfig;
 import com.botcamp.common.config.PropertySourcesPlaceholderConfig;
 import com.botcamp.common.config.SwaggerConfig;
@@ -17,7 +18,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         DataSourceConfig.class,
         PropertySourcesPlaceholderConfig.class,
         EmailSenderConfig.class,
-        SwaggerConfig.class
+        SwaggerConfig.class,
+        GmailGatewayProperties.class
 })
 public class BotcampAPIConfiguration {
 }

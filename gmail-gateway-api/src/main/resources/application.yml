@@ -35,7 +35,8 @@ cors:
 security:
   jwt:
     secret: botcampgmailgatewayapilocal
-    token-validity: 18000
+    token-validity: 3
+    unit: hours
   enabled: true
 
 server:

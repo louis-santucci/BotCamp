@@ -7,10 +7,10 @@ import lombok.Data;
 @Data
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class GenericResponse {
+public class GenericResponse<T> {
     private int status;
     private String message;
-    private Object data;
+    private T data;
     private int size;
     private String dateTime;
 }
