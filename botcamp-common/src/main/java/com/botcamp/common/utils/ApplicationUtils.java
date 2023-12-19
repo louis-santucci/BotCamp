@@ -1,5 +1,7 @@
 package com.botcamp.common.utils;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
@@ -7,6 +9,7 @@ import org.springframework.core.env.Environment;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ApplicationUtils {
     private static final String SPRING_APPLICATION_NAME = "spring.application.name";
     private static final String SERVER_PORT = "server.port";
