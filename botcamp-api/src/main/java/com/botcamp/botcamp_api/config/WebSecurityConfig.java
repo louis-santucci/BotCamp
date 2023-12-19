@@ -22,8 +22,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.botcamp.botcamp_api.controller.ControllerEndpoint.API_AUTH;
-import static com.botcamp.botcamp_api.controller.ControllerEndpoint.AUTH;
+import static com.botcamp.common.endpoints.BotcampApiEndpoint.API_AUTH;
+import static com.botcamp.common.endpoints.BotcampApiEndpoint.AUTH;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -41,7 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtRequestFilter<BotcampUserEntity> jwtRequestFilter;
     private final SecurityConfigProperties securityConfigProperties;
 
-    private final String[] AUTH_WHITELIST = {
+    private static final String[] AUTH_WHITELIST = {
             "/swagger-ui/**",
             "/v3/api-docs/**",
             "/swagger-ui.html",
