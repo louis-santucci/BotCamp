@@ -38,7 +38,7 @@ class DateUtilsTests {
     @Test
     void test_date_time() {
         LocalDateTime expectedDateTime = LocalDateTime.of(2023, 9, 30, 11, 2, 58);
-        LocalDateTime actualDateTime = DateUtils.stringToDateTime(DATE_TEST_1, RFC_1123_DATE_TIME);
+        LocalDateTime actualDateTime = DateUtils.stringToLocalDateTime(DATE_TEST_1, RFC_1123_DATE_TIME);
 
         Assertions.assertThat(actualDateTime).isEqualTo(expectedDateTime);
     }
@@ -46,7 +46,7 @@ class DateUtilsTests {
     @Test
     void test_date_time_with_neg_offset() {
         LocalDateTime expectedDateTime = LocalDateTime.of(2023, 9, 30, 9, 2, 58);
-        LocalDateTime actualDateTime = DateUtils.stringToDateTime(DATE_TEST_2, RFC_1123_DATE_TIME);
+        LocalDateTime actualDateTime = DateUtils.stringToLocalDateTime(DATE_TEST_2, RFC_1123_DATE_TIME);
 
         Assertions.assertThat(actualDateTime).isEqualTo(expectedDateTime);
     }
@@ -54,7 +54,7 @@ class DateUtilsTests {
     @Test
     void test_date_time_with_pos_offset() {
         LocalDateTime expectedDateTime = LocalDateTime.of(2023, 9, 30, 18, 32, 58);
-        LocalDateTime actualDateTime = DateUtils.stringToDateTime(DATE_TEST_3, RFC_1123_DATE_TIME);
+        LocalDateTime actualDateTime = DateUtils.stringToLocalDateTime(DATE_TEST_3, RFC_1123_DATE_TIME);
 
         Assertions.assertThat(actualDateTime).isEqualTo(expectedDateTime);
     }
