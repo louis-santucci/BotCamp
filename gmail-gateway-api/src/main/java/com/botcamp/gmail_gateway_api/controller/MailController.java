@@ -38,7 +38,7 @@ import static com.botcamp.common.utils.HttpUtils.generateResponse;
 public class MailController {
     private static final String BEGIN_DATE_QUERY_PARAM = "beginDate";
     private static final String END_DATE_QUERY_PARAM = "endDate";
-    private static final String TOPIC_QUERY_PARAM = "sender";
+    private static final String SENDER_QUERY_PARAM = "sender";
     private static final String SUBJECT_QUERY_PARAM = "subject";
     private static final String COMPRESS_QUERY_PARAM = "compress";
 
@@ -55,15 +55,14 @@ public class MailController {
     @GetMapping(GET_LIST)
     public ResponseEntity<GenericResponse<Object>> getEmails(@RequestParam(name = BEGIN_DATE_QUERY_PARAM, required = false) String beginDate,
                                                      @RequestParam(name = END_DATE_QUERY_PARAM, required = false) String endDate,
-                                                     @RequestParam(name = TOPIC_QUERY_PARAM, required = false) String sender,
+                                                     @RequestParam(name = SENDER_QUERY_PARAM, required = false) String sender,
                                                      @RequestParam(name = SUBJECT_QUERY_PARAM, required = false) String subject,
                                                      @RequestParam(name = COMPRESS_QUERY_PARAM, defaultValue = "false") boolean compress,
                                                      Authentication authentication) {
         try {
             var userDetails = (GatewayUser) authentication.getPrincipal();
             EmailResults results = this.gmailService.getEmails(userDetails, beginDate, endDate, sender, subject);
-            EmailResponse emailResponse = new EmailResponse(results.getEmails(), results.getErrors());
-            Object content = compress ? compressEmailResults(results) : emailResponse;
+            Object content = compress ? compressEmailResults(results) : new EmailResponse(results.getEmails(), results.getErrors());
             return generateResponse(HttpStatus.OK, SUCCESS, content);
         } catch (IOException | InterruptedException | NullPointerException | EmailHandlingException | UnknownUserException e) {
             return generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null);
