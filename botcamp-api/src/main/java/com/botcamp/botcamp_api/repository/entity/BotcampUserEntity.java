@@ -7,9 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+
+import java.util.Set;
 
 import static com.botcamp.common.entity.EntityNamingAttributes.*;
 
@@ -30,4 +30,8 @@ public class BotcampUserEntity extends AEntity {
     @Column(name = BOTCAMP_USER_PASSWORD)
     @JsonIgnore
     private String password;
+    @Column(name = BOTCAMP_USER_AUTHORIZATIONS)
+    private String authorizations;
+    @OneToMany(mappedBy = "botcampUser")
+    private Set<TaskExecutionEntity> executions;
 }
