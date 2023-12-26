@@ -87,7 +87,7 @@ public class GmailCredentialsServiceImpl implements GmailCredentialsService {
     }
 
     @Override
-    public void clearGmailCredentials(Boolean deleteFile) throws IOException {
+    public void clearGmailCredentials(boolean deleteFile) throws IOException {
         credentialsMap.clear();
         googleAuthCodeFlow.getCredentialDataStore().clear();
         log.info("Cleared Credentials");
