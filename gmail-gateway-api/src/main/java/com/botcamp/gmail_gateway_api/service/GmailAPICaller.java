@@ -1,4 +1,4 @@
-package com.botcamp.gmail_gateway_api.mailing;
+package com.botcamp.gmail_gateway_api.service;
 
 import com.botcamp.common.exception.UnknownUserException;
 import com.botcamp.common.mail.GmailAPIAction;

@@ -1,10 +1,12 @@
-package com.botcamp.gmail_gateway_api.service;
+package com.botcamp.gmail_gateway_api.service.impl;
 
 import com.botcamp.common.exception.EmailParsingException;
 import com.botcamp.common.utils.DateUtils;
 import com.botcamp.common.utils.EmailUtils;
 import com.botcamp.gmail_gateway_api.config.properties.GoogleOAuth2ConfigProperties;
 import com.botcamp.common.gateway_credentials.GmailCredential;
+import com.botcamp.gmail_gateway_api.service.GmailCredentialFactory;
+import com.botcamp.gmail_gateway_api.service.GmailCredentialsService;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.auth.oauth2.StoredCredential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;

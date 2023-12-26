@@ -1,11 +1,11 @@
-package com.botcamp.gmail_gateway_api.mailing.impl;
+package com.botcamp.gmail_gateway_api.service.impl;
 
 import com.botcamp.common.exception.EmailHandlingException;
 import com.botcamp.common.mail.Email;
 import com.botcamp.common.mail.MessageBody;
 import com.botcamp.common.mail.MessageBodyType;
-import com.botcamp.gmail_gateway_api.mailing.*;
 import com.botcamp.common.utils.DateUtils;
+import com.botcamp.gmail_gateway_api.service.MessageHandler;
 import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartHeader;

@@ -1,6 +1,7 @@
-package com.botcamp.gmail_gateway_api.service;
+package com.botcamp.gmail_gateway_api.service.impl;
 
 import com.botcamp.gmail_gateway_api.config.properties.GoogleOAuth2ConfigProperties;
+import com.botcamp.gmail_gateway_api.service.GmailCredentialFactory;
 import com.google.api.client.auth.oauth2.AuthorizationCodeRequestUrl;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.auth.oauth2.TokenResponse;

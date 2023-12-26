@@ -1,4 +1,4 @@
-package com.botcamp.botcamp_api.config.http;
+package com.botcamp.common.http;
 
 import org.apache.hc.client5.http.ClientProtocolException;
 import org.apache.hc.core5.http.ClassicHttpResponse;

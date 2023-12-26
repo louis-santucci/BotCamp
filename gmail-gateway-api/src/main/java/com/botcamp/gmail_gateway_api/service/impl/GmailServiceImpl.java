@@ -1,4 +1,4 @@
-package com.botcamp.gmail_gateway_api.service;
+package com.botcamp.gmail_gateway_api.service.impl;
 
 import com.botcamp.common.exception.EmailHandlingException;
 import com.botcamp.common.exception.UnknownUserException;
@@ -6,11 +6,12 @@ import com.botcamp.common.mail.Email;
 import com.botcamp.common.mail.EmailError;
 import com.botcamp.gmail_gateway_api.config.GatewayUser;
 import com.botcamp.common.mail.EmailResults;
-import com.botcamp.gmail_gateway_api.mailing.GmailAPICaller;
-import com.botcamp.gmail_gateway_api.mailing.MessageHandler;
 import com.botcamp.common.mail.query.GmailQueryParameter;
 import com.botcamp.common.mail.query.MessageListQuery;
 import com.botcamp.common.mail.query.MessageQuery;
+import com.botcamp.gmail_gateway_api.service.GmailAPICaller;
+import com.botcamp.gmail_gateway_api.service.GmailService;
+import com.botcamp.gmail_gateway_api.service.MessageHandler;
 import com.google.api.services.gmail.model.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.ImmutablePair;
