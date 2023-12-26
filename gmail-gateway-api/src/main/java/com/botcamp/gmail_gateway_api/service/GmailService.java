@@ -3,7 +3,7 @@ package com.botcamp.gmail_gateway_api.service;
 import com.botcamp.common.exception.UnknownUserException;
 import com.botcamp.gmail_gateway_api.config.GatewayUser;
 import com.botcamp.common.exception.EmailHandlingException;
-import com.botcamp.gmail_gateway_api.mailing.EmailResults;
+import com.botcamp.common.mail.EmailResults;
 
 import java.io.IOException;
 

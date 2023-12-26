@@ -1,4 +1,4 @@
-package com.botcamp.gmail_gateway_api.mailing.query;
+package com.botcamp.common.mail.query;
 
 public interface Query<T> {
     String getUserEmail();

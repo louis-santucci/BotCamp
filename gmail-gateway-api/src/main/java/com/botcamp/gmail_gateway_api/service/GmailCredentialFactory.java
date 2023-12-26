@@ -1,4 +1,4 @@
-package com.botcamp.gmail_gateway_api.credentials;
+package com.botcamp.gmail_gateway_api.service;
 
 import com.google.api.client.auth.oauth2.Credential;
 

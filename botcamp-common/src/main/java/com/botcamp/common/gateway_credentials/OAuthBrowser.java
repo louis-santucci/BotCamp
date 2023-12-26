@@ -1,4 +1,4 @@
-package com.botcamp.gmail_gateway_api.credentials;
+package com.botcamp.common.gateway_credentials;
 
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.util.Preconditions;
@@ -7,10 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
-import java.util.logging.Level;
 
 @Slf4j(topic = "[BROWSER][OAUTH2]")
-public class Browser implements AuthorizationCodeInstalledApp.Browser {
+public class OAuthBrowser implements AuthorizationCodeInstalledApp.Browser {
 
     @Override
     public void browse(String url) {

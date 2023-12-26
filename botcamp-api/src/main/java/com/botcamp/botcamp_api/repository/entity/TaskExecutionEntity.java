@@ -2,7 +2,7 @@ package com.botcamp.botcamp_api.repository.entity;
 
 import com.botcamp.botcamp_api.execution.ExecutionStatus;
 import com.botcamp.botcamp_api.execution.ExecutionType;
-import com.botcamp.botcamp_api.mailing.QueryParameter;
+import com.botcamp.common.mail.QueryParameter;
 import com.botcamp.botcamp_api.repository.entity.serializer.QueryParameterConverter;
 import com.botcamp.common.entity.AEntity;
 import lombok.AllArgsConstructor;

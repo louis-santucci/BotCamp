@@ -1,7 +1,7 @@
 package com.botcamp.botcamp_api.execution;
 
 import com.botcamp.botcamp_api.config.BotcampUser;
-import com.botcamp.botcamp_api.mailing.QueryParameter;
+import com.botcamp.common.mail.QueryParameter;
 import com.botcamp.botcamp_api.repository.entity.TaskExecutionEntity;
 import com.botcamp.common.utils.DateUtils;
 import lombok.AllArgsConstructor;

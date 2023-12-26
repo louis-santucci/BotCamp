@@ -1,4 +1,4 @@
-package com.botcamp.gmail_gateway_api.credentials;
+package com.botcamp.common.gateway_credentials;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.api.client.auth.oauth2.Credential;

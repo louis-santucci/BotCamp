@@ -1,7 +1,5 @@
-package com.botcamp.gmail_gateway_api.mailing;
+package com.botcamp.common.mail;
 
-import com.botcamp.common.mail.Email;
-import com.botcamp.common.mail.EmailError;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

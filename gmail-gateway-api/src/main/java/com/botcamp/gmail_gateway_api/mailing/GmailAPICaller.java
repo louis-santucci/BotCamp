@@ -1,7 +1,8 @@
 package com.botcamp.gmail_gateway_api.mailing;
 
 import com.botcamp.common.exception.UnknownUserException;
-import com.botcamp.gmail_gateway_api.mailing.query.Query;
+import com.botcamp.common.mail.GmailAPIAction;
+import com.botcamp.common.mail.query.Query;
 import com.google.api.services.gmail.model.Message;
 
 import java.io.IOException;

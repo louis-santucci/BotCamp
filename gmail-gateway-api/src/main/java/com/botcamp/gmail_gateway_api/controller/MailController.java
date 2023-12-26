@@ -6,7 +6,7 @@ import com.botcamp.common.response.EmailResponse;
 import com.botcamp.common.response.GenericResponse;
 import com.botcamp.common.utils.GzipUtils;
 import com.botcamp.gmail_gateway_api.config.GatewayUser;
-import com.botcamp.gmail_gateway_api.mailing.EmailResults;
+import com.botcamp.common.mail.EmailResults;
 import com.botcamp.gmail_gateway_api.service.GmailService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

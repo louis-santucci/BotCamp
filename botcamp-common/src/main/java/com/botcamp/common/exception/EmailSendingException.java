@@ -1,4 +1,4 @@
-package com.botcamp.botcamp_api.mailing;
+package com.botcamp.common.exception;
 
 public class EmailSendingException extends Exception {
     public EmailSendingException(String message) {

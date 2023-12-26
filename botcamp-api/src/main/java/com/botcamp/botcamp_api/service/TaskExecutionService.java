@@ -4,7 +4,7 @@ import com.botcamp.botcamp_api.config.BotcampUser;
 import com.botcamp.botcamp_api.execution.Execution;
 import com.botcamp.botcamp_api.execution.ExecutionStatus;
 import com.botcamp.botcamp_api.execution.ExecutionType;
-import com.botcamp.botcamp_api.mailing.QueryParameter;
+import com.botcamp.common.mail.QueryParameter;
 import com.botcamp.common.request.SortingOrderParameter;
 
 import java.util.List;

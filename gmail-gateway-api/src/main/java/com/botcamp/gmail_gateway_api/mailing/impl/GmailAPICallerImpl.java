@@ -2,12 +2,12 @@ package com.botcamp.gmail_gateway_api.mailing.impl;
 
 import com.botcamp.common.exception.UnknownUserException;
 import com.botcamp.gmail_gateway_api.config.properties.GmailAPICallerProperties;
-import com.botcamp.gmail_gateway_api.credentials.GmailCredential;
-import com.botcamp.gmail_gateway_api.mailing.GmailAPIAction;
+import com.botcamp.common.gateway_credentials.GmailCredential;
+import com.botcamp.common.mail.GmailAPIAction;
 import com.botcamp.gmail_gateway_api.mailing.GmailAPICaller;
-import com.botcamp.gmail_gateway_api.mailing.query.MessageListQuery;
-import com.botcamp.gmail_gateway_api.mailing.query.MessageQuery;
-import com.botcamp.gmail_gateway_api.mailing.query.Query;
+import com.botcamp.common.mail.query.MessageListQuery;
+import com.botcamp.common.mail.query.MessageQuery;
+import com.botcamp.common.mail.query.Query;
 import com.botcamp.gmail_gateway_api.service.GmailCredentialsService;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.ListMessagesResponse;

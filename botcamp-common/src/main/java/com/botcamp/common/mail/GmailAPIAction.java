@@ -1,4 +1,4 @@
-package com.botcamp.gmail_gateway_api.mailing;
+package com.botcamp.common.mail;
 
 import lombok.Getter;
 

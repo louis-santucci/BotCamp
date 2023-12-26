@@ -1,4 +1,4 @@
-package com.botcamp.botcamp_api.mailing;
+package com.botcamp.common.mail;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

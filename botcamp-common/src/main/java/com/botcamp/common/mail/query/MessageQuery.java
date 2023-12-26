@@ -1,4 +1,4 @@
-package com.botcamp.gmail_gateway_api.mailing.query;
+package com.botcamp.common.mail.query;
 
 import com.google.api.services.gmail.model.Message;
 import lombok.AllArgsConstructor;

@@ -5,7 +5,7 @@ import com.botcamp.botcamp_api.execution.Execution;
 import com.botcamp.botcamp_api.execution.ExecutionQueryFilter;
 import com.botcamp.botcamp_api.execution.ExecutionStatus;
 import com.botcamp.botcamp_api.execution.ExecutionType;
-import com.botcamp.botcamp_api.mailing.QueryParameter;
+import com.botcamp.common.mail.QueryParameter;
 import com.botcamp.botcamp_api.repository.BotcampUserRepository;
 import com.botcamp.botcamp_api.repository.TaskExecutionRepository;
 import com.botcamp.botcamp_api.repository.entity.BotcampUserEntity;

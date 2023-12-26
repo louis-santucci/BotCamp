@@ -1,7 +1,7 @@
 package com.botcamp.gmail_gateway_api.service;
 
 import com.botcamp.common.exception.EmailParsingException;
-import com.botcamp.gmail_gateway_api.credentials.GmailCredential;
+import com.botcamp.common.gateway_credentials.GmailCredential;
 
 import java.io.IOException;
 import java.util.Map;

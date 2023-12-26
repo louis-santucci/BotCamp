@@ -5,12 +5,12 @@ import com.botcamp.common.exception.UnknownUserException;
 import com.botcamp.common.mail.Email;
 import com.botcamp.common.mail.EmailError;
 import com.botcamp.gmail_gateway_api.config.GatewayUser;
-import com.botcamp.gmail_gateway_api.mailing.EmailResults;
+import com.botcamp.common.mail.EmailResults;
 import com.botcamp.gmail_gateway_api.mailing.GmailAPICaller;
 import com.botcamp.gmail_gateway_api.mailing.MessageHandler;
-import com.botcamp.gmail_gateway_api.mailing.query.GmailQueryParameter;
-import com.botcamp.gmail_gateway_api.mailing.query.MessageListQuery;
-import com.botcamp.gmail_gateway_api.mailing.query.MessageQuery;
+import com.botcamp.common.mail.query.GmailQueryParameter;
+import com.botcamp.common.mail.query.MessageListQuery;
+import com.botcamp.common.mail.query.MessageQuery;
 import com.google.api.services.gmail.model.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.botcamp.gmail_gateway_api.mailing.GmailAPIAction.MESSAGE_GET;
-import static com.botcamp.gmail_gateway_api.mailing.GmailAPIAction.MESSAGE_LIST;
+import static com.botcamp.common.mail.GmailAPIAction.MESSAGE_GET;
+import static com.botcamp.common.mail.GmailAPIAction.MESSAGE_LIST;
 
 
 @Service
