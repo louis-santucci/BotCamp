@@ -15,12 +15,13 @@ import com.botcamp.common.utils.DateUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
@@ -72,7 +73,14 @@ class TaskExecutionServiceTests {
 
 
     private TaskExecutionEntity buildExecutionEntity(ExecutionStatus status, ExecutionType type, BotcampUserEntity entity, String id, String date) {
-        TaskExecutionEntity e1 = new TaskExecutionEntity(status, type, entity, new QueryParameter());
+        TaskExecutionEntity e1 = TaskExecutionEntity.builder()
+                .status(status)
+                .type(type)
+                .botcampUser(entity)
+                .queryParameter(new QueryParameter())
+                .emailSent(false)
+                .reportPath(Path.of(""))
+                .build();
         e1.setId(id);
         e1.setUpdatedAt(DateUtils.localDateTimeToDate(DateUtils.stringToLocalDateTime(date, DateUtils.formatter)));
         e1.setCreatedAt(DateUtils.localDateTimeToDate(DateUtils.stringToLocalDateTime(date, DateUtils.formatter)));
@@ -85,7 +93,7 @@ class TaskExecutionServiceTests {
         initMocks(initStream());
         List<Execution> res = this.taskExecutionService.getExecutions(null, null, List.of(ExecutionStatus.FAILURE), null, null, botcampUser, false);
 
-        assertThat(res.size()).isEqualTo(1);
+        assertThat(res).hasSize(1);
         Execution result = res.get(0);
         assertThat(result.getStatus()).isEqualTo(ExecutionStatus.FAILURE);
         assertThat(result.getId()).isEqualTo("AAAA");
@@ -96,7 +104,7 @@ class TaskExecutionServiceTests {
         initMocks(initStream());
         List<Execution> res = this.taskExecutionService.getExecutions(null, null, null, List.of(ExecutionType.OUTLOOK), null, botcampUser, false);
 
-        assertThat(res.size()).isEqualTo(1);
+        assertThat(res).hasSize(1);
         Execution result = res.get(0);
         assertThat(result.getType()).isEqualTo(ExecutionType.OUTLOOK);
         assertThat(result.getId()).isEqualTo("BBBB");
@@ -107,7 +115,7 @@ class TaskExecutionServiceTests {
         initMocks(initStream());
         List<Execution> res = this.taskExecutionService.getExecutions("2023-01-01 00:00:00.000", null, null, null, null, botcampUser, false);
 
-        assertThat(res.size()).isEqualTo(1);
+        assertThat(res).hasSize(1);
         Execution result = res.get(0);
         assertThat(result.getId()).isEqualTo("DDDD");
     }
@@ -117,7 +125,7 @@ class TaskExecutionServiceTests {
         initMocks(initStream());
         List<Execution> res = this.taskExecutionService.getExecutions(null, "2019-01-01 00:00:00.000", null, null, null, botcampUser, false);
 
-        assertThat(res.size()).isEqualTo(1);
+        assertThat(res).hasSize(1);
         Execution result = res.get(0);
         assertThat(result.getId()).isEqualTo("CCCC");
     }
@@ -127,7 +135,7 @@ class TaskExecutionServiceTests {
         initMocks(initOtherUserStream());
         List<Execution> res = this.taskExecutionService.getExecutions(null, null, null, null, null, botcampUser2, true);
 
-        assertThat(res.size()).isEqualTo(1);
+        assertThat(res).hasSize(1);
         Execution result = res.get(0);
         assertThat(result.getId()).isEqualTo("EEEE");
     }
@@ -138,7 +146,7 @@ class TaskExecutionServiceTests {
 
         List<Execution> res = this.taskExecutionService.getExecutions(null, null, null, null, SortingOrderParameter.ASCENDING, botcampUser, false);
 
-        assertThat(res.size()).isEqualTo(3);
+        assertThat(res).hasSize(3);
         Execution result1 = res.get(0);
         Execution result2 = res.get(1);
         Execution result3 = res.get(2);
@@ -153,7 +161,7 @@ class TaskExecutionServiceTests {
 
         List<Execution> res = this.taskExecutionService.getExecutions(null, null, null, null, SortingOrderParameter.DESCENDING, botcampUser, false);
 
-        assertThat(res.size()).isEqualTo(3);
+        assertThat(res).hasSize(3);
         Execution result1 = res.get(0);
         Execution result2 = res.get(1);
         Execution result3 = res.get(2);

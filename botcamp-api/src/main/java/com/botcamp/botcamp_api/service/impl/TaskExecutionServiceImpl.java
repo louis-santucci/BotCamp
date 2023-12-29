@@ -12,18 +12,21 @@ import com.botcamp.botcamp_api.repository.entity.BotcampUserEntity;
 import com.botcamp.botcamp_api.repository.entity.TaskExecutionEntity;
 import com.botcamp.botcamp_api.service.TaskExecutionService;
 import com.botcamp.common.request.SortingOrderParameter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
+@Slf4j
 public class TaskExecutionServiceImpl implements TaskExecutionService {
-
+    private static final String EXECUTION_NOT_FOUND = "Execution not found";
     private final TaskExecutionRepository taskExecutionRepository;
     private final BotcampUserRepository botcampUserRepository;
 
@@ -32,7 +35,6 @@ public class TaskExecutionServiceImpl implements TaskExecutionService {
         this.taskExecutionRepository = taskExecutionRepository;
         this.botcampUserRepository = botcampUserRepository;
     }
-
 
     @Override
     @Transactional(readOnly = true)
@@ -66,22 +68,49 @@ public class TaskExecutionServiceImpl implements TaskExecutionService {
 
     @Override
     @Transactional
-    public Execution updateExecution(String id, ExecutionStatus status) {
+    public TaskExecutionEntity updateExecutionStatus(String id, ExecutionStatus status) {
         Optional<TaskExecutionEntity> optional = taskExecutionRepository.findExecutionById(id);
 
         if (optional.isPresent()) {
             TaskExecutionEntity executionEntity = optional.get();
             executionEntity.setStatus(status);
-            TaskExecutionEntity newEntity = taskExecutionRepository.save(executionEntity);
-            return new Execution(newEntity);
+            return taskExecutionRepository.save(executionEntity);
         }
 
-        throw new EntityNotFoundException("Execution not found");
+        throw new EntityNotFoundException(EXECUTION_NOT_FOUND);
     }
 
     @Override
     @Transactional
-    public Execution createExecution(QueryParameter queryParameter, ExecutionType type, BotcampUser botcampUser) {
+    public TaskExecutionEntity updateExecutionReportPath(String id, Path reportPath) {
+        Optional<TaskExecutionEntity> optional = taskExecutionRepository.findExecutionById(id);
+
+        if (optional.isPresent()) {
+            TaskExecutionEntity executionEntity = optional.get();
+            executionEntity.setReportPath(reportPath);
+            return taskExecutionRepository.save(executionEntity);
+        }
+
+        throw new EntityNotFoundException(EXECUTION_NOT_FOUND);
+    }
+
+    @Override
+    @Transactional
+    public TaskExecutionEntity updateExecutionEmailSent(String id, boolean isSent) {
+        Optional<TaskExecutionEntity> optional = taskExecutionRepository.findExecutionById(id);
+
+        if (optional.isPresent()) {
+            TaskExecutionEntity executionEntity = optional.get();
+            executionEntity.setEmailSent(isSent);
+            return taskExecutionRepository.save(executionEntity);
+        }
+
+        throw new EntityNotFoundException(EXECUTION_NOT_FOUND);
+    }
+
+    @Override
+    @Transactional
+    public TaskExecutionEntity createExecutionEntity(QueryParameter queryParameter, ExecutionType type, BotcampUser botcampUser) {
         BotcampUserEntity botcampUserEntity = botcampUserRepository.findByUsername(botcampUser.getUsername());
         if (botcampUserEntity == null) {
             throw new UsernameNotFoundException("User not found with username: " + botcampUser.getUsername());
@@ -94,8 +123,7 @@ public class TaskExecutionServiceImpl implements TaskExecutionService {
                 .status(ExecutionStatus.PENDING)
                 .build();
 
-        TaskExecutionEntity newEntity = taskExecutionRepository.save(executionEntity);
-
-        return new Execution(newEntity);
+        return taskExecutionRepository.save(executionEntity);
     }
+
 }
