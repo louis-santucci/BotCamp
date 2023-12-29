@@ -99,7 +99,9 @@ public class GmailAPICallerImpl implements GmailAPICaller {
             List<Message> newResults = this.callGmailAPI(gmailEmail, GmailAPIAction.MESSAGE_LIST, messageListQuery);
             messageList.addAll(newResults);
         }
-        log.info("Requesting {} emails", messageList.size());
+        if (messageList != null) {
+            log.info("Requesting {} email{}", messageList.size(), messageList.size() > 2 ? "s" : "");
+        }
         return messageList;
     }
 

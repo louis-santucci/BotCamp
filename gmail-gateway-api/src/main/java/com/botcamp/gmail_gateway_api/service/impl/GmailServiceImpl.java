@@ -61,6 +61,7 @@ public class GmailServiceImpl implements GmailService {
 
         List<Email> resultList = new ArrayList<>();
         List<EmailError> errorList = new ArrayList<>();
+        if (results == null) return Pair.of(new ArrayList<>(0), new ArrayList<>(0));
         for (Message result : results) {
             MessageQuery messageQuery = new MessageQuery(gmailEmail, result);
             Optional<Message> message = gmailAPICaller.callGmailAPI(gmailEmail, MESSAGE_GET, messageQuery).stream().findFirst();
