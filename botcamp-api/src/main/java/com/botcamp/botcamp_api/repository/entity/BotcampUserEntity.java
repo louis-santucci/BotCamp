@@ -34,4 +34,15 @@ public class BotcampUserEntity extends AEntity {
     private String authorizations;
     @OneToMany(mappedBy = "botcampUser")
     private Set<TaskExecutionEntity> executions;
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("BotcampUserEntity{");
+        sb.append("username=").append(username);
+        sb.append("authorizations=").append(authorizations);
+        sb.append("}");
+
+        return sb.toString();
+    }
 }
