@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.beans.propertyeditors.StringArrayPropertyEditor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,9 +32,6 @@ public class GatewayUserEntity extends AEntity {
     @Column(name = GATEWAY_USER_PASSWORD)
     @JsonIgnore
     private String password;
-
-    @Column(name = GATEWAY_USER_AUTHORIZATIONS)
-    private String authorizations;
 
     @Column(name = GATEWAY_USER_GMAIL_EMAIL)
     private String gmailEmail;

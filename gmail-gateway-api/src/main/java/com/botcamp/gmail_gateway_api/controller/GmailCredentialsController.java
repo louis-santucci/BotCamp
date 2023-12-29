@@ -2,7 +2,7 @@ package com.botcamp.gmail_gateway_api.controller;
 
 import com.botcamp.common.response.GenericResponse;
 import com.botcamp.common.utils.HttpUtils;
-import com.botcamp.common.gateway_credentials.GmailCredential;
+import com.botcamp.gmail_gateway_api.credentials.GmailCredential;
 import com.botcamp.gmail_gateway_api.service.GmailCredentialsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

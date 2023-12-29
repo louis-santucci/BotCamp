@@ -6,8 +6,6 @@ test:
 
 clean:
 	@mvn clean
-	@./config/cleanup.sh
-
 
 dbup:
 	@docker-compose up postgres pgadmin

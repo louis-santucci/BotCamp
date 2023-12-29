@@ -1,12 +1,3 @@
-db:
-  username: test
-  password: test
-  hostname: localhost
-  db-name: test_db
-  db-url: jdbc:h2:file:./target/data/botcamp;AUTO_SERVER=TRUE;MODE=PostgreSQL;
-  db-type: h2
-  port: 9876
-
 gmail:
   api:
     caller:

@@ -2,18 +2,20 @@ package com.botcamp.botcamp_api.config.http.interceptors;
 
 import com.botcamp.botcamp_api.service.TokenRefresher;
 import com.botcamp.common.jwt.JwtToken;
+import org.apache.hc.core5.http.EntityDetails;
+import org.apache.hc.core5.http.HttpException;
+import org.apache.hc.core5.http.HttpRequest;
+import org.apache.hc.core5.http.HttpRequestInterceptor;
+import org.apache.hc.core5.http.protocol.HttpContext;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpRequest;
-import org.springframework.http.client.ClientHttpRequestExecution;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
-import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 @Component
-public class HeaderAuthInterceptor implements ClientHttpRequestInterceptor {
+public class HeaderAuthInterceptor implements HttpRequestInterceptor {
+
+    private static final String AUTHORIZATION_HEADER = "Authorization";
 
     private final TokenRefresher tokenRefresher;
 
@@ -22,16 +24,10 @@ public class HeaderAuthInterceptor implements ClientHttpRequestInterceptor {
     }
 
     @Override
-    public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
+    public void process(HttpRequest httpRequest, EntityDetails entityDetails, HttpContext httpContext) throws HttpException, IOException {
         JwtToken jwtToken = tokenRefresher.provideJwtToken();
         if (jwtToken != null) {
-            request.getHeaders().add(HttpHeaders.AUTHORIZATION, buildBearerToken(jwtToken.getToken()));
+            httpRequest.addHeader(AUTHORIZATION_HEADER, jwtToken.getToken());
         }
-
-        return execution.execute(request, body);
-    }
-
-    private String buildBearerToken(String token) {
-        return "Bearer " + token;
     }
 }

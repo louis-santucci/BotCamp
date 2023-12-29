@@ -2,46 +2,75 @@ package com.botcamp.botcamp_api.config.http;
 
 import com.botcamp.botcamp_api.config.http.interceptors.HeaderAuthInterceptor;
 import com.botcamp.botcamp_api.config.http.interceptors.HeaderBuilderInterceptor;
-import com.botcamp.botcamp_api.config.http.interceptors.LoggingInterceptor;
+import com.botcamp.botcamp_api.config.http.interceptors.LoggingRequestInterceptor;
+import com.botcamp.botcamp_api.config.http.interceptors.LoggingResponseInterceptor;
 import com.botcamp.botcamp_api.config.properties.HttpConfigProperties;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.apache.hc.client5.http.config.ConnectionConfig;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.BasicHttpClientConnectionManager;
+import org.apache.hc.client5.http.io.HttpClientConnectionManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.web.client.RestTemplate;
-
-import java.time.Duration;
-import java.util.List;
 
 @Configuration
 @Import(HttpConfigProperties.class)
 public class HttpConfig {
-    @Bean(value = "basicRestTemplate")
-    RestTemplate basicRestTemplate(HttpConfigProperties properties,
-                                   HeaderBuilderInterceptor headerBuilderInterceptor,
-                                   LoggingInterceptor loggingInterceptor) {
-        RestTemplate restTemplate = new RestTemplateBuilder()
-                .setConnectTimeout(Duration.of(properties.getConnectionTimeout(), properties.getConnectionTimeoutUnit().toChronoUnit()))
-                .setReadTimeout(Duration.of(properties.getSocketTimeout(), properties.getSocketTimeoutUnit().toChronoUnit()))
+
+    @Bean
+    ConnectionConfig connectionConfig(HttpConfigProperties properties) {
+        return ConnectionConfig.custom()
+                .setConnectTimeout(properties.getConnectionTimeout(), properties.getConnectionTimeoutUnit())
+                .setSocketTimeout(properties.getSocketTimeout(), properties.getSocketTimeoutUnit())
                 .build();
-
-        restTemplate.setInterceptors(List.of(headerBuilderInterceptor, loggingInterceptor));
-
-        return restTemplate;
     }
 
-    @Bean(value = "authRestTemplate")
-    RestTemplate authRestTemplate(HttpConfigProperties properties,
-                                  HeaderAuthInterceptor headerAuthInterceptor,
-                                  HeaderBuilderInterceptor headerBuilderInterceptor,
-                                  LoggingInterceptor loggingInterceptor) {
-        RestTemplate restTemplate = new RestTemplateBuilder()
-                .setConnectTimeout(Duration.of(properties.getConnectionTimeout(), properties.getConnectionTimeoutUnit().toChronoUnit()))
-                .setReadTimeout(Duration.of(properties.getSocketTimeout(), properties.getSocketTimeoutUnit().toChronoUnit()))
-                .build();
+    @Bean
+    BasicHttpClientConnectionManager httpClientConnectionManager(ConnectionConfig connectionConfig) {
+        BasicHttpClientConnectionManager basicHttpClientConnectionManager = new BasicHttpClientConnectionManager();
+        basicHttpClientConnectionManager.setConnectionConfig(connectionConfig);
 
-        restTemplate.setInterceptors(List.of(headerBuilderInterceptor, headerAuthInterceptor, loggingInterceptor));
+        return basicHttpClientConnectionManager;
+    }
 
-        return restTemplate;
+    @Bean(value = "authHttpClientBuilder")
+    HttpClientBuilder authHttpClientBuilder(HttpConfigProperties httpConfigProperties,
+                                        HttpClientConnectionManager httpClientConnectionManager,
+                                        LoggingRequestInterceptor loggingRequestInterceptor,
+                                        LoggingResponseInterceptor loggingResponseInterceptor,
+                                        HeaderBuilderInterceptor headerBuilderInterceptor,
+                                        HeaderAuthInterceptor headerAuthInterceptor) {
+        HttpClientBuilder httpClientBuilder = HttpClients.custom()
+                .setConnectionManager(httpClientConnectionManager);
+
+        httpClientBuilder.addRequestInterceptorLast(headerBuilderInterceptor);
+        httpClientBuilder.addRequestInterceptorLast(headerAuthInterceptor);
+        if (httpConfigProperties.isLoggingEnabled()) {
+            httpClientBuilder.addRequestInterceptorLast(loggingRequestInterceptor);
+            httpClientBuilder.addResponseInterceptorLast(loggingResponseInterceptor);
+        }
+
+
+        return httpClientBuilder;
+    }
+
+    @Bean(value = "basicHttpClientBuilder")
+    HttpClientBuilder basicHttpClientBuilder(HttpConfigProperties httpConfigProperties,
+                                        HttpClientConnectionManager httpClientConnectionManager,
+                                        LoggingRequestInterceptor loggingRequestInterceptor,
+                                        LoggingResponseInterceptor loggingResponseInterceptor,
+                                        HeaderBuilderInterceptor headerBuilderInterceptor) {
+        HttpClientBuilder httpClientBuilder = HttpClients.custom()
+                .setConnectionManager(httpClientConnectionManager);
+
+        httpClientBuilder.addRequestInterceptorLast(headerBuilderInterceptor);
+        if (httpConfigProperties.isLoggingEnabled()) {
+            httpClientBuilder.addRequestInterceptorLast(loggingRequestInterceptor);
+            httpClientBuilder.addResponseInterceptorLast(loggingResponseInterceptor);
+        }
+
+
+        return httpClientBuilder;
     }
 }

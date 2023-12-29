@@ -1,9 +1,12 @@
 package com.botcamp.common.utils;
 
+import com.botcamp.common.http.HttpMethod;
 import com.botcamp.common.response.EmailResponse;
 import com.botcamp.common.response.GenericResponse;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.apache.hc.client5.http.classic.methods.*;
+import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -56,6 +59,16 @@ public class HttpUtils {
         sb.append(endpoint);
 
         return sb.toString();
+    }
+
+    public static HttpUriRequestBase buildHttpObject(HttpMethod httpMethod, String url, StringEntity body) {
+        HttpUriRequestBase httpUriRequestBase = switch (httpMethod) {
+            case DELETE -> new HttpDelete(url);
+            case POST -> new HttpPost(url);
+            case GET -> new HttpGet(url);
+        };
+        httpUriRequestBase.setEntity(body);
+        return httpUriRequestBase;
     }
 
 }

@@ -19,11 +19,6 @@ public class GmailGatewayEndpoint {
 
     // Mail Controller
     public static final String GET_LIST = "/all";
-    public static final String BEGIN_DATE_QUERY_PARAM = "beginDate";
-    public static final String END_DATE_QUERY_PARAM = "endDate";
-    public static final String SENDER_QUERY_PARAM = "sender";
-    public static final String SUBJECT_QUERY_PARAM = "subject";
-    public static final String COMPRESS_QUERY_PARAM = "compress";
 
     // Gmail Credentials Controller
     public static final String GET_CREDENTIALS = "/all";
