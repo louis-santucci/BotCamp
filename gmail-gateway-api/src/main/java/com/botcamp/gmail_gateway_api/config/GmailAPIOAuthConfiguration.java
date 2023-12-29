@@ -2,7 +2,7 @@ package com.botcamp.gmail_gateway_api.config;
 
 
 import com.botcamp.gmail_gateway_api.config.properties.GoogleOAuth2ConfigProperties;
-import com.botcamp.gmail_gateway_api.credentials.Browser;
+import com.botcamp.common.gateway_credentials.OAuthBrowser;
 import com.google.api.client.auth.oauth2.StoredCredential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
@@ -67,7 +67,7 @@ public class GmailAPIOAuthConfiguration {
 
     @Bean
     AuthorizationCodeInstalledApp.Browser browser() {
-        return new Browser();
+        return new OAuthBrowser();
     }
 
     @Bean

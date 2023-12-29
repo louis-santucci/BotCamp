@@ -70,6 +70,14 @@ botcamp:
     ssl-protocols: TLSv1.2
     auth-enabled: true
 
+task-executor:
+  core-pool-size: 1
+  max-pool-size: 1
+  queue-capacity: 200
+  polling-cron: "0 */1 * * * *"
+task-scheduler:
+  pool-size: 20
+
 swagger:
   title: Botcamp API
   description: Botcamp API
@@ -86,3 +94,8 @@ gmail-gateway:
   credentials:
     username: ${BOTCAMP_USR1_USERNAME}
     password: ${BOTCAMP_USR1_PASSWORD}
+
+export:
+  path: db_data/exports
+  types:
+    - file_export

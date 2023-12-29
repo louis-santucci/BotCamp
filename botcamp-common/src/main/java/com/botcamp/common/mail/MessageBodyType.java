@@ -12,4 +12,9 @@ public enum MessageBodyType {
 
     @JsonValue
     private final String type;
+
+    @Override
+    public String toString() {
+        return this.name();
+    }
 }
