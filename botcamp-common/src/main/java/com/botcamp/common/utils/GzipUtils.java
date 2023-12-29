@@ -2,46 +2,37 @@ package com.botcamp.common.utils;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
-import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.InputStreamSource;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class GzipUtils {
-    public static ByteArrayOutputStream compress(InputStream inputStream) {
-        if (inputStream == null) return null;
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            GzipCompressorOutputStream gzipOut = new GzipCompressorOutputStream(baos);
-            gzipOut.write(inputStream.readAllBytes());
-            gzipOut.flush();
-            gzipOut.close();
-            return baos;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    public static byte[] compress(String str) throws IOException {
+        if (str == null || str.isEmpty()) {
+            return new byte[0];
         }
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        GZIPOutputStream gzip = new GZIPOutputStream(baos);
+        gzip.write(str.getBytes(StandardCharsets.UTF_8));
+        gzip.flush();
+        gzip.close();
+        return baos.toByteArray();
     }
 
-    public static String decompress(InputStream inputStream) {
-        if (inputStream == null) return null;
-        try {
-            StringBuilder sb = new StringBuilder();
-            GzipCompressorInputStream gzipCompressorInputStream = new GzipCompressorInputStream(inputStream);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(gzipCompressorInputStream, StandardCharsets.UTF_8));
-
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                sb.append(line);
-            }
-
-            return sb.toString();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    public static String decompress(final byte[] str) throws IOException {
+        if (str == null || str.length == 0) {
+            return "";
         }
+        GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(str));
+        BufferedReader bf = new BufferedReader(new InputStreamReader(gis, StandardCharsets.UTF_8));
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = bf.readLine()) != null) {
+            sb.append(line);
+        }
+        return sb.toString();
     }
 }
