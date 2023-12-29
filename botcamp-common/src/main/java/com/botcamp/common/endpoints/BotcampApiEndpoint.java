@@ -19,7 +19,6 @@ public class BotcampApiEndpoint {
     public static final String AUTH = "/authenticate";
 
     // Reporting Controller
-    public static final String GENERATE = "/generate";
     public static final String SCHEDULE = "/schedule";
     public static final String FROM_QUERY_PARAM = "from";
     public static final String BEGIN_DATE_QUERY_PARAM = "begin_date";
