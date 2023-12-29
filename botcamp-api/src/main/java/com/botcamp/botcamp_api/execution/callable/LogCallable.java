@@ -17,5 +17,6 @@ public class LogCallable extends BotcampCallable<Void> {
         Execution execution = getExecution();
         log.info("Execution: {}", execution);
         Thread.sleep(10000);
+        return null;
     }
 }
