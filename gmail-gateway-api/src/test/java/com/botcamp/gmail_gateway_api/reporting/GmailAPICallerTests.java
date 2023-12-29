@@ -7,12 +7,12 @@ import com.botcamp.common.exception.UnknownUserException;
 import com.botcamp.gmail_gateway_api.MemoryAppender;
 import com.botcamp.gmail_gateway_api.config.properties.GmailAPICallerProperties;
 import com.botcamp.gmail_gateway_api.configuration.TestConfiguration;
-import com.botcamp.gmail_gateway_api.credentials.GmailCredential;
-import com.botcamp.gmail_gateway_api.mailing.GmailAPIAction;
-import com.botcamp.gmail_gateway_api.mailing.impl.GmailAPICallerImpl;
-import com.botcamp.gmail_gateway_api.mailing.query.MessageQuery;
+import com.botcamp.common.gateway_credentials.GmailCredential;
+import com.botcamp.common.mail.GmailAPIAction;
+import com.botcamp.gmail_gateway_api.service.impl.GmailAPICallerImpl;
+import com.botcamp.common.mail.query.MessageQuery;
 import com.botcamp.gmail_gateway_api.service.GmailCredentialsService;
-import com.botcamp.gmail_gateway_api.service.GmailCredentialsServiceImpl;
+import com.botcamp.gmail_gateway_api.service.impl.GmailCredentialsServiceImpl;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.Message;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +41,7 @@ import static org.mockito.Mockito.*;
 @SpringBootTest(classes = TestConfiguration.class)
 @ActiveProfiles("test")
 @Slf4j
-public class GmailAPICallerTests {
+class GmailAPICallerTests {
     private static final String GMAIL_EMAIL = "toto@toto.com";
 
     @Autowired
@@ -126,7 +126,7 @@ public class GmailAPICallerTests {
     }
 
     @Test
-    public void should_log_and_reset_twice() throws InterruptedException, IOException {
+    void should_log_and_reset_twice() throws InterruptedException, IOException {
 
         configureTests(101);
 
@@ -145,7 +145,7 @@ public class GmailAPICallerTests {
     }
 
     @Test
-    public void should_throw_exception_when_user_is_not_existing() throws IOException {
+    void should_throw_exception_when_user_is_not_existing() throws IOException {
         configureTests(1);
         String wrongEmail = "wrong_email@gogole.com";
         AtomicBoolean hasThrown = new AtomicBoolean(false);
@@ -163,7 +163,7 @@ public class GmailAPICallerTests {
     }
 
     @Test
-    public void should_reset_between_each_call() throws IOException, InterruptedException {
+    void should_reset_between_each_call() throws IOException, InterruptedException {
         configureTests(5);
 
         AtomicInteger counter = new AtomicInteger(1);

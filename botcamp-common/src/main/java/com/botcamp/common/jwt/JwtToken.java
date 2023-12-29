@@ -15,6 +15,6 @@ public class JwtToken {
 
     public JwtToken(JwtResponse jwtResponse) {
         this.token = jwtResponse.getJwtToken();
-        this.expiresAt = DateUtils.stringToDateTime(jwtResponse.getExpiresAt(), DateUtils.formatter);
+        this.expiresAt = DateUtils.stringToLocalDateTime(jwtResponse.getExpiresAt(), DateUtils.formatter);
     }
 }

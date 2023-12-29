@@ -3,10 +3,7 @@ package com.botcamp.common.utils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Date;
@@ -22,9 +19,10 @@ public class DateUtils {
     private static final String TIME_ZONE_PARIS = "Europe/Paris";
 
     public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+    public static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 
-    public static LocalDateTime stringToDateTime(String dateStr, DateTimeFormatter formatter) {
+    public static LocalDateTime stringToLocalDateTime(String dateStr, DateTimeFormatter formatter) {
         if (formatter.equals(DateUtils.formatter)) return LocalDateTime.parse(dateStr, formatter);
         formatter = formatter.withLocale(Locale.ENGLISH);
         LocalDateTime localDateTime = LocalDateTime.parse(dateStr, formatter);
@@ -34,6 +32,10 @@ public class DateUtils {
         ZonedDateTime zonedDateTime = instant.atZone(ZoneId.of(TIME_ZONE_PARIS));
 
         return zonedDateTime.toLocalDateTime();
+    }
+
+    public static LocalDate stringToLocalDate(String dateStr) {
+        return LocalDate.parse(dateStr, dateFormatter);
     }
 
     public static String dateTimeToString(LocalDateTime dateTime) {
@@ -63,6 +65,9 @@ public class DateUtils {
         return sb.toString();
     }
 
+    public static Date localDateToDate(LocalDate date) {
+        return java.sql.Date.valueOf(date);
+    }
 
 
     public static OffsetPair parseOffset(String offsetString) {
@@ -74,8 +79,9 @@ public class DateUtils {
     }
 
     public static LocalDateTime dateToLocalDateTime(Date dateToConvert) {
+        Instant instant = dateToConvert.toInstant();
         return LocalDateTime.ofInstant(
-                dateToConvert.toInstant(), ZoneId.systemDefault());
+                instant, ZoneId.systemDefault());
     }
 
     public static Date localDateTimeToDate(LocalDateTime localDateTime) {

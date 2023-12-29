@@ -2,7 +2,7 @@ package com.botcamp.gmail_gateway_api.service;
 
 import com.botcamp.common.config.properties.SecurityConfigProperties;
 import com.botcamp.common.service.JwtUserDetailsService;
-import com.botcamp.common.utils.JwtUtils;
+import com.botcamp.gmail_gateway_api.config.GatewayUser;
 import com.botcamp.gmail_gateway_api.repository.GatewayUserRepository;
 import com.botcamp.gmail_gateway_api.repository.entity.GatewayUserEntity;
 import org.springframework.security.core.userdetails.UserDetails;
