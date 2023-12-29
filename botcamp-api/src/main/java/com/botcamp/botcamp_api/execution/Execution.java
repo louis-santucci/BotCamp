@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.nio.file.Path;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,6 +23,8 @@ public class Execution {
     private QueryParameter queryParameter;
     private String createdAt;
     private String updatedAt;
+    private Path reportPath;
+    private boolean emailSent;
 
     public Execution(TaskExecutionEntity entity) {
         this.id = entity.getId();
@@ -30,6 +34,8 @@ public class Execution {
         this.type = entity.getType();
         this.createdAt = entity.getCreatedAt() == null ? null : DateUtils.dateTimeToString(DateUtils.dateToLocalDateTime(entity.getCreatedAt()));
         this.updatedAt = entity.getUpdatedAt() == null ? null : DateUtils.dateTimeToString(DateUtils.dateToLocalDateTime(entity.getUpdatedAt()));
+        this.reportPath = entity.getReportPath();
+        this.emailSent = entity.isEmailSent();
     }
 
 

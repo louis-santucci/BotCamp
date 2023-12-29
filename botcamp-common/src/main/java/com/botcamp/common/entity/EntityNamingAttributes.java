@@ -24,6 +24,8 @@ public class EntityNamingAttributes {
     public static final String EXECUTION_TYPE = "execution_type";
     public static final String EXECUTION_STATUS = "status";
     public static final String EXECUTION_QUERY_PARAMETER = "query_parameter";
+    public static final String EXECUTION_REPORT_PATH = "report_path";
+    public static final String EXECUTION_EMAIL_SENT = "email_sent";
 
     // Job
     public static final String JOB = "job";
